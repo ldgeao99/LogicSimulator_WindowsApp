@@ -25,7 +25,7 @@ public:
 	int zero = 0;
 
 //로직 시뮬레이터 함수입니다.
-	CPoint DividedByTen(CPoint point);
+	CPoint DividedByTwenty(CPoint point);
 
 // 작업입니다.
 public:
