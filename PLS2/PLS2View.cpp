@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32772, &CPLS2View::Create_Output_BCLK)
 	ON_COMMAND(ID_32773, &CPLS2View::Create_AndGate_BCLK)
 	ON_COMMAND(ID_32775, &CPLS2View::On32775)
+	ON_COMMAND(ID_32777, &CPLS2View::Create_NAndGate_BCLK)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -132,8 +133,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.and[i].clicked.x*10-20, pDoc->ls.and[i].clicked.y*10-20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-}
+			pDC->StretchBlt(pDoc->ls.and[i].min.x * 10, pDoc->ls.and[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_xor; i++) {
@@ -147,7 +148,21 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 10, pDoc->ls.xor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-}
+		}
+	}
+
+	for (i = 0; i <= pDoc->ls.count_nand; i++) {
+		if (pDoc->ls.nand[i].clicked.x != 0 && pDoc->ls.nand[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_NAND);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 10, pDoc->ls.nand[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
 	}
 }
 
@@ -229,6 +244,12 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case xor:
 			pDoc->ls.count_xor++;
 			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(0);
+			break;
+		case nand:
+			pDoc->ls.count_nand++;
+			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
 			break;
@@ -339,12 +360,17 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		case xor:
 			if (oldpoint != p1) {
 				Invalidate(0);
 			}
+
 			bitmap.LoadBitmapW(IDB_GATE_XOR);
 			bitmap.GetBitmap(&bmpinfo);
 
@@ -356,6 +382,23 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x-20, p1.y-20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		case nand:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+
+			bitmap.LoadBitmapW(IDB_GATE_NAND);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		}
 		
@@ -496,4 +539,12 @@ void CPLS2View::On32775()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = xor;
+}
+
+
+void CPLS2View::Create_NAndGate_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = nand;
 }

@@ -65,6 +65,7 @@ public:
 	afx_msg void Create_Output_BCLK();
 	afx_msg void Create_AndGate_BCLK();
 	afx_msg void On32775();
+	afx_msg void Create_NAndGate_BCLK();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

@@ -98,17 +98,23 @@ void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif �
 	and->min = { clicked.x-2, clicked.y-2}; // 비트맵을 찍어낼때 사용하는 left좌표
 	and->max = { clicked.x+2, clicked.y+2};
 
-	and->output[0] = { clicked.x+2, clicked.y};//값을 내보낼 수 있는 점.
+	and->output = { clicked.x+2, clicked.y};//값을 내보낼 수 있는 점.
 	and->input[0] = { clicked.x-2, clicked.y - 1 }; // 값을 받는 점.
 	and->input[1] = { clicked.x-2, clicked.y + 1 };
 	
-	for (int i = 0; i < 5; i++)
-		for (int j = 0; j < 5; j++)
-		pif[and->min.x + i][and->min.y + j].usingpoint = TRUE; // 그려지는 영역이 사용중 인것을 pif에 저장.
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				this->pif[and->min.x + i][and->min.y + j].usingpoint = TRUE;
+				this->pif[and->min.x + i][and->min.y + j].gate = ::and;
+			}
+		}
+		this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
+		this->pif[and->input[0].x][and->input[0].y].gatein = TRUE;
+		this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
+		this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
+		this->pif[and->output.x][and->output.y].lineok = TRUE;
+		this->pif[and->output.x][and->output.y].gatein = TRUE;
 
-		pif[and->output[0].x][and->output[0].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함.
-		pif[and->input[0].x][and->input[0].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함.
-		pif[and->input[1].x][and->input[1].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함.
 }
 
 void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereFixed old_wherefixed) { // 그려진 선에 대한 점을 저장한다.
@@ -179,6 +185,28 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 	this->pif[xor->input[1].x][xor->input[1].y].gatein = TRUE;
 	this->pif[xor->output.x][xor->output.y].lineok = TRUE;
 	this->pif[xor->output.x][xor->output.y].gatein = TRUE;
+}
+
+void LogicSimulator::create_nand(NAndGate *nand, CPoint clicked) {
+	nand->clicked = clicked; //pif 인덱스
+	nand->min = { clicked.x - 2, clicked.y - 2 }; // 비트맵을 찍어낼때 사용하는 left좌표
+	nand->max = { clicked.x + 2, clicked.y + 2 };
+	nand->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
+	nand->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
+	nand->input[1] = { clicked.x - 2, clicked.y + 1 };
+
+	for (int i = 0; i < 5; i++){
+		for (int j = 0; j < 5; j++) {
+			this->pif[nand->min.x + i][nand->min.y + j].usingpoint = TRUE;
+			this->pif[nand->min.x + i][nand->min.y + j].gate = ::nand;
+		}
+	}
+	this->pif[nand->input[0].x][nand->input[0].y].lineok = TRUE;
+	this->pif[nand->input[0].x][nand->input[0].y].gatein = TRUE;
+	this->pif[nand->input[1].x][nand->input[1].y].lineok = TRUE;
+	this->pif[nand->input[1].x][nand->input[1].y].gatein = TRUE;
+	this->pif[nand->output.x][nand->output.y].lineok = TRUE;
+	this->pif[nand->output.x][nand->output.y].gatein = TRUE;
 }
 
 
