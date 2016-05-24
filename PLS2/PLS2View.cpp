@@ -193,17 +193,20 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 	if (pDoc->ls.whatgate != nothing) {
 		switch (pDoc->ls.whatgate) {
 		case input:
+			pDoc->ls.count_input++;
 			pDoc->ls.create_input(&(pDoc->ls.in[pDoc->ls.count_input]), pointofpif);
 			pDoc->ls.whatgate = nothing; // 마우스를 누르는 순간 그 위치에 그려지게 되므로 초기값으로 돌려줌.
 			Invalidate(0);
 			break;
 		case output:
+			pDoc->ls.count_output++;
 			pDoc->ls.pif[p1.x / 10 - 1][p1.y / 10].value = &zero;
 			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
 			break;
 		case and:
+			pDoc->ls.count_and++;
 			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
@@ -268,7 +271,6 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	CClientDC dc(this);
 	CPoint p1 = DividedByTen(point);
 	CPoint pointofpif{ p1.x / 10, p1.y / 10 };
 	CPoint movedFirstPoint = DividedByTen(p1); // 마우스를 처음 누른 뒤 움직인 첫 위치
@@ -285,20 +287,20 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			if (oldpoint != p1) {
 				Invalidate(0);
 			}
-			dc.SelectObject(&whitepen);
-			dc.Rectangle(oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10);
-			dc.SelectObject(&blackpen);
-			dc.Rectangle(p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10);
+			pDC->SelectObject(&whitepen);
+			pDC->Rectangle(oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10);
+			pDC->SelectObject(&blackpen);
+			pDC->Rectangle(p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10);
 			oldpoint = p1;
 			break;
 		case output:
 			if (oldpoint != p1) {
 				Invalidate(0);
 			}
-			dc.SelectObject(&whitepen);
-			dc.Ellipse(oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10);
-			dc.SelectObject(&blackpen);
-			dc.Ellipse(p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10);
+			pDC->SelectObject(&whitepen);
+			pDC->Ellipse(oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10);
+			pDC->SelectObject(&blackpen);
+			pDC->Ellipse(p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10);
 			oldpoint = p1;
 			break;
 		case and:
@@ -314,7 +316,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 
-			dc.BitBlt(p1.x-40, p1.y-20, bmpinfo.bmWidth, bmpinfo.bmHeight, &dcmem, 0, 0, SRCCOPY);
+			pDC->BitBlt(p1.x-40, p1.y-20, bmpinfo.bmWidth, bmpinfo.bmHeight, &dcmem, 0, 0, SRCCOPY);
 			break;
 		}
 		
@@ -430,7 +432,6 @@ void CPLS2View::Create_Input_BCLK()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pDoc->ls.count_input++;
 	pDoc->ls.whatgate = input; //  create를 LSINPUT(0)으로 만들어 input단자를 만들겠다고 알림.
 }
 
@@ -439,7 +440,6 @@ void CPLS2View::Create_Output_BCLK()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pDoc->ls.count_output++;
 	pDoc->ls.whatgate = output; //  create를 LSOUTPUT(1)으로 만들어 output단자를 만들겠다고 알림.
 }
 
@@ -448,6 +448,5 @@ void CPLS2View::Create_AndGate_BCLK()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pDoc->ls.count_and++;
 	pDoc->ls.whatgate = and; //  create를 LSOUTPUT(1)으로 만들어 output단자를 만들겠다고 알림.
 }
