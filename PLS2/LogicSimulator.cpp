@@ -86,26 +86,29 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 	out->value = this->pif[out->input.x][out->input.y].value;
 }
 
-void LogicSimulator::create_and(AndGate *and, CPoint clicked)
+void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif 인덱스 
 {
-	int a = 0;
-	and->value = &a;
-	and->clicked = clicked; // 마우스가 눌린 위치.
-	and->min = { clicked.x -4, clicked.y - 2 }; // 비트맵을 찍어낼때 사용하는 left좌표
-	and->output[0] = { clicked.x, clicked.y};//값을 내보낼 수 있는 점.
-	and->input[0] = { clicked.x-4, clicked.y - 1 }; // 값을 받는 점.
-	and->input[1] = { clicked.x-4, clicked.y + 1 };
+
+	and->get1 = pif[clicked.x-2][clicked.y-1].value;
+	and->get2 = pif[clicked.x-2][clicked.y+1].value;
+
+	//and->out = *(pif[clicked.x - 2][clicked.y - 1].value)  *(pif[clicked.x - 2][clicked.y + 1].value);
+
+	and->clicked = clicked; //pif 인덱스
+	and->min = { clicked.x-2, clicked.y-2}; // 비트맵을 찍어낼때 사용하는 left좌표
+	and->max = { clicked.x+2, clicked.y+2};
+
+	and->output[0] = { clicked.x+2, clicked.y};//값을 내보낼 수 있는 점.
+	and->input[0] = { clicked.x-2, clicked.y - 1 }; // 값을 받는 점.
+	and->input[1] = { clicked.x-2, clicked.y + 1 };
 	
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
-			pif[and->min.x + i][and->min.y + j].usingpoint = TRUE; // 그려지는 영역이 사용중 인것을 pif에 저장.
+		pif[and->min.x + i][and->min.y + j].usingpoint = TRUE; // 그려지는 영역이 사용중 인것을 pif에 저장.
 
-		pif[and->output[0].x][and->output[0].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함. 
-		//pif[and->output[0].x][and->output[0].y].value = pif[clicked.x][clicked.y].value; // pif의 값을 
-
+		pif[and->output[0].x][and->output[0].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함.
 		pif[and->input[0].x][and->input[0].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함.
-
-		pif[and->input[1].x][and->input[1].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함. 
+		pif[and->input[1].x][and->input[1].y].lineok = TRUE; // 이 점에서만 선이 그려질 수 있도록함.
 }
 
 void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereFixed old_wherefixed) { // 그려진 선에 대한 점을 저장한다.

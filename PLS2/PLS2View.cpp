@@ -131,8 +131,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
-			pDC->BitBlt(pDoc->ls.and[i].min.x*10, pDoc->ls.and[i].min.y*10, bmpinfo.bmWidth, bmpinfo.bmHeight, &dcmem, 0, 0, SRCCOPY);
-}
+			pDC->StretchBlt(pDoc->ls.and[i].clicked.x*10-20, pDoc->ls.and[i].clicked.y*10-20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
 	}
 }
 
@@ -218,6 +218,9 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		if (pDoc->ls.pif[p1.x / 10][p1.y / 10].lineok == TRUE)
 			pDoc->ls.canDrawState = TRUE;
 	}
+
+	Invalidate();
+
 	/* //여기서 선을 그릴 수 있는 곳인지 판단.
 	else { // 그밖에 선을 그린다고 알고있을 때.
 		if (pDoc->ls.pif[p1.x / 10][p1.y / 10].gate == input) {
@@ -316,7 +319,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 
-			pDC->BitBlt(p1.x-40, p1.y-20, bmpinfo.bmWidth, bmpinfo.bmHeight, &dcmem, 0, 0, SRCCOPY);
+			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		}
 		

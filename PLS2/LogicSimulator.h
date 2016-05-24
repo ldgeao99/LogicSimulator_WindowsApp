@@ -55,7 +55,6 @@ public:
 	};
 
 	struct OneLinePoint {
-
 		CPoint firstPt;
 		CPoint secondPt;
 		OneLinePoint() {}
@@ -66,12 +65,14 @@ public:
 	};
 
 	struct AndGate {
-		int* value = NULL; // 가지는 값.
+		int* get1 = NULL; // 값을 받는 변수
+		int* get2 = NULL; // 값을 받는 변수
+		int out = NULL;  // 값을 내보내는 변수
 		CString name;
-		CPoint clicked{ -1, -1 }; // 사각형의 중점.
-		CPoint min; // 사각형의 왼쪽 끝점
-		CPoint max; // 사각형의 오른쪽 끝점
-		CPoint output[1];  // 값을 내보낼 수 있는 점.
+		CPoint clicked{ -1, -1 };
+		CPoint min;
+		CPoint max;
+		CPoint output[1];
 		CPoint input[2];
 	};
 
