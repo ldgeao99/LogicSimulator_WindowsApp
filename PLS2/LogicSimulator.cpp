@@ -44,7 +44,7 @@ void LogicSimulator::print(LogicSimulator ls)
 void LogicSimulator::create_input(Input *in, CPoint clicked)
 {
 
-	in->clicked = clicked; // 마우스가 눌린 위치.
+	in->clicked = clicked; // 마우스가 눌린 위치.//
 	//사각형을 그리기 위한 left와 right
 	in->min = { clicked.x - 1, clicked.y - 1 };
 	in->max = { clicked.x + 1, clicked.y + 1 };
