@@ -195,6 +195,15 @@ BEGIN
         MENUITEM "입력",                          ID_32771
         MENUITEM "출력",                          ID_32772
         MENUITEM "AND",                         ID_32773
+        MENUITEM "OR",                          ID_32774
+        MENUITEM "XOR",                         ID_32775
+        MENUITEM "NOT",                         ID_32776
+        MENUITEM "NAND",                        ID_32777
+        MENUITEM "NOR",                         ID_32778
+        MENUITEM "D-FF",                        ID_32779
+        MENUITEM "JK-FF",                       ID_32780
+        MENUITEM "T-FF",                        ID_32781
+        MENUITEM "클럭",                          ID_32782
     END
 END
 
