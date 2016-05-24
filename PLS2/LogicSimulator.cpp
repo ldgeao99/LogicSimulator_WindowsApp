@@ -159,4 +159,26 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 	}
 }
 
+void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
+{
+	xor->clicked = clicked; // 마우스가 눌린 위치.
+	xor->min = { clicked.x - 2, clicked.y - 2 }; // 비트맵을 찍어낼때 사용하는 left좌표
+	xor->max = { clicked.x + 2, clicked.y + 2 }; //우측하단의 점
+	xor->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
+	xor->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
+	xor->input[1] = { clicked.x - 2, clicked.y + 1 };
+
+	for (int i = 0; i < 5; i++)
+		for (int j = 0; j < 5; j++) {
+			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
+			this->pif[in->min.x + i][in->min.y + j].gate = ::xor;
+		}
+	this->pif[xor->input[0].x][xor->input[0].y].lineok = TRUE;
+	this->pif[xor->input[0].x][xor->input[0].y].gatein = TRUE;
+	this->pif[xor->input[1].x][xor->input[1].y].lineok = TRUE;
+	this->pif[xor->input[1].x][xor->input[1].y].gatein = TRUE;
+	this->pif[xor->output.x][xor->output.y].lineok = TRUE;
+	this->pif[xor->output.x][xor->output.y].gatein = TRUE;
+}
+
 
