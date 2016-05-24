@@ -35,6 +35,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32775, &CPLS2View::Create_XorGate_BCLK)
 	ON_COMMAND(ID_32778, &CPLS2View::Create_NorGate_BCLK)
 	ON_COMMAND(ID_32777, &CPLS2View::Create_NAndGate_BCLK)
+	ON_COMMAND(ID_32774, &CPLS2View::Create_OrGate_BCLK)
+	ON_COMMAND(ID_32776, &CPLS2View::Create_NotGate_BCLK)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -59,18 +61,18 @@ BOOL CPLS2View::PreCreateWindow(CREATESTRUCT& cs)
 
 // CPLS2View 그리기
 
-CPoint CPLS2View::DividedByTen(CPoint point)
+CPoint CPLS2View::DividedByTwenty(CPoint point)
 {
 	CPoint currentPoint;
-	if (point.x % 10 <= 4)
-		currentPoint.x = point.x - point.x % 10;
+	if (point.x % 20 <= 10)
+		currentPoint.x = point.x - point.x % 20;
 	else
-		currentPoint.x = point.x + (10 - (point.x % 10));
+		currentPoint.x = point.x + (20 - (point.x % 20));
 
-	if (point.y % 10 <= 4)
-		currentPoint.y = point.y - point.y % 10;
+	if (point.y % 20 <= 10)
+		currentPoint.y = point.y - point.y % 20;
 	else
-		currentPoint.y = point.y + (10 - (point.y % 10));
+		currentPoint.y = point.y + (20 - (point.y % 20));
 
 	return currentPoint;
 }
@@ -92,7 +94,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 	//격자를 그림
 	for (int i = 0; i < 200; i++)
 		for (int j = 0; j < 100; j++)
-			pDC->SetPixel(i * 10, j * 10, RGB(0, 0, 0));
+			pDC->SetPixel(i * 20, j * 20, RGB(0, 0, 0));
 
 	//그려진 선을 그림
 	for (int i = 0; i < pDoc->ls.line.GetSize(); i++) {
@@ -104,10 +106,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 	for (i = 0; i <= pDoc->ls.count_input; i++) {
 		if (pDoc->ls.in[i].clicked.x != 0 && pDoc->ls.in[i].clicked.y != 0)
 		{
-			pDC->Rectangle(pDoc->ls.in[i].min.x*10, pDoc->ls.in[i].min.y*10, pDoc->ls.in[i].max.x*10, pDoc->ls.in[i].max.y*10);
-			if (pDoc->ls.in[i].min.x * 10 > 0 ) {
+			pDC->Rectangle(pDoc->ls.in[i].min.x*20, pDoc->ls.in[i].min.y*20, pDoc->ls.in[i].max.x*20, pDoc->ls.in[i].max.y*20);
+			if (pDoc->ls.in[i].min.x * 20 > 0 ) {
 				str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.in[i].clicked.x + 1][pDoc->ls.in[i].clicked.y].value));
-				pDC->TextOutW(pDoc->ls.in[i].min.x * 10, pDoc->ls.in[i].min.y * 10 + 20, str);
+				pDC->TextOutW(pDoc->ls.in[i].min.x * 20, pDoc->ls.in[i].min.y * 20 + 40, str);
 			}
 		}
 	}
@@ -115,10 +117,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 	for (i = 0; i <= pDoc->ls.count_output; i++) {
 		if (pDoc->ls.out[i].clicked.x != 0 && pDoc->ls.out[i].clicked.y != 0)
 		{
-			pDC->Ellipse(pDoc->ls.out[i].min.x * 10, pDoc->ls.out[i].min.y * 10, pDoc->ls.out[i].max.x * 10, pDoc->ls.out[i].max.y * 10);
-			if (pDoc->ls.out[i].min.x * 10 > 0) {
+			pDC->Ellipse(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20, pDoc->ls.out[i].max.x * 20, pDoc->ls.out[i].max.y * 20);
+			if (pDoc->ls.out[i].min.x * 20 > 0) {
 				str.Format(_T("value = %d"), *(pDoc->ls.out[i].value));
-				pDC->TextOutW(pDoc->ls.out[i].min.x * 10, pDoc->ls.out[i].min.y * 10 + 20, str);
+				pDC->TextOutW(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20 + 40, str);
 			}
 		}
 	}
@@ -134,7 +136,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.and[i].min.x * 10, pDoc->ls.and[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 }
 	}
 
@@ -148,8 +150,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 10, pDoc->ls.xor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-}
+			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_nor; i++) {
@@ -162,7 +164,33 @@ void CPLS2View::OnDraw(CDC* pDC)
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 10, pDoc->ls.nor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+
+	for (i = 0; i <= pDoc->ls.count_or; i++) {
+		if (pDoc->ls. or [i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0) {
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_OR);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+
+	for (i = 0; i <= pDoc->ls.count_not; i++) {
+		if (pDoc->ls. not [i].clicked.x != 0 && pDoc->ls.not[i].clicked.y != 0) {
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_NOT);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 		}
 	}
 
@@ -176,8 +204,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 10, pDoc->ls.nand[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-}
+			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
 	}
 }
 
@@ -230,9 +258,9 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	CClientDC dc(this);
-	CPoint p1 = DividedByTen(point);
-	CPoint pointofpif{ p1.x / 10, p1.y / 10 };
-	pDoc->ls.downPoint = DividedByTen(point); //마우스를 누르기 시작한 지점의 좌표를 받을 수 있음.
+	CPoint p1 = DividedByTwenty(point);
+	CPoint pointofpif{ p1.x / 20, p1.y / 20 };
+	pDoc->ls.downPoint = DividedByTwenty(point); //마우스를 누르기 시작한 지점의 좌표를 받을 수 있음.
 
 	// 단자 또는 게이트를 생성한다고 할고있을 때.
 	if (pDoc->ls.whatgate != nothing) {
@@ -245,7 +273,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case output:
 			pDoc->ls.count_output++;
-			pDoc->ls.pif[p1.x / 10 - 1][p1.y / 10].value = &zero;
+			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value = &zero;
 			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
@@ -274,12 +302,24 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
 			break;
+		case or :
+			pDoc->ls.count_or++;
+			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(0);
+			break;
+		case not:
+			pDoc->ls.count_not++;
+			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(0);
+			break;
 		}
 	}
 
 
 	else {
-		if (pDoc->ls.pif[p1.x / 10][p1.y / 10].lineok == TRUE)
+		if (pDoc->ls.pif[p1.x / 20][p1.y / 20].lineok == TRUE)
 			pDoc->ls.canDrawState = TRUE;
 	}
 
@@ -313,7 +353,7 @@ void CPLS2View::OnLButtonUp(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	CDC* pDC = GetDC();
 
-	pDoc->ls.upPoint = DividedByTen(point); //마우스를 누르기 시작한 지점의 좌표를 받을 수 있음.
+	pDoc->ls.upPoint = DividedByTwenty(point); //마우스를 누르기 시작한 지점의 좌표를 받을 수 있음.
 
 
 	if(pDoc->ls.canDrawState == TRUE)
@@ -336,10 +376,10 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	CPoint p1 = DividedByTen(point);
-	CPoint pointofpif{ p1.x / 10, p1.y / 10 };
-	CPoint movedFirstPoint = DividedByTen(p1); // 마우스를 처음 누른 뒤 움직인 첫 위치
-	CPoint startPoint = DividedByTen(pDoc->ls.downPoint);
+	CPoint p1 = DividedByTwenty(point);
+	CPoint pointofpif{ p1.x / 20, p1.y / 20 };
+	CPoint movedFirstPoint = DividedByTwenty(p1); // 마우스를 처음 누른 뒤 움직인 첫 위치
+	CPoint startPoint = DividedByTwenty(pDoc->ls.downPoint);
 	CPen blackpen(PS_SOLID, 1, RGB(0, 0, 0)); // 검정펜
 	CPen whitepen(PS_SOLID, 1, RGB(255, 255, 255)); //흰펜
 	CBrush whitebrush(RGB(255, 255, 255));
@@ -348,7 +388,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 	BITMAP bmpinfo;
 	CDC dcmem;
 	CRect bitrect;
-	bitrect = { oldpoint.x - 20, oldpoint.y - 20, oldpoint.x + 20, oldpoint.y + 20 };
+	bitrect = { oldpoint.x - 40, oldpoint.y - 40, oldpoint.x + 40, oldpoint.y + 40 };
 	//"pDoc->ls.create >= 0" 이 상태는 단자 또는 게이트를 메뉴에서 클릭하여 그리려고 하는 상태임.
 	if (pDoc->ls.whatgate != nothing) {
 		switch (pDoc->ls.whatgate) {
@@ -357,18 +397,18 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 				Invalidate(0);
 			}
 			pDC->SelectObject(&whitepen);
-			pDC->Rectangle(oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10);
+			pDC->Rectangle(oldpoint.x - 20, oldpoint.y - 20, oldpoint.x + 20, oldpoint.y + 20);
 			pDC->SelectObject(&blackpen);
-			pDC->Rectangle(p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10);
+			pDC->Rectangle(p1.x - 20, p1.y - 20, p1.x + 20, p1.y + 20);
 			break;
 		case output:
 			if (oldpoint != p1) {
 				Invalidate(0);
 			}
 			pDC->SelectObject(&whitepen);
-			pDC->Ellipse(oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10);
+			pDC->Ellipse(oldpoint.x - 20, oldpoint.y - 20, oldpoint.x + 20, oldpoint.y + 20);
 			pDC->SelectObject(&blackpen);
-			pDC->Ellipse(p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10);
+			pDC->Ellipse(p1.x - 20, p1.y - 20, p1.x + 20, p1.y + 20);
 			break;
 		case and:
 			if (oldpoint != p1) {
@@ -384,7 +424,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&whitebrush);
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
-			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		case xor:
 			if (oldpoint != p1) {
@@ -401,7 +441,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&whitebrush);
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
-			pDC->StretchBlt(p1.x-20, p1.y-20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(p1.x-40, p1.y-40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		case nor:
 			if (oldpoint != p1) {
@@ -417,7 +457,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&whitebrush);
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
-			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		case nand:
 			if (oldpoint != p1) {
@@ -434,10 +474,41 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&whitebrush);
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
-			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		case or:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_GATE_OR);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		case not:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_GATE_NOT);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		}
-		
 	}
 
 
@@ -591,4 +662,20 @@ void CPLS2View::Create_NAndGate_BCLK()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = nand;
+}
+
+
+void CPLS2View::Create_OrGate_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = or;
+}
+
+
+void CPLS2View::Create_NotGate_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = not;
 }
