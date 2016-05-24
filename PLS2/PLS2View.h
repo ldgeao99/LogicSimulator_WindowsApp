@@ -67,6 +67,8 @@ public:
 	afx_msg void Create_XorGate_BCLK();
 	afx_msg void Create_NorGate_BCLK();
 	afx_msg void Create_NAndGate_BCLK();
+	afx_msg void Create_OrGate_BCLK();
+	afx_msg void Create_NotGate_BCLK();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

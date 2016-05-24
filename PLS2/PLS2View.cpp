@@ -35,6 +35,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32775, &CPLS2View::Create_XorGate_BCLK)
 	ON_COMMAND(ID_32778, &CPLS2View::Create_NorGate_BCLK)
 	ON_COMMAND(ID_32777, &CPLS2View::Create_NAndGate_BCLK)
+	ON_COMMAND(ID_32774, &CPLS2View::Create_OrGate_BCLK)
+	ON_COMMAND(ID_32776, &CPLS2View::Create_NotGate_BCLK)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -149,7 +151,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 10, pDoc->ls.xor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-}
+		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_nor; i++) {
@@ -165,6 +167,33 @@ void CPLS2View::OnDraw(CDC* pDC)
 			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 10, pDoc->ls.nor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 		}
 	}
+
+	for (i = 0; i <= pDoc->ls.count_or; i++) {
+		if (pDoc->ls. or [i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0) {
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_OR);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.or[i].min.x * 10, pDoc->ls.or[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+
+	for (i = 0; i <= pDoc->ls.count_not; i++) {
+		if (pDoc->ls. not [i].clicked.x != 0 && pDoc->ls.not[i].clicked.y != 0) {
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_NOT);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls. not [i].min.x * 10, pDoc->ls. not [i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+}
 
 	for (i = 0; i <= pDoc->ls.count_nand; i++) {
 		if (pDoc->ls.nand[i].clicked.x != 0 && pDoc->ls.nand[i].clicked.y != 0)
@@ -271,6 +300,18 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case nand:
 			pDoc->ls.count_nand++;
 			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(0);
+			break;
+		case or :
+			pDoc->ls.count_or++;
+			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(0);
+			break;
+		case not:
+			pDoc->ls.count_not++;
+			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
 			break;
@@ -439,6 +480,40 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		
 	}
+		case or:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_GATE_OR);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		case not:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_GATE_NOT);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		}
+	}
 
 
 	//"pDoc->ls.create < 0 && nFlags & MK_LBUTTON" 이 상태는 메뉴의 게이트 또는 단자를 클릭하지 않은 상태이며 마우스가 눌린상태,, 선을 그릴 수 있음. 
@@ -591,4 +666,20 @@ void CPLS2View::Create_NAndGate_BCLK()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = nand;
+}
+
+
+void CPLS2View::Create_OrGate_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = or;
+}
+
+
+void CPLS2View::Create_NotGate_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = not;
 }
