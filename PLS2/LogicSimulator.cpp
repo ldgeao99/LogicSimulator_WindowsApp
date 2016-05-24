@@ -170,8 +170,8 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
-			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
-			this->pif[in->min.x + i][in->min.y + j].gate = ::xor;
+			this->pif[xor->min.x + i][xor->min.y + j].usingpoint = TRUE;
+			this->pif[xor->min.x + i][xor->min.y + j].gate = ::xor;
 		}
 	this->pif[xor->input[0].x][xor->input[0].y].lineok = TRUE;
 	this->pif[xor->input[0].x][xor->input[0].y].gatein = TRUE;
@@ -192,8 +192,8 @@ void LogicSimulator::create_nor(NorGate * nor, CPoint clicked)
 
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
-			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
-			this->pif[in->min.x + i][in->min.y + j].gate = ::xor;
+			this->pif[nor->min.x + i][nor->min.y + j].usingpoint = TRUE;
+			this->pif[nor->min.x + i][nor->min.y + j].gate = ::nor;
 		}
 	this->pif[nor->input[0].x][nor->input[0].y].lineok = TRUE;
 	this->pif[nor->input[0].x][nor->input[0].y].gatein = TRUE;
