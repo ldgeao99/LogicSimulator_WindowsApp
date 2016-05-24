@@ -32,6 +32,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32771, &CPLS2View::Create_Input_BCLK)
 	ON_COMMAND(ID_32772, &CPLS2View::Create_Output_BCLK)
 	ON_COMMAND(ID_32773, &CPLS2View::Create_AndGate_BCLK)
+	ON_COMMAND(ID_32775, &CPLS2View::Create_XorGate_BCLK)
+	ON_COMMAND(ID_32778, &CPLS2View::Create_NorGate_BCLK)
 	ON_COMMAND(ID_32775, &CPLS2View::On32775)
 	ON_COMMAND(ID_32777, &CPLS2View::Create_NAndGate_BCLK)
 END_MESSAGE_MAP()
@@ -134,7 +136,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.and[i].min.x * 10, pDoc->ls.and[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-		}
+}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_xor; i++) {
@@ -148,6 +150,20 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 10, pDoc->ls.xor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+}
+	}
+
+	for (i = 0; i <= pDoc->ls.count_nor; i++) {
+		if (pDoc->ls.nor[i].clicked.x != 0 && pDoc->ls.nor[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_NOR);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 10, pDoc->ls.nor[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 		}
 	}
 
@@ -162,7 +178,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 10, pDoc->ls.nand[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-		}
+}
 	}
 }
 
@@ -247,6 +263,12 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.whatgate = nothing;
 			Invalidate(0);
 			break;
+		case nor:
+			pDoc->ls.count_nor++;
+			pDoc->ls.create_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(0);
+			break;
 		case nand:
 			pDoc->ls.count_nand++;
 			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
@@ -256,12 +278,11 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 	}
 
+
 	else {
 		if (pDoc->ls.pif[p1.x / 10][p1.y / 10].lineok == TRUE)
 			pDoc->ls.canDrawState = TRUE;
 	}
-
-	Invalidate();
 
 	/* //여기서 선을 그릴 수 있는 곳인지 판단.
 	else { // 그밖에 선을 그린다고 알고있을 때.
@@ -382,6 +403,22 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x-20, p1.y-20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		case nor:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_GATE_NOR);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(bitrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		case nand:
 			if (oldpoint != p1) {
@@ -534,11 +571,19 @@ void CPLS2View::Create_AndGate_BCLK()
 }
 
 
-void CPLS2View::On32775()
+void CPLS2View::Create_XorGate_BCLK()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = xor;
+}
+
+
+void CPLS2View::Create_NorGate_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = nor;
 }
 
 

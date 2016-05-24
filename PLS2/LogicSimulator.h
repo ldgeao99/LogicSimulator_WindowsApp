@@ -78,7 +78,17 @@ public:
 
 	struct XorGate {
 		int * value = NULL;
-		CString name;
+		CString name; // caption
+		CPoint clicked{ -1, -1 }; // 사각형의 중점.
+		CPoint min; // 사각형의 왼쪽 끝점
+		CPoint max; // 사각형의 오른쪽 끝점
+		CPoint output;  // 값을 내보낼 수 있는 점.
+		CPoint input[2];
+	};
+
+	struct NorGate {
+		int * value = NULL;
+		CString name; // caption
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
@@ -105,6 +115,7 @@ public:
 	Output out[INDEX];
 	AndGate and[INDEX];
 	XorGate xor[INDEX];
+	NorGate nor[INDEX];
 	NAndGate nand[INDEX];
 
 	CPoint downPoint;
@@ -120,6 +131,7 @@ public:
 	int count_output = -1;
 	int count_and = -1;
 	int count_xor = -1;
+	int count_nor = -1;
 	int count_nand = -1;
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
@@ -135,5 +147,6 @@ public:
 	void create_and(AndGate *and, CPoint clicked);
 	void SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereFixed old_wherefixed);
 	void create_xor(XorGate *xor, CPoint clicked);
+	void create_nor(NorGate *nor, CPoint clicked);
 	void create_nand(NAndGate *nand, CPoint clicked);
 };
