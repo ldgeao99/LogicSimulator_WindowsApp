@@ -11,8 +11,8 @@ class LogicSimulator
 {
 
 public:
-//구조체입니다.
-public: 
+	//구조체입니다.
+public:
 
 	struct PointInfo {
 
@@ -28,7 +28,7 @@ public:
 
 		BOOL gatein = FALSE; //게이트의 입력값으로 사용되는가
 		BOOL gateout = FALSE; //게이트의 출력값으로 사용되는가
-	
+
 		BOOL lineok = FALSE;
 		WhatGate gate = nothing;
 		BOOL usingpoint = FALSE;
@@ -46,10 +46,10 @@ public:
 	};
 
 	struct Output {
-		int* value = 0; 
+		int* value = 0;
 		CString name;
-		CPoint clicked{ -1, -1 }; 
-		CPoint min; 
+		CPoint clicked{ -1, -1 };
+		CPoint min;
 		CPoint max;
 		CPoint input;
 	};
@@ -86,7 +86,27 @@ public:
 		CPoint input[2];
 	};
 
-//변수입니다.
+	struct OrGate {
+		int* value = NULL;
+		CString name;
+		CPoint clicked{ -1, -1 };
+		CPoint min;
+		CPoint max;
+		CPoint output;
+		CPoint input[2];
+	};
+
+	struct NotGate {
+		int* value = NULL;
+		CString name;
+		CPoint clicked{ -1. - 1 };
+		CPoint min;
+		CPoint max;
+		CPoint output;
+		CPoint input;
+	};
+
+	//변수입니다.
 public:
 	PointInfo pif[INDEX][INDEX];
 	CArray<OneLinePoint, OneLinePoint&> line; // 각 원소가 한 라인
@@ -94,6 +114,9 @@ public:
 	Output out[INDEX];
 	AndGate and[INDEX];
 	XorGate xor[INDEX];
+	OrGate or [INDEX];
+	NotGate not[INDEX];
+	
 
 	CPoint downPoint;
 	CPoint upPoint;
@@ -108,6 +131,8 @@ public:
 	int count_output = -1;
 	int count_and = -1;
 	int count_xor = -1;
+	int count_or = -1;
+	int count_not = -1;
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
 
@@ -122,4 +147,6 @@ public:
 	void create_and(AndGate *and, CPoint clicked);
 	void SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereFixed old_wherefixed);
 	void create_xor(XorGate *xor, CPoint clicked);
+	void create_or(OrGate * or , CPoint clicked);
+	void create_not(NotGate * not, CPoint clicked);
 };

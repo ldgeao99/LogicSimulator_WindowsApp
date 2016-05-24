@@ -170,15 +170,58 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
-			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
-			this->pif[in->min.x + i][in->min.y + j].gate = ::xor;
+			this->pif[xor->min.x + i][xor->min.y + j].usingpoint = TRUE;
+			this->pif[xor->min.x + i][xor->min.y + j].gate = ::xor;
 		}
 	this->pif[xor->input[0].x][xor->input[0].y].lineok = TRUE;
 	this->pif[xor->input[0].x][xor->input[0].y].gatein = TRUE;
 	this->pif[xor->input[1].x][xor->input[1].y].lineok = TRUE;
 	this->pif[xor->input[1].x][xor->input[1].y].gatein = TRUE;
 	this->pif[xor->output.x][xor->output.y].lineok = TRUE;
-	this->pif[xor->output.x][xor->output.y].gatein = TRUE;
+	this->pif[xor->output.x][xor->output.y].gateout = TRUE;
+}
+
+void LogicSimulator::create_or(OrGate * or , CPoint clicked)
+{
+	or ->clicked = clicked; // 마우스가 눌린 위치.
+	or ->min = { clicked.x - 2, clicked.y - 2 };
+	or ->max = { clicked.x + 2, clicked.y + 2 };
+	or ->output = { clicked.x + 2, clicked.y };
+	or ->input[0] = { clicked.x - 2,clicked.y - 1 };
+	or ->input[1] = { clicked.x - 2, clicked.y + 1 };
+
+	for(int i=0; i<5; i++)
+		for (int j = 0; j < 5; j++) {
+			this->pif[or ->min.x + i][or ->min.y + j].usingpoint = TRUE;
+			this->pif[or ->min.x + i][or ->min.y + j].gate = :: or ;
+		}
+	this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
+	this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
+	this->pif[or ->input[1].x][or ->input[1].y].lineok = TRUE;
+	this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
+	this->pif[or ->output.x][or ->output.y].lineok = TRUE;
+	this->pif[or ->output.x][or ->output.y].gateout = TRUE;
+}
+
+void LogicSimulator::create_not(NotGate * not, CPoint clicked)
+{
+	not->clicked = clicked;
+	not->min = { clicked.x - 2, clicked.y - 2 };
+	not->max = { clicked.x + 2, clicked.y + 2 };
+	not->output = { clicked.x + 2,clicked.y };
+	not->input = { clicked.x - 2,clicked.y };
+
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			this->pif[not->min.x + i][not->min.y + j].usingpoint = TRUE;
+			this->pif[not->min.x + i][not->min.y + j].gate = ::not;
+		}
+	}
+
+	this->pif[not->input.x][not->input.y].lineok = TRUE;
+	this->pif[not->input.x][not->input.y].gatein = TRUE;
+	this->pif[not->output.x][not->output.y].lineok = TRUE;
+	this->pif[not->output.x][not->output.y].gateout = TRUE;
 }
 
 
