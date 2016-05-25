@@ -71,6 +71,9 @@ public:
 	afx_msg void Create_NotGate_BCLK();
 	afx_msg void Create_TFF_BCLK();
 	afx_msg void Create_Clock_BCLK();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnDestroy();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

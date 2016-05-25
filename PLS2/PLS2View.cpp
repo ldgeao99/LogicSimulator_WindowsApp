@@ -39,6 +39,9 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32776, &CPLS2View::Create_NotGate_BCLK)
 	ON_COMMAND(ID_32781, &CPLS2View::Create_TFF_BCLK)
 	ON_COMMAND(ID_32782, &CPLS2View::Create_Clock_BCLK)
+	ON_WM_CREATE()
+	ON_WM_TIMER()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -210,6 +213,19 @@ void CPLS2View::OnDraw(CDC* pDC)
 		}
 	}
 
+	for (i = 0; i <= pDoc->ls.count_clock; i++) {
+		if (pDoc->ls.clock[i].clicked.x != 0 && pDoc->ls.clock[i].clicked.y != 0)
+		{
+			pDC->Rectangle(pDoc->ls.clock[i].min.x * 20, pDoc->ls.clock[i].min.y * 20, pDoc->ls.clock[i].max.x * 20, pDoc->ls.clock[i].max.y * 20);
+			pDC->Ellipse(pDoc->ls.clock[i].min.x * 20, pDoc->ls.clock[i].min.y * 20, pDoc->ls.clock[i].max.x * 20, pDoc->ls.clock[i].max.y * 20);
+			if (pDoc->ls.clock[i].min.x * 20 > 0) {
+				//str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.clock[i].clicked.x + 1][pDoc->ls.clock[i].clicked.y].value));
+				str.Format(_T("value = %d"), pDoc->ls.clock[pDoc->ls.count_clock].value);
+				pDC->TextOutW(pDoc->ls.clock[i].min.x * 20, pDoc->ls.clock[i].min.y * 20 + 40, str);
+			}
+		}
+	}
+
 	for (i = 0; i <= pDoc->ls.count_tff; i++) {
 		if (pDoc->ls.tff[i].clicked.x != 0 && pDoc->ls.tff[i].clicked.y != 0)
 		{
@@ -335,6 +351,13 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case tff:
 			pDoc->ls.count_tff++;
 			pDoc->ls.create_tff(&pDoc->ls. tff [pDoc->ls.count_tff], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case lsclock:
+			pDoc->ls.count_clock++;
+			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
+			SetTimer(pDoc->ls.count_clock, pDoc->ls.count_clock*100, NULL);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -552,6 +575,17 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
+		case lsclock:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			pDC->SelectObject(&whitepen);
+			pDC->Rectangle(oldpoint.x - 20, oldpoint.y - 20, oldpoint.x + 20, oldpoint.y + 20);
+			pDC->Ellipse(oldpoint.x - 20, oldpoint.y - 20, oldpoint.x + 20, oldpoint.y + 20);
+			pDC->SelectObject(&blackpen);
+			pDC->Rectangle(p1.x - 20, p1.y - 20, p1.x + 20, p1.y + 20);
+			pDC->Ellipse(p1.x - 20, p1.y - 20, p1.x + 20, p1.y + 20);
+			break;
 		}
 
 	}
@@ -739,4 +773,37 @@ void CPLS2View::Create_Clock_BCLK()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = lsclock;
+}
+
+
+int CPLS2View::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+	return 0;
+}
+
+
+void CPLS2View::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	//for (int i = 0; i < pDoc->ls.count_clock; i++) {
+		if (pDoc->ls.clock[nIDEvent].value == 0)
+			pDoc->ls.clock[nIDEvent].value = 1;
+		else
+			pDoc->ls.clock[nIDEvent].value = 0;
+		Invalidate(0);
+	//}
+	CView::OnTimer(nIDEvent);
+}
+
+
+void CPLS2View::OnDestroy()
+{
+	CView::OnDestroy();
+	KillTimer(0);
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

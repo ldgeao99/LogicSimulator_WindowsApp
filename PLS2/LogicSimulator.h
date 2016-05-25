@@ -24,6 +24,12 @@ public:
 		int xor = -1;
 		int not = -1;
 		int line = -1;
+		int nand = -1;
+		int nor = -1;
+		int dff = -1;
+		int jkff = -1;
+		int tff = -1;
+		int clock = -1;
 
 
 		BOOL gatein = FALSE; //게이트의 입력값으로 사용되는가

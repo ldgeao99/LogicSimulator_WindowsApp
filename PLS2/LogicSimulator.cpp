@@ -311,7 +311,7 @@ void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
 	clock->output = { clicked.x + 1, clicked.y };
 
 	this->pif[clicked.x][clicked.y].value = &(clock->value);
-	this->pif[clicked.x][clicked.y].input = this->count_input;
+	this->pif[clicked.x][clicked.y].clock = this->count_clock;
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++) {
 			this->pif[clock->min.x + i][clock->min.y + j].usingpoint = TRUE;
