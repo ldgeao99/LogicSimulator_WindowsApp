@@ -292,13 +292,13 @@ void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 		}
 
 	this->pif[tff->input.x][tff->input.y].lineok = TRUE;
-	this->pif[tff->input.x][tff->input.y].gateout = TRUE;
+	this->pif[tff->input.x][tff->input.y].gatein = TRUE;
 	this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
-	this->pif[tff->clock.x][tff->clock.y].gateout = TRUE;
+	this->pif[tff->clock.x][tff->clock.y].gatein = TRUE;
 	this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
-	this->pif[tff->output[0].x][tff->output[0].y].gatein = TRUE;
+	this->pif[tff->output[0].x][tff->output[0].y].gateout = TRUE;
 	this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
-	this->pif[tff->output[1].x][tff->output[1].y].gatein = TRUE;
+	this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
 }
 
 void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
@@ -324,4 +324,29 @@ void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
 	}
 }
 
+void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
+{
+	dff->clicked = clicked; // 마우스가 눌린 위치.
+	dff->min = { clicked.x - 3, clicked.y - 3 };
+	dff->max = { clicked.x + 3, clicked.y + 3 };
+	dff->input = { clicked.x - 3, clicked.y - 2 };
+	dff->clock = { clicked.x - 3, clicked.y };
+	dff->output[0] = { clicked.x + 2,clicked.y - 1 };
+	dff->output[1] = { clicked.x + 2, clicked.y + 1 };
+
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[dff->min.x + i][dff->min.y + j].usingpoint = TRUE;
+			this->pif[dff->min.x + i][dff->min.y + j].gate = ::dff;
+		}
+
+	this->pif[dff->input.x][dff->input.y].lineok = TRUE;
+	this->pif[dff->input.x][dff->input.y].gatein = TRUE;
+	this->pif[dff->clock.x][dff->clock.y].lineok = TRUE;
+	this->pif[dff->clock.x][dff->clock.y].gatein = TRUE;
+	this->pif[dff->output[0].x][dff->output[0].y].lineok = TRUE;
+	this->pif[dff->output[0].x][dff->output[0].y].gateout = TRUE;
+	this->pif[dff->output[1].x][dff->output[1].y].lineok = TRUE;
+	this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
+}
 

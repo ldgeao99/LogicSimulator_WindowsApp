@@ -74,6 +74,7 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
+	afx_msg void Create_DFF_BCLK();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

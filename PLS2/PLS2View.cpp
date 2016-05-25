@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
+	ON_COMMAND(ID_32779, &CPLS2View::Create_DFF_BCLK)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -241,6 +242,21 @@ void CPLS2View::OnDraw(CDC* pDC)
 		}
 	}
 
+	for (i = 0; i <= pDoc->ls.count_dff; i++) {
+		if (pDoc->ls.dff[i].clicked.x != 0 && pDoc->ls.dff[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_FF_D);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+	
+
 	ReleaseDC(pDC);
 }
 
@@ -359,6 +375,12 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_clock++;
 			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
 			SetTimer(pDoc->ls.count_clock, pDoc->ls.count_clock*100, NULL);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case dff:
+			pDoc->ls.count_dff++;
+			pDoc->ls.create_dff(&pDoc->ls.dff[pDoc->ls.count_dff], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -587,8 +609,24 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->Rectangle(p1.x - 20, p1.y - 20, p1.x + 20, p1.y + 20);
 			pDC->Ellipse(p1.x - 20, p1.y - 20, p1.x + 20, p1.y + 20);
 			break;
-		}
+		case dff:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_FF_D);
+			bitmap.GetBitmap(&bmpinfo);
 
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(ffrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
+		}
+		
 	}
 	//"pDoc->ls.create < 0 && nFlags & MK_LBUTTON" 이 상태는 메뉴의 게이트 또는 단자를 클릭하지 않은 상태이며 마우스가 눌린상태,, 선을 그릴 수 있음. 
 	if (pDoc->ls.create < 0 && nFlags & MK_LBUTTON && pDoc->ls.canDrawState == TRUE) {
@@ -807,4 +845,12 @@ void CPLS2View::OnDestroy()
 	CView::OnDestroy();
 	KillTimer(0);
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+}
+
+
+void CPLS2View::Create_DFF_BCLK()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = dff;
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
