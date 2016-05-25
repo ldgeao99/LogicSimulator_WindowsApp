@@ -66,7 +66,6 @@ public:
 	afx_msg void Create_AndGate_BCLK();
 	afx_msg void Create_XorGate_BCLK();
 	afx_msg void Create_NorGate_BCLK();
-	afx_msg void On32775();
 	afx_msg void Create_NAndGate_BCLK();
 	afx_msg void Create_OrGate_BCLK();
 	afx_msg void Create_NotGate_BCLK();

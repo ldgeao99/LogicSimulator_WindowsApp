@@ -34,7 +34,6 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32773, &CPLS2View::Create_AndGate_BCLK)
 	ON_COMMAND(ID_32775, &CPLS2View::Create_XorGate_BCLK)
 	ON_COMMAND(ID_32778, &CPLS2View::Create_NorGate_BCLK)
-	ON_COMMAND(ID_32775, &CPLS2View::On32775)
 	ON_COMMAND(ID_32777, &CPLS2View::Create_NAndGate_BCLK)
 	ON_COMMAND(ID_32774, &CPLS2View::Create_OrGate_BCLK)
 	ON_COMMAND(ID_32776, &CPLS2View::Create_NotGate_BCLK)
@@ -194,7 +193,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			pDC->StretchBlt(pDoc->ls. not [i].min.x * 10, pDoc->ls. not [i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 		}
 	}
-}
+
 
 	for (i = 0; i <= pDoc->ls.count_nand; i++) {
 		if (pDoc->ls.nand[i].clicked.x != 0 && pDoc->ls.nand[i].clicked.y != 0)
@@ -207,7 +206,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 10, pDoc->ls.nand[i].min.y * 10, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-}
+		}
 	}
 }
 
@@ -443,7 +442,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&whitebrush);
 			pDC->Rectangle(bitrect);
 			pDC->SelectObject(&blackpen);
-			pDC->StretchBlt(p1.x-20, p1.y-20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
 		case nor:
 			if (oldpoint != p1) {
@@ -478,10 +477,8 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 20, p1.y - 20, 40, 40, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
-		}
-		
-	}
-		case or:
+
+		case or :
 			if (oldpoint != p1) {
 				Invalidate(0);
 			}
