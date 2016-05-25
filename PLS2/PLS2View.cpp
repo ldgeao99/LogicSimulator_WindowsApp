@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32777, &CPLS2View::Create_NAndGate_BCLK)
 	ON_COMMAND(ID_32774, &CPLS2View::Create_OrGate_BCLK)
 	ON_COMMAND(ID_32776, &CPLS2View::Create_NotGate_BCLK)
+	ON_COMMAND(ID_32781, &CPLS2View::Create_TFF_BCLK)
+	ON_COMMAND(ID_32782, &CPLS2View::Create_Clock_BCLK)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -92,9 +94,9 @@ void CPLS2View::OnDraw(CDC* pDC)
 	int i = 0;
 
 	//격자를 그림
-	for (int i = 0; i < 200; i++)
-		for (int j = 0; j < 100; j++)
-			pDC->SetPixel(i * 20, j * 20, RGB(0, 0, 0));
+	//for (int i = 0; i < 200; i++)
+	//	for (int j = 0; j < 100; j++)
+	//		pDC->SetPixel(i * 20, j * 20, RGB(0, 0, 0));
 
 	//그려진 선을 그림
 	for (int i = 0; i < pDoc->ls.line.GetSize(); i++) {
@@ -207,6 +209,22 @@ void CPLS2View::OnDraw(CDC* pDC)
 			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 		}
 	}
+
+	for (i = 0; i <= pDoc->ls.count_tff; i++) {
+		if (pDoc->ls.tff[i].clicked.x != 0 && pDoc->ls.tff[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_FF_T);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.tff[i].min.x * 20, pDoc->ls.tff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+
+	ReleaseDC(pDC);
 }
 
 
@@ -269,53 +287,60 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_input++;
 			pDoc->ls.create_input(&(pDoc->ls.in[pDoc->ls.count_input]), pointofpif);
 			pDoc->ls.whatgate = nothing; // 마우스를 누르는 순간 그 위치에 그려지게 되므로 초기값으로 돌려줌.
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case output:
 			pDoc->ls.count_output++;
 			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value = &zero;
 			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case and:
 			pDoc->ls.count_and++;
 			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case xor:
 			pDoc->ls.count_xor++;
 			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case nor:
 			pDoc->ls.count_nor++;
 			pDoc->ls.create_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case nand:
 			pDoc->ls.count_nand++;
 			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case or :
 			pDoc->ls.count_or++;
 			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
 			break;
 		case not:
 			pDoc->ls.count_not++;
 			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
 			pDoc->ls.whatgate = nothing;
-			Invalidate(0);
+			Invalidate(1);
+			break;
+		case tff:
+			pDoc->ls.count_tff++;
+			pDoc->ls.create_tff(&pDoc->ls. tff [pDoc->ls.count_tff], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
 			break;
 		}
 	}
+	
 
 
 	else {
@@ -342,6 +367,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 	}
 	*/
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -389,6 +415,8 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 	CDC dcmem;
 	CRect bitrect;
 	bitrect = { oldpoint.x - 40, oldpoint.y - 40, oldpoint.x + 40, oldpoint.y + 40 };
+	CRect ffrect;
+	ffrect = { oldpoint.x - 60, oldpoint.y - 60, oldpoint.x + 60, oldpoint.y + 60 };
 	//"pDoc->ls.create >= 0" 이 상태는 단자 또는 게이트를 메뉴에서 클릭하여 그리려고 하는 상태임.
 	if (pDoc->ls.whatgate != nothing) {
 		switch (pDoc->ls.whatgate) {
@@ -422,7 +450,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 
 			pDC->SelectObject(&whitepen);
 			pDC->SelectObject(&whitebrush);
-			pDC->Rectangle(bitrect);
+			pDC->Rectangle(&bitrect);
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
@@ -508,10 +536,25 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 40, p1.y - 40, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
+		case tff:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_FF_T);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(ffrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
 		}
+
 	}
-
-
 	//"pDoc->ls.create < 0 && nFlags & MK_LBUTTON" 이 상태는 메뉴의 게이트 또는 단자를 클릭하지 않은 상태이며 마우스가 눌린상태,, 선을 그릴 수 있음. 
 	if (pDoc->ls.create < 0 && nFlags & MK_LBUTTON && pDoc->ls.canDrawState == TRUE) {
 		//pDoc->ls.pif[p1.x / 10][p1.y / 10]->linevalue = pDoc->ls.pif[startline.x / 10][startline.y / 10]->linevalue;
@@ -540,7 +583,9 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 		else if (pDoc->ls.wherefixed == SERO && startPoint.y == p1.y || startPoint == p1)
 			pDoc->ls.wherefixed = DEFAULT;
 	}
-		oldpoint = p1;
+
+	ReleaseDC(pDC);
+	oldpoint = p1;
 	CView::OnMouseMove(nFlags, point);
 }
 
@@ -678,4 +723,20 @@ void CPLS2View::Create_NotGate_BCLK()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = not;
+}
+
+
+void CPLS2View::Create_TFF_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = tff;
+}
+
+
+void CPLS2View::Create_Clock_BCLK()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = lsclock;
 }

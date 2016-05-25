@@ -97,6 +97,12 @@ IDB_GATE_NXOR           BITMAP                  "res\\bitmap7.bmp"
 
 IDB_GATE_NOT            BITMAP                  "res\\bitmap8.bmp"
 
+IDB_FF_D                BITMAP                  "res\\bmp00001.bmp"
+
+IDB_FF_T                BITMAP                  "res\\bmp00002.bmp"
+
+IDB_FF_JK               BITMAP                  "res\\bmp00003.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
