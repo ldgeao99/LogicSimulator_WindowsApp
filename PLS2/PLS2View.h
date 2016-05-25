@@ -38,12 +38,11 @@ protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	//////////////////////////////////////////////////////////////////
+
 	void drawingline(CPoint start, CPoint end, WhereFixed wherefixed);
 	CPoint old_start; //drawingline에서 이전에 그려진걸 지워주기 위한것.
 	CPoint old_end; //drawingline에서 이전에 그려진걸 지워주기 위한것.
 	WhereFixed old_wherefixed; //drawingline에서 이전에 그려진걸 지워주기 위한것.
-	//////////////////////////////////////////////////////////////////
 // 구현입니다.
 public:
 	virtual ~CPLS2View();
@@ -75,6 +74,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnDestroy();
 	afx_msg void Create_DFF_BCLK();
+	afx_msg void Create_JKFF_BCLK();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

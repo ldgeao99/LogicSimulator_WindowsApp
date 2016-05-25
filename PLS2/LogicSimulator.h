@@ -163,6 +163,17 @@ public:
 		CPoint clock;
 	};
 
+	struct JKFF {
+		int* value = NULL;
+		CString name;
+		CPoint clicked{ -1. - 1 };
+		CPoint min;
+		CPoint max;
+		CPoint output[2];
+		CPoint input[2];
+		CPoint clock;
+	};
+
 	//변수입니다.
 public:
 	PointInfo pif[INDEX][INDEX];
@@ -178,6 +189,7 @@ public:
 	TFF tff[INDEX];
 	Clock clock[INDEX];
 	DFF dff[INDEX];
+	JKFF jkff[INDEX];
 
 	CPoint downPoint;
 	CPoint upPoint;
@@ -199,6 +211,7 @@ public:
 	int count_clock = -1;
 	int count_tff = -1;
 	int count_dff = -1;
+	int count_jkff = -1;
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
 
@@ -220,4 +233,5 @@ public:
 	void create_tff(TFF * not, CPoint clicked);
 	void create_clock(Clock * not, CPoint clicked);
 	void create_dff(DFF * dff, CPoint clicked);
+	void create_jkff(JKFF * jkff, CPoint clicked);
 };

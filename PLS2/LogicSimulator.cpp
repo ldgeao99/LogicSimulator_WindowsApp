@@ -282,8 +282,8 @@ void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 	tff->max = { clicked.x + 3, clicked.y + 3 };
 	tff->input = { clicked.x - 3, clicked.y - 2 };
 	tff->clock = { clicked.x - 3, clicked.y };
-	tff->output[0] = { clicked.x + 2,clicked.y - 1 };
-	tff->output[1] = { clicked.x + 2, clicked.y + 1 };
+	tff->output[0] = { clicked.x + 3,clicked.y - 1 };
+	tff->output[1] = { clicked.x + 3, clicked.y + 1 };
 
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -331,8 +331,8 @@ void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
 	dff->max = { clicked.x + 3, clicked.y + 3 };
 	dff->input = { clicked.x - 3, clicked.y - 2 };
 	dff->clock = { clicked.x - 3, clicked.y };
-	dff->output[0] = { clicked.x + 2,clicked.y - 1 };
-	dff->output[1] = { clicked.x + 2, clicked.y + 1 };
+	dff->output[0] = { clicked.x + 3,clicked.y - 1 };
+	dff->output[1] = { clicked.x + 3, clicked.y + 1 };
 
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -350,3 +350,30 @@ void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
 	this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
 }
 
+void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
+	jkff->clicked = clicked; // 마우스가 눌린 위치.
+	jkff->min = { clicked.x - 3, clicked.y - 3 };
+	jkff->max = { clicked.x + 3, clicked.y + 3 };
+	jkff->input[0] = { clicked.x - 3, clicked.y - 2 };
+	jkff->input[1] = { clicked.x - 3, clicked.y + 2 };
+	jkff->clock = { clicked.x - 3, clicked.y };
+	jkff->output[0] = { clicked.x + 3,clicked.y - 1 };
+	jkff->output[1] = { clicked.x + 3, clicked.y + 1 };
+
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[jkff->min.x + i][jkff->min.y + j].usingpoint = TRUE;
+			this->pif[jkff->min.x + i][jkff->min.y + j].gate = ::jkff;
+		}
+
+	this->pif[jkff->input[0].x][jkff->input[0].y].lineok = TRUE;
+	this->pif[jkff->input[0].x][jkff->input[0].y].gatein = TRUE;
+	this->pif[jkff->input[1].x][jkff->input[1].y].lineok = TRUE;
+	this->pif[jkff->input[1].x][jkff->input[1].y].gatein = TRUE;
+	this->pif[jkff->clock.x][jkff->clock.y].lineok = TRUE;
+	this->pif[jkff->clock.x][jkff->clock.y].gatein = TRUE;
+	this->pif[jkff->output[0].x][jkff->output[0].y].lineok = TRUE;
+	this->pif[jkff->output[0].x][jkff->output[0].y].gateout = TRUE;
+	this->pif[jkff->output[1].x][jkff->output[1].y].lineok = TRUE;
+	this->pif[jkff->output[1].x][jkff->output[1].y].gateout = TRUE;
+}
