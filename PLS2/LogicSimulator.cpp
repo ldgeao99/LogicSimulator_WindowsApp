@@ -275,4 +275,53 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 	this->pif[not->output.x][not->output.y].gateout = TRUE;
 }
 
+void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
+{
+	tff->clicked = clicked; // 마우스가 눌린 위치.
+	tff->min = { clicked.x - 3, clicked.y - 3 };
+	tff->max = { clicked.x + 3, clicked.y + 3 };
+	tff->input = { clicked.x - 3, clicked.y - 2 };
+	tff->clock = { clicked.x - 3, clicked.y };
+	tff->output[0] = { clicked.x + 2,clicked.y - 1 };
+	tff->output[1] = { clicked.x + 2, clicked.y + 1 };
+
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[tff->min.x + i][tff->min.y + j].usingpoint = TRUE;
+			this->pif[tff->min.x + i][tff->min.y + j].gate = :: tff ;
+		}
+
+	this->pif[tff->input.x][tff->input.y].lineok = TRUE;
+	this->pif[tff->input.x][tff->input.y].gateout = TRUE;
+	this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
+	this->pif[tff->clock.x][tff->clock.y].gateout = TRUE;
+	this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
+	this->pif[tff->output[0].x][tff->output[0].y].gatein = TRUE;
+	this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
+	this->pif[tff->output[1].x][tff->output[1].y].gatein = TRUE;
+}
+
+void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
+{
+	clock->clicked = clicked; // 마우스가 눌린 위치.//
+						   //사각형을 그리기 위한 left와 right
+	clock->min = { clicked.x - 1, clicked.y - 1 };
+	clock->max = { clicked.x + 1, clicked.y + 1 };
+	//값을 내보낼 수 있는 점.
+	clock->output = { clicked.x + 1, clicked.y };
+
+	this->pif[clicked.x][clicked.y].value = &(clock->value);
+	this->pif[clicked.x][clicked.y].clock = this->count_clock;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++) {
+			this->pif[clock->min.x + i][clock->min.y + j].usingpoint = TRUE;
+			this->pif[clock->min.x + i][clock->min.y + j].gate = lsclock;
+		}
+	for (int i = 0; i < 4; i++) {
+		this->pif[clock->output.x][clock->output.y].lineok = TRUE;
+		this->pif[clock->output.x][clock->output.y].gateout = TRUE;
+		this->pif[clock->output.x][clock->output.y].value = this->pif[clicked.x][clicked.y].value;
+	}
+}
+
 

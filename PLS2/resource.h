@@ -18,6 +18,10 @@
 #define IDB_GATE_NXOR                   317
 #define IDB_BITMAP8                     318
 #define IDB_GATE_NOT                    318
+#define IDB_FF_D                        319
+#define IDB_FF_T                        320
+#define IDB_BITMAP4                     321
+#define IDB_FF_JK                       321
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -35,7 +39,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        319
+#define _APS_NEXT_RESOURCE_VALUE        322
 #define _APS_NEXT_COMMAND_VALUE         32783
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
