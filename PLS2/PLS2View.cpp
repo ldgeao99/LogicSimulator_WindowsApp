@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_WM_DESTROY()
 	ON_COMMAND(ID_32779, &CPLS2View::Create_DFF_BCLK)
 	ON_COMMAND(ID_32780, &CPLS2View::Create_JKFF_BCLK)
+	ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -909,4 +910,25 @@ void CPLS2View::Create_JKFF_BCLK()
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = jkff;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	/*
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(point);
+	switch(pDoc->ls.pif[p1.x/20][p1.y/20].gate)
+	{
+	case and:
+		pDoc->ls.calculate_and(pDoc->ls.and[pDoc->ls.pif[p1.x/20][p1.y/20].and]);
+		break;
+	case or:
+		pDoc->ls.calculate_and(pDoc->ls.or[pDoc->ls.pif[p1.x/20][p1.y/20].or]);
+		break;
+	...
+	}
+	*/
+	CView::OnLButtonDblClk(nFlags, point);
 }

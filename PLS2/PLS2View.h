@@ -75,6 +75,7 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void Create_DFF_BCLK();
 	afx_msg void Create_JKFF_BCLK();
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

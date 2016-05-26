@@ -430,3 +430,13 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 	this->pif[jkff->output[1].x][jkff->output[1].y].lineok = TRUE;
 	this->pif[jkff->output[1].x][jkff->output[1].y].gateout = TRUE;
 }
+
+/*
+void LogicSimulator::calculate_and(AndGate *and){
+	//논리연산 구현
+	if(this->pif[and->input[0].x][and->input[0].y].value && this->pif[and->input[1].x][and->input[1].y].value)
+		and->value = 1;
+	else
+		and->value = 0;
+}
+*/

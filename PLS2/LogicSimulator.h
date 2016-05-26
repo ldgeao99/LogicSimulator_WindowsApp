@@ -234,4 +234,5 @@ public:
 	void create_dff(DFF * dff, CPoint clicked);
 	void create_jkff(JKFF * jkff, CPoint clicked);
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
+	//void calculate_and(AndGate *and);
 };
