@@ -43,7 +43,7 @@ public:
 	}pinfo;
 
 	struct Input {
-		int value = 0; // 가지는 값.
+		int value = 1; // 가지는 값.
 		CString name;
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
@@ -52,7 +52,7 @@ public:
 	};
 
 	struct Output {
-		int* value = 0;
+		int value = 1;
 		CString name;
 		CPoint clicked{ -1, -1 };
 		CPoint min;
@@ -210,6 +210,7 @@ public:
 	int count_tff = -1;
 	int count_dff = -1;
 	int count_jkff = -1;
+	int count_line = -1;
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
 
@@ -232,4 +233,5 @@ public:
 	void create_clock(Clock * not, CPoint clicked);
 	void create_dff(DFF * dff, CPoint clicked);
 	void create_jkff(JKFF * jkff, CPoint clicked);
+	void create_line(CPoint firstPt, CPoint secondPt, int index);
 };

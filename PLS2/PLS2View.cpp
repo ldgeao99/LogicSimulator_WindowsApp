@@ -126,7 +126,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 		{
 			pDC->Ellipse(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20, pDoc->ls.out[i].max.x * 20, pDoc->ls.out[i].max.y * 20);
 			if (pDoc->ls.out[i].min.x * 20 > 0) {
-				str.Format(_T("value = %d"), *(pDoc->ls.out[i].value));
+				//str.Format(_T("value = %d"), *(pDoc->ls.out[i].value));
+				str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.out[pDoc->ls.count_output].input.x][pDoc->ls.out[pDoc->ls.count_output].input.y].value));
 				pDC->TextOutW(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20 + 40, str);
 			}
 		}
@@ -268,6 +269,15 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.jkff[i].min.x * 20, pDoc->ls.jkff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+
+	CString s;
+
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			s.Format(_T("%d"), *(&pDoc->ls.pif[i][j].value));
+			//pDC->TextOutW(i*20, j*20, s);
 		}
 	}
 
@@ -414,6 +424,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.canDrawState = TRUE;
 	}
 
+
 	/* //여기서 선을 그릴 수 있는 곳인지 판단.
 	else { // 그밖에 선을 그린다고 알고있을 때.
 		if (pDoc->ls.pif[p1.x / 10][p1.y / 10].gate == input) {
@@ -448,8 +459,9 @@ void CPLS2View::OnLButtonUp(UINT nFlags, CPoint point)
 	pDoc->ls.upPoint = DividedByTwenty(point); //마우스를 누르기 시작한 지점의 좌표를 받을 수 있음.
 
 
-	if(pDoc->ls.canDrawState == TRUE)
+	if(pDoc->ls.canDrawState == TRUE){
 		pDoc->ls.SavePointOnTheLine(old_start, old_end, old_wherefixed); // 선에대한 점을 저장.
+	}
 
 	Invalidate(0);
 

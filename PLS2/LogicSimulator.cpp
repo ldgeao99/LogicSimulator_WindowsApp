@@ -64,7 +64,7 @@ void LogicSimulator::create_input(Input *in, CPoint clicked)
 	for (int i = 0; i < 4; i++) {
 		this->pif[in->output[i].x][in->output[i].y].lineok = TRUE;
 		this->pif[in->output[i].x][in->output[i].y].gateout = TRUE;
-		this->pif[in->output[i].x][in->output[i].y].value = this->pif[clicked.x][clicked.y].value;
+		this->pif[in->output[i].x][in->output[i].y].value = &in->value;
 	}
 }
 
@@ -83,7 +83,7 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 		}
 	this->pif[out->input.x][out->input.y].lineok = TRUE;
 	this->pif[out->input.x][out->input.y].gatein = TRUE;
-	out->value = this->pif[out->input.x][out->input.y].value;
+	out->value = *(this->pif[out->input.x][out->input.y].value);
 }
 
 void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif 인덱스 
@@ -120,41 +120,100 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 	if (old_wherefixed == GARO)
 		if (old_start.y == old_end.y) { // 1줄만 그리는경우.
 			 line.Add(OneLinePoint(old_start, old_end));
-			 pif[old_start.x/10][old_start.y/10].lineok = TRUE;
-			 pif[old_end.x/10][old_end.y/10].lineok = TRUE;
+			 count_line++;
+			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			// pif[old_start.x/10][old_start.y/10].lineok = TRUE;
+			// pif[old_end.x/10][old_end.y/10].lineok = TRUE;
 		}
 
 		else {//두줄을 그려줘야 하는 경우.
 			tempP.x = old_end.x;
 			tempP.y = old_start.y;
 			 line.Add(OneLinePoint(old_start, tempP));
-			 pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
-			 pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
+			 count_line++;
+			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 //pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
+			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
 
 			tempP.x = old_end.x;
 			tempP.y = old_start.y;
 			 line.Add(OneLinePoint(tempP, old_end));
-			 pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
-			 pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
+			 count_line++;
+			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
+			// pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
 		}
 	else if (old_wherefixed == SERO) {
 		if (old_start.x == old_end.x) { // 1줄만 그리는경우.
 			 line.Add(OneLinePoint(old_start, old_end));
-			 pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
-			 pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
+			 count_line++;
+			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			// pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
+			// pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
 		}
 		else {//두줄을 그려줘야 하는 경우.
 			tempP.x = old_start.x;
 			tempP.y = old_end.y;
 			 line.Add(OneLinePoint(old_start, tempP));
-			 pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
-			 pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
+			 count_line++;
+			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			// pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
+			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
 
 			tempP.x = old_start.x;
 			tempP.y = old_end.y;
 			 line.Add(OneLinePoint(tempP, old_end));
-			 pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
-			 pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
+			 count_line++;
+			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
+			// pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
+		}
+	}
+}
+
+void LogicSimulator::create_line(CPoint firstPt, CPoint secondPt, int index) {
+	// 이 함수의 주요 역할은 pif의 정보를 갱신하는 것.(저장했다가 로드 했을 때 이 정보가 있어야 연결 되므로.)
+	if (firstPt.y == secondPt.y) { //가로인경우
+		if ((firstPt.x - secondPt.x) < 0) {
+			for (int i = 1; i <= abs(firstPt.x - secondPt.x) / 20; i++) {
+				this->pif[(firstPt.x / 20) + i][firstPt.y / 20].value = pif[firstPt.x / 20][firstPt.y / 20].value;
+				pif[(firstPt.x / 20) + i][firstPt.y / 20].line = index;
+				pif[(firstPt.x / 20) + i][firstPt.y / 20].lineok = TRUE;
+				pif[(firstPt.x / 20) + i][firstPt.y / 20].usingpoint = TRUE;
+				pif[(firstPt.x / 20) + i][firstPt.y / 20].gateout = TRUE;
+			}
+		}
+		else {
+			for (int i = 1; i <= abs(firstPt.x - secondPt.x) / 20; i++) {
+				pif[(firstPt.x / 20) - i][firstPt.y / 20].value = pif[firstPt.x / 20][firstPt.y / 20].value;
+				pif[(firstPt.x / 20) - i][firstPt.y / 20].line = index;
+				pif[(firstPt.x / 20) - i][firstPt.y / 20].lineok = TRUE;
+				pif[(firstPt.x / 20) - i][firstPt.y / 20].usingpoint = TRUE;
+				pif[(firstPt.x / 20) - i][firstPt.y / 20].gateout = TRUE;
+			}
+		}
+	}
+		
+
+	else {//세로인경우
+		if ((firstPt.y - secondPt.y) < 0) {
+			for (int i = 1; i <= abs(firstPt.y - secondPt.y) / 20; i++) {
+				pif[(firstPt.x / 20)][firstPt.y / 20 + i].value = pif[firstPt.x / 20][firstPt.y / 20].value;
+				pif[(firstPt.x / 20)][firstPt.y / 20 + i].line = index;
+				pif[(firstPt.x / 20)][firstPt.y / 20 + i].lineok = TRUE;
+				pif[(firstPt.x / 20)][firstPt.y / 20 + i].usingpoint = TRUE;
+				pif[(firstPt.x / 20)][firstPt.y / 20 + i].gateout = TRUE;
+			}
+		}
+
+		else {
+			for (int i = 1; i <= abs(firstPt.y - secondPt.y) / 20; i++) {
+				pif[(firstPt.x / 20)][firstPt.y / 20 -i].value = pif[firstPt.x / 20][firstPt.y / 20].value;
+				pif[(firstPt.x / 20)][firstPt.y / 20 - i].line = index;
+				pif[(firstPt.x / 20)][firstPt.y / 20 - i].lineok = TRUE;
+				pif[(firstPt.x / 20)][firstPt.y / 20 - i].usingpoint = TRUE;
+				pif[(firstPt.x / 20)][firstPt.y / 20 - i].gateout = TRUE;
+			}
 		}
 	}
 }
