@@ -70,9 +70,7 @@ public:
 		}
 	};
 
-	struct AndGate {
-		int* get1 = NULL; // 값을 받는 변수
-		int* get2 = NULL; // 값을 받는 변수
+	struct AndGate { // 입력값은 pif[input[0].x][input[0].y].value * 뭐 이런식으로 얻을 수 있음.
 		int out = NULL;  // 값을 내보내는 변수
 		CString name;
 		CPoint clicked{ -1, -1 };

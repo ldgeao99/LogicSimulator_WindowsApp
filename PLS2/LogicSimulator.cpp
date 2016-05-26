@@ -88,12 +88,6 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 
 void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif ÀÎµ¦½º 
 {
-
-	and->get1 = pif[clicked.x-2][clicked.y-1].value;
-	and->get2 = pif[clicked.x-2][clicked.y+1].value;
-
-	//and->out = *(pif[clicked.x - 2][clicked.y - 1].value)  *(pif[clicked.x - 2][clicked.y + 1].value);
-
 	and->clicked = clicked; //pif ÀÎµ¦½º
 	and->min = { clicked.x-2, clicked.y-2}; // ºñÆ®¸ÊÀ» Âï¾î³¾¶§ »ç¿ëÇÏ´Â leftÁÂÇ¥
 	and->max = { clicked.x+2, clicked.y+2};
