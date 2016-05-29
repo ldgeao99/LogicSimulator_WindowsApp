@@ -49,10 +49,8 @@ void LogicSimulator::create_input(Input *in, CPoint clicked)
 	in->min = { clicked.x - 1, clicked.y - 1 };
 	in->max = { clicked.x + 1, clicked.y + 1 };
 	//값을 내보낼 수 있는 점.
-	in->output[0] = { clicked.x, clicked.y - 1 };
-	in->output[1] = { clicked.x - 1, clicked.y };
-	in->output[2] = { clicked.x + 1, clicked.y };
-	in->output[3] = { clicked.x, clicked.y + 1 };
+	in->output = { clicked.x + 1, clicked.y};
+
 
 	this->pif[clicked.x][clicked.y].value = &(in->value);
 	this->pif[clicked.x][clicked.y].input = this->count_input;
@@ -61,11 +59,16 @@ void LogicSimulator::create_input(Input *in, CPoint clicked)
 			this->pif[in->min.x + i][in->min.y + j].usingpoint = TRUE;
 			this->pif[in->min.x + i][in->min.y + j].gate = input;
 		}
+	this->pif[in->output.x][in->output.y].lineok = TRUE;
+	this->pif[in->output.x][in->output.y].gateout = TRUE;
+	this->pif[in->output.x][in->output.y].value = &in->value;
+	/*
 	for (int i = 0; i < 4; i++) {
 		this->pif[in->output[i].x][in->output[i].y].lineok = TRUE;
 		this->pif[in->output[i].x][in->output[i].y].gateout = TRUE;
 		this->pif[in->output[i].x][in->output[i].y].value = &in->value;
 	}
+	*/
 }
 
 void LogicSimulator::create_output(Output *out, CPoint clicked)
@@ -79,7 +82,7 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++) {
 			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
-			this->pif[in->min.x + i][in->min.y + j].gate = output;
+			this->pif[out->min.x + i][out->min.y + j].gate = output;
 		}
 	this->pif[out->input.x][out->input.y].lineok = TRUE;
 	this->pif[out->input.x][out->input.y].gatein = TRUE;
@@ -218,6 +221,14 @@ void LogicSimulator::create_line(CPoint firstPt, CPoint secondPt, int index) {
 	}
 }
 
+void LogicSimulator::calculate_xor(XorGate * xor)
+{
+	if (*(this->pif[xor->input[0].x][xor->input[0].y].value) == *(this->pif[xor->input[1].x][xor->input[1].y].value))
+		xor->value = 0;
+	else
+		xor->value = 1;
+}
+
 void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 {
 	xor->clicked = clicked; // 마우스가 눌린 위치.
@@ -238,6 +249,7 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 	this->pif[xor->input[1].x][xor->input[1].y].gatein = TRUE;
 	this->pif[xor->output.x][xor->output.y].lineok = TRUE;
 	this->pif[xor->output.x][xor->output.y].gateout = TRUE;
+	this->pif[xor->output.x][xor->output.y].value = &(xor->value);
 }
 
 void LogicSimulator::create_nor(NorGate * nor, CPoint clicked)

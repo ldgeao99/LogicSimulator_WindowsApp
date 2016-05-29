@@ -362,6 +362,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case xor:
 			pDoc->ls.count_xor++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].xor = pDoc->ls.count_xor;
 			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
@@ -456,9 +457,8 @@ void CPLS2View::OnLButtonUp(UINT nFlags, CPoint point)
 	CPLS2Doc* pDoc = GetDocument();
 	CClientDC dc(this);
 	CDC* pDC = GetDC();
-
+	CPoint p1 = DividedByTwenty(point);
 	pDoc->ls.upPoint = DividedByTwenty(point); //마우스를 누르기 시작한 지점의 좌표를 받을 수 있음.
-
 
 	if(pDoc->ls.canDrawState == TRUE){
 		pDoc->ls.SavePointOnTheLine(old_start, old_end, old_wherefixed); // 선에대한 점을 저장.
@@ -916,19 +916,21 @@ void CPLS2View::Create_JKFF_BCLK()
 void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	/*
+	
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(point);
 	switch(pDoc->ls.pif[p1.x/20][p1.y/20].gate)
 	{
-	case and:
-		pDoc->ls.calculate_and(pDoc->ls.and[pDoc->ls.pif[p1.x/20][p1.y/20].and]);
+	case input:
+		if (pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].value == 1)
+			pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].value = 0;
+		else
+			pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].value = 1;
 		break;
-	case or:
-		pDoc->ls.calculate_and(pDoc->ls.or[pDoc->ls.pif[p1.x/20][p1.y/20].or]);
+	case xor:
+		pDoc->ls.calculate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor]);
 		break;
-	...
 	}
-	*/
+	
 	CView::OnLButtonDblClk(nFlags, point);
 }

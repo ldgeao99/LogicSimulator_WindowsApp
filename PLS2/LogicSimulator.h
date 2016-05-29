@@ -48,7 +48,7 @@ public:
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
-		CPoint output[4];  // 값을 내보낼 수 있는 점.
+		CPoint output;  // 값을 내보낼 수 있는 점.
 	};
 
 	struct Output {
@@ -81,7 +81,7 @@ public:
 	};
 
 	struct XorGate {
-		int * value = NULL;
+		int value = NULL;
 		CString name; // caption
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
@@ -234,5 +234,5 @@ public:
 	void create_dff(DFF * dff, CPoint clicked);
 	void create_jkff(JKFF * jkff, CPoint clicked);
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
-	//void calculate_and(AndGate *and);
+	void calculate_xor(XorGate *xor);
 };
