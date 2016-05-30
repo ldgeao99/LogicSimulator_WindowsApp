@@ -111,7 +111,7 @@ public:
 	};
 
 	struct OrGate {
-		int* value = NULL;
+		int value = NULL;
 		CString name;
 		CPoint clicked{ -1, -1 };
 		CPoint min;
@@ -121,7 +121,7 @@ public:
 	};
 
 	struct NotGate {
-		int* value = NULL;
+		int value = NULL;
 		CString name;
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
@@ -236,4 +236,6 @@ public:
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
 	void calculate_xor(XorGate *xor);
 	void calculate_nor(NorGate *nor);
+	void calculate_or(OrGate * or );
+	void calculate_not(NotGate * not);
 };

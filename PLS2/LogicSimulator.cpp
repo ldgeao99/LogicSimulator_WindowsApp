@@ -244,6 +244,28 @@ void LogicSimulator::calculate_nor(NorGate * nor)
 			nor->value = 0;
 }
 
+void LogicSimulator::calculate_or(OrGate * or )
+{
+	if (this->pif[or->input[0].x][or->input[0].y].value == NULL || this->pif[or->input[1].x][or->input[1].y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else
+		if (*(this->pif[or->input[0].x][or->input[0].y].value) == 0 && *(this->pif[or->input[1].x][or->input[1].y].value) == 0)
+			or->value = 0;
+		else
+			or->value = 1;
+}
+
+void LogicSimulator::calculate_not(NotGate * not)
+{
+	if (this->pif[not->input.x][not->input.y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else
+		if (*(this->pif[not->input.x][not->input.y].value) == 0)
+			not->value = 1;
+		else
+			not->value = 0;
+}
+
 void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 {
 	xor->clicked = clicked; // 마우스가 눌린 위치.
@@ -333,6 +355,7 @@ void LogicSimulator::create_or(OrGate * or , CPoint clicked)
 	this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
 	this->pif[or ->output.x][or ->output.y].lineok = TRUE;
 	this->pif[or ->output.x][or ->output.y].gateout = TRUE;
+	this->pif[or->output.x][or->output.y].value = &(or->value);
 }
 
 void LogicSimulator::create_not(NotGate * not, CPoint clicked)
@@ -354,6 +377,7 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 	this->pif[not->input.x][not->input.y].gatein = TRUE;
 	this->pif[not->output.x][not->output.y].lineok = TRUE;
 	this->pif[not->output.x][not->output.y].gateout = TRUE;
+	this->pif[not->output.x][not->output.y].value = &(not->value);
 }
 
 void LogicSimulator::create_tff(TFF * tff, CPoint clicked)

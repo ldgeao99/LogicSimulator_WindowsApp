@@ -189,6 +189,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.or[i].value);
+			pDC->TextOutW(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20 + 80, str);
 		}
 	}
 
@@ -202,6 +204,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls. not [i].value);
+			pDC->TextOutW(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20 + 80, str);
 		}
 	}
 
@@ -383,12 +387,14 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case or :
 			pDoc->ls.count_or++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].or = pDoc->ls.count_or;
 			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case not:
 			pDoc->ls.count_not++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].not = pDoc->ls.count_not;
 			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
@@ -938,6 +944,12 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 		break;
 	case nor:
 		pDoc->ls.calculate_nor(&pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor]);
+		break;
+	case or:
+		pDoc->ls.calculate_or(&pDoc->ls.or[pDoc->ls.pif[p1.x / 20][p1.y / 20].or]);
+		break;
+	case not:
+		pDoc->ls.calculate_not(&pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not]);
 		break;
 	}
 	Invalidate();
