@@ -91,7 +91,7 @@ public:
 	};
 
 	struct NorGate {
-		int * value = NULL;
+		int value = NULL;
 		CString name; // caption
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
@@ -235,4 +235,5 @@ public:
 	void create_jkff(JKFF * jkff, CPoint clicked);
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
 	void calculate_xor(XorGate *xor);
+	void calculate_nor(NorGate *nor);
 };

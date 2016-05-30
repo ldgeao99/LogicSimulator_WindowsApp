@@ -116,7 +116,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 		{
 			pDC->Rectangle(pDoc->ls.in[i].min.x*20, pDoc->ls.in[i].min.y*20, pDoc->ls.in[i].max.x*20, pDoc->ls.in[i].max.y*20);
 			if (pDoc->ls.in[i].min.x * 20 > 0 ) {
-				str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.in[i].clicked.x + 1][pDoc->ls.in[i].clicked.y].value));
+				//str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.in[i].clicked.x + 1][pDoc->ls.in[i].clicked.y].value));
+				str.Format(_T("value = %d"), pDoc->ls.in[i].value);
 				pDC->TextOutW(pDoc->ls.in[i].min.x * 20, pDoc->ls.in[i].min.y * 20 + 40, str);
 			}
 		}
@@ -127,8 +128,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 		{
 			pDC->Ellipse(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20, pDoc->ls.out[i].max.x * 20, pDoc->ls.out[i].max.y * 20);
 			if (pDoc->ls.out[i].min.x * 20 > 0) {
-				//str.Format(_T("value = %d"), *(pDoc->ls.out[i].value));
-				str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.out[pDoc->ls.count_output].input.x][pDoc->ls.out[pDoc->ls.count_output].input.y].value));
+				str.Format(_T("value = %d"), pDoc->ls.out[i].value);
 				pDC->TextOutW(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20 + 40, str);
 			}
 		}
@@ -160,6 +160,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.xor[i].value);
+			pDC->TextOutW(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20 + 80, str);
 		}
 	}
 
@@ -349,7 +351,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case output:
 			pDoc->ls.count_output++;
-			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value = &zero;
+			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value;
 			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
@@ -927,10 +929,17 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 		else
 			pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].value = 1;
 		break;
+	case output:
+		if(pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value != NULL)
+			pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].value = *(pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value);
+		break;
 	case xor:
 		pDoc->ls.calculate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor]);
 		break;
+	case nor:
+		pDoc->ls.calculate_nor(&pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor]);
+		break;
 	}
-	
+	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
 }

@@ -86,7 +86,8 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 		}
 	this->pif[out->input.x][out->input.y].lineok = TRUE;
 	this->pif[out->input.x][out->input.y].gatein = TRUE;
-	out->value = *(this->pif[out->input.x][out->input.y].value);
+	if(this->pif[out->input.x][out->input.y].value != NULL)
+		out->value = *(this->pif[out->input.x][out->input.y].value);
 }
 
 void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif 인덱스 
@@ -223,10 +224,24 @@ void LogicSimulator::create_line(CPoint firstPt, CPoint secondPt, int index) {
 
 void LogicSimulator::calculate_xor(XorGate * xor)
 {
-	if (*(this->pif[xor->input[0].x][xor->input[0].y].value) == *(this->pif[xor->input[1].x][xor->input[1].y].value))
-		xor->value = 0;
+	if (this->pif[xor->input[0].x][xor->input[0].y].value == NULL || this->pif[xor->input[1].x][xor->input[1].y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
 	else
-		xor->value = 1;
+		if (*(this->pif[xor->input[0].x][xor->input[0].y].value) == *(this->pif[xor->input[1].x][xor->input[1].y].value))
+			xor->value = 0;
+		else
+			xor->value = 1;
+}
+
+void LogicSimulator::calculate_nor(NorGate * nor)
+{
+	if (this->pif[nor->input[0].x][nor->input[0].y].value == NULL || this->pif[nor->input[1].x][nor->input[1].y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else
+		if (*(this->pif[nor->input[0].x][nor->input[0].y].value) == 0 && *(this->pif[nor->input[1].x][nor->input[1].y].value) == 0)
+			nor->value = 1;
+		else
+			nor->value = 0;
 }
 
 void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
@@ -272,6 +287,7 @@ void LogicSimulator::create_nor(NorGate * nor, CPoint clicked)
 	this->pif[nor->input[1].x][nor->input[1].y].gatein = TRUE;
 	this->pif[nor->output.x][nor->output.y].lineok = TRUE;
 	this->pif[nor->output.x][nor->output.y].gateout = TRUE;
+	this->pif[nor->output.x][nor->output.y].value = &(nor->value);
 }
 
 void LogicSimulator::create_nand(NAndGate *nand, CPoint clicked) {
