@@ -146,6 +146,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.and[i].value);
+			pDC->TextOutW(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20 + 80, str);
 }
 	}
 
@@ -221,6 +223,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.nand[i].value);
+			pDC->TextOutW(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20 + 80, str);
 		}
 	}
 
@@ -364,6 +368,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case and:
 			pDoc->ls.count_and++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].and = pDoc->ls.count_and;
 			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
@@ -383,6 +388,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case nand:
 			pDoc->ls.count_nand++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].nand = pDoc->ls.count_nand;
 			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
@@ -1028,6 +1034,12 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	case output:
 		if(pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value != NULL)
 			pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].value = *(pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value);
+		break;
+	case and:
+		pDoc->ls.calculate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and]);
+		break;
+	case nand:
+		pDoc->ls.calculate_nand(&pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand]);
 		break;
 	case xor:
 		pDoc->ls.calculate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor]);

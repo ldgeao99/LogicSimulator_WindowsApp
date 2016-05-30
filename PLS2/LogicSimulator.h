@@ -72,7 +72,7 @@ public:
 	};
 
 	struct AndGate { // 입력값은 pif[input[0].x][input[0].y].value * 뭐 이런식으로 얻을 수 있음.
-		int out = NULL;  // 값을 내보내는 변수
+		int value = NULL;  // 값을 내보내는 변수
 		CString name;
 		CPoint clicked{ -1, -1 };
 		CPoint min;
@@ -102,7 +102,7 @@ public:
 	};
 
 	struct NAndGate {
-		int * value = NULL;
+		int value = NULL;
 		CString name;
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
@@ -243,4 +243,6 @@ public:
 	void calculate_or(OrGate * or );
 	void calculate_not(NotGate * not);
 	void calculate_tff(TFF *tff);
+	void calculate_and(AndGate *and);
+	void calculate_nand(NAndGate *nand);
 };

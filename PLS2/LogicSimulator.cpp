@@ -97,7 +97,6 @@ void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif �
 	and->clicked = clicked; //pif 인덱스
 	and->min = { clicked.x-2, clicked.y-2}; // 비트맵을 찍어낼때 사용하는 left좌표
 	and->max = { clicked.x+2, clicked.y+2};
-
 	and->output = { clicked.x+2, clicked.y};//값을 내보낼 수 있는 점.
 	and->input[0] = { clicked.x-2, clicked.y - 1 }; // 값을 받는 점.
 	and->input[1] = { clicked.x-2, clicked.y + 1 };
@@ -113,7 +112,8 @@ void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif �
 		this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
 		this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
 		this->pif[and->output.x][and->output.y].lineok = TRUE;
-		this->pif[and->output.x][and->output.y].gatein = TRUE;
+		this->pif[and->output.x][and->output.y].gateout = TRUE;
+		this->pif[and->output.x][and->output.y].value = &(and ->value);
 
 }
 
@@ -268,6 +268,28 @@ void LogicSimulator::calculate_not(NotGate * not)
 			not->value = 0;
 }
 
+void LogicSimulator::calculate_and(AndGate *and)
+{
+	if (this->pif[and->input[0].x][and->input[0].y].value == NULL || this->pif[and->input[1].x][and->input[1].y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else
+		if (*(this->pif[and->input[0].x][and->input[0].y].value) == 1 && *(this->pif[and->input[1].x][and->input[1].y].value) == 1)
+			and ->value = 1;
+		else
+			and->value = 0;
+}
+
+void LogicSimulator::calculate_nand(NAndGate *nand) {
+	if (this->pif[nand->input[0].x][nand->input[0].y].value == NULL || this->pif[nand->input[1].x][nand->input[1].y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else
+		if (*(this->pif[nand->input[0].x][nand->input[0].y].value) == 1 && *(this->pif[nand->input[1].x][nand->input[1].y].value) == 1)
+			nand ->value = 0;
+		else
+			nand->value = 1;
+}
+
+
 void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 {
 	xor->clicked = clicked; // 마우스가 눌린 위치.
@@ -333,8 +355,9 @@ void LogicSimulator::create_nand(NAndGate *nand, CPoint clicked) {
 	this->pif[nand->input[1].x][nand->input[1].y].lineok = TRUE;
 	this->pif[nand->input[1].x][nand->input[1].y].gatein = TRUE;
 	this->pif[nand->output.x][nand->output.y].lineok = TRUE;
-	this->pif[nand->output.x][nand->output.y].gatein = TRUE;
-	this->pif[xor->output.x][xor->output.y].gateout = TRUE;
+	this->pif[nand->output.x][nand->output.y].gateout = TRUE;
+	this->pif[nand->output.x][nand->output.y].value = &(nand->value);
+
 }
 
 void LogicSimulator::create_or(OrGate * or , CPoint clicked)
