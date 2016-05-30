@@ -56,13 +56,83 @@ BOOL CPLS2Doc::OnNewDocument()
 
 void CPLS2Doc::Serialize(CArchive& ar)
 {
+	int gate = -1;
+	CPoint pointofpif;
 	if (ar.IsStoring())
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
+		for (int i = 0; i < INDEX; i++)
+			for (int j = 0; j < INDEX; j++) {
+				gate = ls.pif[i][j].serializegate;
+				ar << gate;
+			}
+		ls.line.Serialize(ar);
 	}
 	else
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
+		for (int i = 0; i < INDEX; i++)
+			for (int j = 0; j < INDEX; j++) {
+				ar >> gate;
+				ls.pif[i][j].serializegate = (WhatGate)gate;
+				pointofpif = { i,j };
+				switch (ls.pif[i][j].serializegate) {
+				case input:
+					ls.count_input++;
+					ls.create_input(&(ls.in[ls.count_input]), pointofpif);
+					break;
+				case output:
+					ls.count_output++;
+					ls.pif[i][j].value;
+					ls.create_output(&ls.out[ls.count_output], pointofpif);
+					break;
+				case and:
+					ls.count_and++;
+					ls.create_and(&ls.and[ls.count_and], pointofpif); // 만드는 함수 호출.
+					break;
+				case xor:
+					ls.count_xor++;
+					ls.pif[i][j].xor = ls.count_xor;
+					ls.create_xor(&ls.xor[ls.count_xor], pointofpif); // 만드는 함수 호출.
+					break;
+				case nor:
+					ls.count_nor++;
+					ls.create_nor(&ls.nor[ls.count_nor], pointofpif); // 만드는 함수 호출.
+					break;
+				case nand:
+					ls.count_nand++;
+					ls.create_nand(&ls.nand[ls.count_nand], pointofpif); // 만드는 함수 호출.
+					break;
+				case or :
+					ls.count_or++;
+					ls.pif[i][j]. or = ls.count_or;
+					ls.create_or(&ls. or [ls.count_or], pointofpif);
+					break;
+				case not:
+					ls.count_not++;
+					ls.pif[i][j].not = ls.count_not;
+					ls.create_not(&ls. not [ls.count_not], pointofpif);
+					break;
+				case tff:
+					ls.count_tff++;
+					ls.create_tff(&ls.tff[ls.count_tff], pointofpif);
+					break;
+				case lsclock:
+					ls.count_clock++;
+					ls.create_clock(&ls.clock[ls.count_clock], pointofpif);
+					//SetTimer(ls.count_clock, 500, NULL);
+					break;
+				case dff:
+					ls.count_dff++;
+					ls.create_dff(&ls.dff[ls.count_dff], pointofpif);
+					break;
+				case jkff:
+					ls.count_jkff++;
+					ls.create_jkff(&ls.jkff[ls.count_jkff], pointofpif);
+					break;
+				}
+			}
+		ls.line.Serialize(ar);
 	}
 }
 

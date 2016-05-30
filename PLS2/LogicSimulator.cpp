@@ -54,6 +54,7 @@ void LogicSimulator::create_input(Input *in, CPoint clicked)
 
 	this->pif[clicked.x][clicked.y].value = &(in->value);
 	this->pif[clicked.x][clicked.y].input = this->count_input;
+	this->pif[clicked.x][clicked.y].serializegate = input;
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++) {
 			this->pif[in->min.x + i][in->min.y + j].usingpoint = TRUE;
@@ -79,6 +80,7 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 	out->input = { clicked.x - 1, clicked.y };
 
 	this->pif[clicked.x][clicked.y].output = this->count_output;
+	this->pif[clicked.x][clicked.y].serializegate = output;
 	for (int i = 0; i < 3; i++)
 		for (int j = 0; j < 3; j++) {
 			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
@@ -99,7 +101,7 @@ void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif �
 	and->output = { clicked.x+2, clicked.y};//값을 내보낼 수 있는 점.
 	and->input[0] = { clicked.x-2, clicked.y - 1 }; // 값을 받는 점.
 	and->input[1] = { clicked.x-2, clicked.y + 1 };
-	
+	this->pif[clicked.x][clicked.y].serializegate = ::and;
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				this->pif[and->min.x + i][and->min.y + j].usingpoint = TRUE;
@@ -274,7 +276,7 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 	xor->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
 	xor->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
 	xor->input[1] = { clicked.x - 2, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::xor;
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
 			this->pif[xor->min.x + i][xor->min.y + j].usingpoint = TRUE;
@@ -297,7 +299,7 @@ void LogicSimulator::create_nor(NorGate * nor, CPoint clicked)
 	nor->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
 	nor->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
 	nor->input[1] = { clicked.x - 2, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::nor;
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
 			this->pif[nor->min.x + i][nor->min.y + j].usingpoint = TRUE;
@@ -319,7 +321,7 @@ void LogicSimulator::create_nand(NAndGate *nand, CPoint clicked) {
 	nand->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
 	nand->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
 	nand->input[1] = { clicked.x - 2, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::nand;
 	for (int i = 0; i < 5; i++){
 		for (int j = 0; j < 5; j++) {
 			this->pif[nand->min.x + i][nand->min.y + j].usingpoint = TRUE;
@@ -343,7 +345,7 @@ void LogicSimulator::create_or(OrGate * or , CPoint clicked)
 	or ->output = { clicked.x + 2, clicked.y };
 	or ->input[0] = { clicked.x - 2,clicked.y - 1 };
 	or ->input[1] = { clicked.x - 2, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::or;
 	for(int i=0; i<5; i++)
 		for (int j = 0; j < 5; j++) {
 			this->pif[or ->min.x + i][or ->min.y + j].usingpoint = TRUE;
@@ -365,7 +367,7 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 	not->max = { clicked.x + 2, clicked.y + 2 };
 	not->output = { clicked.x + 2,clicked.y };
 	not->input = { clicked.x - 2,clicked.y };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::not;
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
 			this->pif[not->min.x + i][not->min.y + j].usingpoint = TRUE;
@@ -417,7 +419,7 @@ void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 	tff->clock = { clicked.x - 3, clicked.y + 1};
 	tff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	tff->output[1] = { clicked.x + 3, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::tff;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
 			this->pif[tff->min.x + i][tff->min.y + j].usingpoint = TRUE;
@@ -443,7 +445,7 @@ void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
 	clock->max = { clicked.x + 1, clicked.y + 1 };
 	//값을 내보낼 수 있는 점.
 	clock->output = { clicked.x + 1, clicked.y };
-
+	this->pif[clicked.x][clicked.y].serializegate = lsclock;
 	this->pif[clicked.x][clicked.y].value = &(clock->value);
 	this->pif[clicked.x][clicked.y].clock = this->count_clock;
 	for (int i = 0; i < 3; i++)
@@ -467,7 +469,7 @@ void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
 	dff->clock = { clicked.x - 3, clicked.y };
 	dff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	dff->output[1] = { clicked.x + 3, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::dff;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
 			this->pif[dff->min.x + i][dff->min.y + j].usingpoint = TRUE;
@@ -493,7 +495,7 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 	jkff->clock = { clicked.x - 3, clicked.y };
 	jkff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	jkff->output[1] = { clicked.x + 3, clicked.y + 1 };
-
+	this->pif[clicked.x][clicked.y].serializegate = ::jkff;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
 			this->pif[jkff->min.x + i][jkff->min.y + j].usingpoint = TRUE;

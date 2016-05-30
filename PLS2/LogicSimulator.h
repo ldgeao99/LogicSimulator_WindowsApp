@@ -37,6 +37,7 @@ public:
 
 		BOOL lineok = FALSE;
 		WhatGate gate = nothing;
+		WhatGate serializegate = nothing;
 		BOOL usingpoint = FALSE;
 
 		int* value = NULL;
