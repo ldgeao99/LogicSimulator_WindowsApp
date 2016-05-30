@@ -497,16 +497,32 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 	CPoint startPoint = DividedByTwenty(pDoc->ls.downPoint);
 	CPen blackpen(PS_SOLID, 1, RGB(0, 0, 0)); // 검정펜
 	CPen whitepen(PS_SOLID, 1, RGB(255, 255, 255)); //흰펜
+	CPen white3pen(PS_SOLID, 3, RGB(255, 255, 255)); //흰 두꺼운 펜
+	CPen gree3npen(PS_SOLID, 3, RGB(0, 255, 0)); //초록 두꺼운 펜
 	CBrush whitebrush(RGB(255, 255, 255));
 	CDC* pDC = GetDC();
 	CBitmap bitmap;
 	BITMAP bmpinfo;
 	CDC dcmem;
+	CRect elrect, eloldrect, elinoutrect, elgaterect, elffrect, elinoutoldrect, elgateoldrect, elffoldrect;
+	elrect = {p1.x - 10, p1.y - 10, p1.x + 10, p1.y + 10};
+	eloldrect = { oldpoint.x - 10, oldpoint.y - 10, oldpoint.x + 10, oldpoint.y + 10 };
+
+	elinoutrect = { p1.x - 25, p1.y - 25, p1.x + 25, p1.y + 25 };
+	elinoutoldrect = { oldpoint.x - 25, oldpoint.y - 25, oldpoint.x + 25, oldpoint.y + 25 };
+
+	elgaterect = { p1.x - 45, p1.y - 45, p1.x + 45, p1.y + 45 };
+	elgateoldrect = { oldpoint.x - 45, oldpoint.y - 45, oldpoint.x + 45, oldpoint.y + 45 };
+
+	elffrect = { p1.x - 65, p1.y - 65, p1.x + 65, p1.y + 65 };
+	elffoldrect = { oldpoint.x - 65, oldpoint.y - 65, oldpoint.x + 65, oldpoint.y + 65 };
+
 	CRect bitrect;
 	bitrect = { oldpoint.x - 40, oldpoint.y - 40, oldpoint.x + 40, oldpoint.y + 40 };
 	CRect ffrect;
 	ffrect = { oldpoint.x - 60, oldpoint.y - 60, oldpoint.x + 60, oldpoint.y + 60 };
 	//"pDoc->ls.create >= 0" 이 상태는 단자 또는 게이트를 메뉴에서 클릭하여 그리려고 하는 상태임.
+
 	if (pDoc->ls.whatgate != nothing) {
 		switch (pDoc->ls.whatgate) {
 		case input:
@@ -715,6 +731,77 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 		else if (pDoc->ls.wherefixed == SERO && startPoint.y == p1.y || startPoint == p1)
 			pDoc->ls.wherefixed = DEFAULT;
 	}
+
+	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].gatein == TRUE || pDoc->ls.pif[pointofpif.x][pointofpif.y].gateout == TRUE) {
+			line = 1;
+			pDC->SelectObject(&white3pen);
+			pDC->Ellipse(eloldrect);
+			pDC->SelectObject(&gree3npen);
+			pDC->Ellipse(elrect);
+			Invalidate(0);
+	}
+	else {
+		if (line == 1) {
+			line = 0;
+			pDC->SelectObject(&white3pen);
+			pDC->Ellipse(eloldrect);
+			Invalidate(0);
+		}
+	}
+
+	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == input || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == output || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == lsclock) {
+		inout = 1;
+		pDC->SelectObject(&white3pen);
+		pDC->Rectangle(elinoutoldrect);
+		pDC->SelectObject(&gree3npen);
+		pDC->Rectangle(elinoutrect);
+		Invalidate(0);
+	}
+	else {
+		if (inout == 1) {
+			inout = 0;
+			pDC->SelectObject(&white3pen);
+			pDC->Rectangle(elinoutoldrect);
+			Invalidate(0);
+		}
+	}
+
+	if (   pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == and || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == or
+		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == xor || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == not
+		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == nand || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == nor) {
+		gate = 1;
+		pDC->SelectObject(&white3pen);
+		pDC->Rectangle(elgateoldrect);
+		pDC->SelectObject(&gree3npen);
+		pDC->Rectangle(elgaterect);
+		Invalidate(0);
+	}
+	else {
+		if (gate == 1) {
+			gate = 0;
+			pDC->SelectObject(&white3pen);
+			pDC->Rectangle(elgateoldrect);
+			Invalidate(0);
+		}
+	}
+
+	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == dff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == jkff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == tff) {
+		ff = 1;
+		pDC->SelectObject(&white3pen);
+		pDC->Rectangle(elffoldrect);
+		pDC->SelectObject(&gree3npen);
+		pDC->Rectangle(elffrect);
+		Invalidate(0);
+	}
+	else {
+		if (ff == 1) {
+			ff = 0;
+			pDC->SelectObject(&white3pen);
+			pDC->Rectangle(elffoldrect);
+			Invalidate(0);
+		}
+	}
+
 
 	ReleaseDC(pDC);
 	oldpoint = p1;

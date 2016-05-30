@@ -19,9 +19,9 @@ public:
 	BOOL drawline = FALSE;
 	CPoint startline;
 	
-	CPoint oldpoint;
+	CPoint oldpoint = { 0,0 };
 	int garo = 0, sero = 0;
-	
+	int line = 0, inout = 0, gate = 0, ff = 0;
 	int zero = 0;
 
 //로직 시뮬레이터 함수입니다.
