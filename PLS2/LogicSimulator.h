@@ -131,7 +131,7 @@ public:
 	};
 
 	struct TFF{
-		int* value = NULL;
+		int value = 0;
 		CString name;
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
@@ -139,6 +139,9 @@ public:
 		CPoint output[2];
 		CPoint input;
 		CPoint clock;
+		BOOL trigger = TRUE; //true->»ó½Â false->ÇÏ°­
+		int newclock = 0;
+		int oldclock = 0;
 	};
 
 	struct Clock {
@@ -238,4 +241,5 @@ public:
 	void calculate_nor(NorGate *nor);
 	void calculate_or(OrGate * or );
 	void calculate_not(NotGate * not);
+	void calculate_tff(TFF *tff);
 };

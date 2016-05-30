@@ -380,13 +380,41 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 	this->pif[not->output.x][not->output.y].value = &(not->value);
 }
 
+void LogicSimulator::calculate_tff(TFF * tff)
+{
+	if(this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else {
+		tff->newclock = *(this->pif[tff->clock.x][tff->clock.y].value);
+		if (tff->trigger == TRUE) {
+			if (tff->oldclock == 0 && tff->newclock == 1) {
+				if (*(this->pif[tff->input.x][tff->input.y].value) == 1)
+					if (tff->value == 1)
+						tff->value = 0;
+					else
+						tff->value = 1;
+			}
+		}
+		else {
+			if (tff->oldclock == 1 && tff->newclock == 0) {
+				if (*(this->pif[tff->input.x][tff->input.y].value) == 1)
+					if (tff->value == 1)
+						tff->value = 0;
+					else
+						tff->value = 1;
+			}
+		}
+		tff->oldclock = tff->newclock;
+	}
+}
+
 void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 {
 	tff->clicked = clicked; // 마우스가 눌린 위치.
 	tff->min = { clicked.x - 3, clicked.y - 3 };
 	tff->max = { clicked.x + 3, clicked.y + 3 };
-	tff->input = { clicked.x - 3, clicked.y - 2 };
-	tff->clock = { clicked.x - 3, clicked.y };
+	tff->input = { clicked.x - 3, clicked.y - 1 };
+	tff->clock = { clicked.x - 3, clicked.y + 1};
 	tff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	tff->output[1] = { clicked.x + 3, clicked.y + 1 };
 
@@ -396,6 +424,7 @@ void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 			this->pif[tff->min.x + i][tff->min.y + j].gate = :: tff ;
 		}
 
+	this->pif[tff->clicked.x][tff->clicked.y].tff = this->count_tff;
 	this->pif[tff->input.x][tff->input.y].lineok = TRUE;
 	this->pif[tff->input.x][tff->input.y].gatein = TRUE;
 	this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;

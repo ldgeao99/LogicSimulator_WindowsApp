@@ -248,6 +248,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.tff[i].min.x * 20, pDoc->ls.tff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.tff[i].value);
+			pDC->TextOutW(pDoc->ls.tff[i].min.x * 20, pDoc->ls.tff[i].min.y * 20 + 120, str);
 		}
 	}
 
@@ -408,7 +410,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case lsclock:
 			pDoc->ls.count_clock++;
 			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
-			SetTimer(pDoc->ls.count_clock, pDoc->ls.count_clock*100, NULL);
+			SetTimer(pDoc->ls.count_clock,500, NULL);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -891,6 +893,7 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 			pDoc->ls.clock[nIDEvent].value = 1;
 		else
 			pDoc->ls.clock[nIDEvent].value = 0;
+		//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
 		Invalidate(0);
 	//}
 	CView::OnTimer(nIDEvent);
@@ -950,6 +953,9 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 		break;
 	case not:
 		pDoc->ls.calculate_not(&pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not]);
+		break;
+	case tff:
+		pDoc->ls.calculate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff]);
 		break;
 	}
 	Invalidate();
