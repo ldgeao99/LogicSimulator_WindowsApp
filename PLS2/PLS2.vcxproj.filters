@@ -126,5 +126,14 @@
     <Image Include="res\bmp00004.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="..\..\..\..\Desktop\7Project_LS2(회전 구현중--이거 버리기)\PLS2\res\bitmap1 - bottom.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\7Project_LS2(회전 구현중--이거 버리기)\PLS2\res\bitmap1 - left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\7Project_LS2(회전 구현중--이거 버리기)\PLS2\res\bitmap1 - top.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

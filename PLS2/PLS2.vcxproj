@@ -217,6 +217,9 @@
     <ResourceCompile Include="PLS2.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\7Project_LS2(회전 구현중--이거 버리기)\PLS2\res\bitmap1 - bottom.bmp" />
+    <Image Include="..\..\..\..\Desktop\7Project_LS2(회전 구현중--이거 버리기)\PLS2\res\bitmap1 - left.bmp" />
+    <Image Include="..\..\..\..\Desktop\7Project_LS2(회전 구현중--이거 버리기)\PLS2\res\bitmap1 - top.bmp" />
     <Image Include="res\bitmap1.bmp" />
     <Image Include="res\bitmap2.bmp" />
     <Image Include="res\bitmap3.bmp" />

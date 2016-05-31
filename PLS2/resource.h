@@ -23,6 +23,10 @@
 #define IDB_BITMAP4                     321
 #define IDB_FF_JK                       321
 #define IDB_GATE_SEG7                   322
+#define IDB_GATE_AND_BOTTOM             323
+#define IDB_GATE_AND_LEFT               324
+#define IDB_BITMAP7                     325
+#define IDB_GATE_AND_TOP                325
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -67,7 +71,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        323
+#define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32810
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

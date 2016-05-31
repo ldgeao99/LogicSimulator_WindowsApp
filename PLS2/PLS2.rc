@@ -105,6 +105,12 @@ IDB_FF_JK               BITMAP                  "res\\bmp00003.bmp"
 
 IDB_GATE_SEG7           BITMAP                  "res\\bmp00004.bmp"
 
+IDB_GATE_AND_BOTTOM     BITMAP                  "C:\\Users\\DG\\Desktop\\7Project_LS2(회전 구현중--이거 버리기)\\PLS2\\res\\bitmap1 - bottom.bmp"
+
+IDB_GATE_AND_LEFT       BITMAP                  "C:\\Users\\DG\\Desktop\\7Project_LS2(회전 구현중--이거 버리기)\\PLS2\\res\\bitmap1 - left.bmp"
+
+IDB_GATE_AND_TOP        BITMAP                  "C:\\Users\\DG\\Desktop\\7Project_LS2(회전 구현중--이거 버리기)\\PLS2\\res\\bitmap1 - top.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
