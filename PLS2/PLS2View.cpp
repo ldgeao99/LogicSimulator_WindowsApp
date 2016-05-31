@@ -987,6 +987,8 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	//for (int i = 0; i < pDoc->ls.count_clock; i++) {
+	//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
+	//pDoc->ls.run(repeat, se);
 		if (pDoc->ls.clock[nIDEvent].value == 0)
 			pDoc->ls.clock[nIDEvent].value = 1;
 		else

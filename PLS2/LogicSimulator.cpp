@@ -421,8 +421,8 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 
 void LogicSimulator::calculate_tff(TFF * tff)
 {
-	if(this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL)
-		AfxMessageBox(_T("선을 연결해주세요."));
+	if(this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL){}
+		//AfxMessageBox(_T("선을 연결해주세요."));
 	else {
 		tff->newclock = *(this->pif[tff->clock.x][tff->clock.y].value);
 		if (tff->trigger == TRUE) {
