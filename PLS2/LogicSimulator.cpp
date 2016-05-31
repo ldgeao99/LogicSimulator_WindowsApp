@@ -568,8 +568,8 @@ void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
 	dff->clicked = clicked; // 마우스가 눌린 위치.
 	dff->min = { clicked.x - 3, clicked.y - 3 };
 	dff->max = { clicked.x + 3, clicked.y + 3 };
-	dff->input = { clicked.x - 3, clicked.y - 2 };
-	dff->clock = { clicked.x - 3, clicked.y };
+	dff->input = { clicked.x - 3, clicked.y - 1 };
+	dff->clock = { clicked.x - 3, clicked.y + 1 };
 	dff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	dff->output[1] = { clicked.x + 3, clicked.y + 1 };
 	this->pif[clicked.x][clicked.y].serializegate = ::dff;
@@ -806,7 +806,10 @@ void LogicSimulator::run(int repeat, int se[10])
 	int end, start;
 	int out = 0, se7 = 0;
 	for (int a = 0; a < repeat; a++) {
-		end = se[a] + 1;
+		if (a == 0)
+			end = se[a];
+		else
+			end = se[a] + 1;
 		start = se[a + 1];
 		for (int i = start; i >= end; i--) {
 			switch (this->serial[i].gate) {
@@ -838,8 +841,8 @@ void LogicSimulator::run(int repeat, int se[10])
 			case lsclock:
 				break;
 			case ::dff:
-				//this->calculate_dff(&this->dff[this->serial[i].count]);
-				//this->dff[this->serial[i].count].serial = FALSE;
+				this->calculate_dff(&this->dff[this->serial[i].count]);
+				this->dff[this->serial[i].count].serial = FALSE;
 				break;
 			case ::jkff:
 				//this->calculate_jkff(&this->jkff[this->serial[i].count]);
