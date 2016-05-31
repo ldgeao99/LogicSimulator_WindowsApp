@@ -45,8 +45,9 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32779, &CPLS2View::Create_DFF_BCLK)
 	ON_COMMAND(ID_32780, &CPLS2View::Create_JKFF_BCLK)
 	ON_WM_LBUTTONDBLCLK()
-	ON_COMMAND(ID_Serialize, &CPLS2View::OnSerialize)
+	ON_COMMAND(ID_serialize, &CPLS2View::OnSerialize)
 	ON_COMMAND(ID_run, &CPLS2View::Onrun)
+	ON_COMMAND(ID_7_Segment, &CPLS2View::Create_7Segment_BCLK)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -92,7 +93,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 	CPLS2Doc* pDoc = GetDocument();
 	CString str;
 	
-	
+	CPen black3pen(PS_SOLID, 3, RGB(0, 0, 0));
 
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
@@ -272,6 +273,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.dff[i].value);
+			pDC->TextOutW(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20 + 120, str);
 		}
 	}
 	
@@ -286,6 +289,56 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.jkff[i].min.x * 20, pDoc->ls.jkff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+		}
+	}
+
+	for (i = 0; i <= pDoc->ls.count_seg7; i++) {
+		if (pDoc->ls.seg7[i].clicked.x != 0 && pDoc->ls.seg7[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_GATE_SEG7);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->SelectObject(&black3pen);
+			pDC->StretchBlt(pDoc->ls.seg7[i].min.x * 20, pDoc->ls.seg7[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			if (pDoc->ls.seg7[i].value[0] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 1) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 1) * 20);
+			}
+			if (pDoc->ls.seg7[i].value[1] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 1) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 3) * 20);
+			}
+			if (pDoc->ls.seg7[i].value[2] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 3) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 5) * 20);
+			}
+			if (pDoc->ls.seg7[i].value[3] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 5) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 5) * 20);
+			}
+			if (pDoc->ls.seg7[i].value[4] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 5) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 3) * 20);
+			}
+			if (pDoc->ls.seg7[i].value[5] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 3) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 1) * 20);
+			}
+			if (pDoc->ls.seg7[i].value[6] == 1)
+			{
+				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 3) * 20);
+				pDC->LineTo((pDoc->ls.seg7[i].min.x + 4) * 20, (pDoc->ls.seg7[i].min.y + 3) * 20);
+			}
 		}
 	}
 
@@ -434,6 +487,12 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case jkff:
 			pDoc->ls.count_jkff++;
 			pDoc->ls.create_jkff(&pDoc->ls.jkff[pDoc->ls.count_jkff], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case seg7:
+			pDoc->ls.count_seg7++;
+			pDoc->ls.create_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -711,6 +770,22 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
+		case seg7:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_GATE_SEG7);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(ffrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
 		}
 		
 	}
@@ -796,7 +871,8 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 		}
 	}
 
-	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == dff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == jkff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == tff) {
+	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == dff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == jkff 
+		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == tff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == seg7) {
 		ff = 1;
 		pDC->SelectObject(&white3pen);
 		pDC->Rectangle(elffoldrect);
@@ -1062,6 +1138,9 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	case tff:
 		pDoc->ls.calculate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff]);
 		break;
+	case seg7:
+		pDoc->ls.calculate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7]);
+		break;
 	}
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
@@ -1142,4 +1221,12 @@ void CPLS2View::Onrun()
 	}
 	*/
 	Invalidate();
+}
+
+
+void CPLS2View::Create_7Segment_BCLK()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = seg7;
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
