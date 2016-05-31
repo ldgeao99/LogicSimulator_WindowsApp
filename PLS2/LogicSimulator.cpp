@@ -59,6 +59,7 @@ void LogicSimulator::create_input(Input *in, CPoint clicked)
 		for (int j = 0; j < 3; j++) {
 			this->pif[in->min.x + i][in->min.y + j].usingpoint = TRUE;
 			this->pif[in->min.x + i][in->min.y + j].gate = input;
+			this->pif[in->min.x + i][in->min.y + j].input = this->count_input;
 		}
 	this->pif[in->output.x][in->output.y].lineok = TRUE;
 	this->pif[in->output.x][in->output.y].gateout = TRUE;
@@ -85,6 +86,7 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 		for (int j = 0; j < 3; j++) {
 			this->pif[out->min.x + i][out->min.y + j].usingpoint = TRUE;
 			this->pif[out->min.x + i][out->min.y + j].gate = output;
+			this->pif[out->min.x + i][out->min.y + j].output = this->count_output;
 		}
 	this->pif[out->input.x][out->input.y].lineok = TRUE;
 	this->pif[out->input.x][out->input.y].gatein = TRUE;
@@ -105,6 +107,7 @@ void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif �
 			for (int j = 0; j < 5; j++) {
 				this->pif[and->min.x + i][and->min.y + j].usingpoint = TRUE;
 				this->pif[and->min.x + i][and->min.y + j].gate = ::and;
+				this->pif[and->min.x + i][and->min.y + j].and = this->count_and;
 			}
 		}
 		this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
@@ -303,6 +306,7 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 		for (int j = 0; j < 5; j++) {
 			this->pif[xor->min.x + i][xor->min.y + j].usingpoint = TRUE;
 			this->pif[xor->min.x + i][xor->min.y + j].gate = ::xor;
+			this->pif[xor->min.x + i][xor->min.y + j].xor = this->count_xor;
 		}
 	this->pif[xor->input[0].x][xor->input[0].y].lineok = TRUE;
 	this->pif[xor->input[0].x][xor->input[0].y].gatein = TRUE;
@@ -326,6 +330,7 @@ void LogicSimulator::create_nor(NorGate * nor, CPoint clicked)
 		for (int j = 0; j < 5; j++) {
 			this->pif[nor->min.x + i][nor->min.y + j].usingpoint = TRUE;
 			this->pif[nor->min.x + i][nor->min.y + j].gate = ::nor;
+			this->pif[nor->min.x + i][nor->min.y + j].nor = this->count_nor;
 		}
 	this->pif[nor->input[0].x][nor->input[0].y].lineok = TRUE;
 	this->pif[nor->input[0].x][nor->input[0].y].gatein = TRUE;
@@ -348,6 +353,7 @@ void LogicSimulator::create_nand(NAndGate *nand, CPoint clicked) {
 		for (int j = 0; j < 5; j++) {
 			this->pif[nand->min.x + i][nand->min.y + j].usingpoint = TRUE;
 			this->pif[nand->min.x + i][nand->min.y + j].gate = ::nand;
+			this->pif[nand->min.x + i][nand->min.y + j].nand = this->count_nand;
 		}
 	}
 	this->pif[nand->input[0].x][nand->input[0].y].lineok = TRUE;
@@ -373,6 +379,7 @@ void LogicSimulator::create_or(OrGate * or , CPoint clicked)
 		for (int j = 0; j < 5; j++) {
 			this->pif[or ->min.x + i][or ->min.y + j].usingpoint = TRUE;
 			this->pif[or ->min.x + i][or ->min.y + j].gate = :: or ;
+			this->pif[or ->min.x + i][or ->min.y + j].or = this->count_or;
 		}
 	this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
 	this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
@@ -395,6 +402,7 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 		for (int j = 0; j < 5; j++) {
 			this->pif[not->min.x + i][not->min.y + j].usingpoint = TRUE;
 			this->pif[not->min.x + i][not->min.y + j].gate = ::not;
+			this->pif[not->min.x + i][not->min.y + j].not = this->count_not;
 		}
 	}
 
@@ -447,6 +455,7 @@ void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 		for (int j = 0; j < 7; j++) {
 			this->pif[tff->min.x + i][tff->min.y + j].usingpoint = TRUE;
 			this->pif[tff->min.x + i][tff->min.y + j].gate = :: tff ;
+			this->pif[tff->min.x + i][tff->min.y + j].tff = this->count_tff;
 		}
 
 	this->pif[tff->clicked.x][tff->clicked.y].tff = this->count_tff;
@@ -475,6 +484,7 @@ void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
 		for (int j = 0; j < 3; j++) {
 			this->pif[clock->min.x + i][clock->min.y + j].usingpoint = TRUE;
 			this->pif[clock->min.x + i][clock->min.y + j].gate = lsclock;
+			this->pif[clock->min.x + i][clock->min.y + j].clock = this->count_clock;
 		}
 	for (int i = 0; i < 4; i++) {
 		this->pif[clock->output.x][clock->output.y].lineok = TRUE;
@@ -497,6 +507,7 @@ void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
 		for (int j = 0; j < 7; j++) {
 			this->pif[dff->min.x + i][dff->min.y + j].usingpoint = TRUE;
 			this->pif[dff->min.x + i][dff->min.y + j].gate = ::dff;
+			this->pif[dff->min.x + i][dff->min.y + j].dff = this->count_dff;
 		}
 
 	this->pif[dff->input.x][dff->input.y].lineok = TRUE;
@@ -523,6 +534,7 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 		for (int j = 0; j < 7; j++) {
 			this->pif[jkff->min.x + i][jkff->min.y + j].usingpoint = TRUE;
 			this->pif[jkff->min.x + i][jkff->min.y + j].gate = ::jkff;
+			this->pif[jkff->min.x + i][jkff->min.y + j].jkff = this->count_jkff;
 		}
 
 	this->pif[jkff->input[0].x][jkff->input[0].y].lineok = TRUE;
@@ -537,12 +549,136 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 	this->pif[jkff->output[1].x][jkff->output[1].y].gateout = TRUE;
 }
 
-/*
-void LogicSimulator::calculate_and(AndGate *and){
-	//논리연산 구현
-	if(this->pif[and->input[0].x][and->input[0].y].value && this->pif[and->input[1].x][and->input[1].y].value)
-		and->value = 1;
-	else
-		and->value = 0;
+int LogicSimulator::serialize_gate(int x, int y) {
+	int tempx, tempy;
+	if (pif[x][y].gate == output) {
+		count_serial++;
+		serial[count_serial].gate = output;
+		serial[count_serial].count = pif[x][y].output;
+	}
+
+	if (pif[x][y].line < 0) {
+		AfxMessageBox(_T("선을 잘 연결해주세요."));
+		return 0;
+	}
+	else {
+		while (1) {
+			tempx = line.GetAt(pif[x][y].line).firstPt.x;
+			tempy = line.GetAt(pif[x][y].line).firstPt.y;
+			x = tempx / 20;
+			y = tempy / 20;
+			if (this->pif[x][y].gate != nothing)
+				break;
+			if (this->pif[x][y].line < 0)
+				return 0;
+		}
+	}
+
+	switch (pif[x][y].gate) {
+	case input://
+		return 1;
+		break;
+	case output://
+		if (out[pif[x][y].output].serial == TRUE)
+			return 1;
+		else
+			out[pif[x][y].output].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].output;
+		serial[count_serial].gate = output;
+		serialize_gate(out[pif[x][y].output].input.x, out[pif[x][y].output].input.y);
+		return 1;
+	case ::and://
+		if (and[pif[x][y].and].serial == TRUE)
+			return 1;
+		else
+			and[pif[x][y].and].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].and;
+		serial[count_serial].gate = ::and;
+		serialize_gate(and[pif[x][y].and].input[0].x, and[pif[x][y].and].input[0].y);
+		serialize_gate(and[pif[x][y].and].input[1].x, and[pif[x][y].and].input[1].y);
+		return 1;
+	case ::or://
+		if (or [pif[x][y]. or ].serial == TRUE)
+			return 1;
+		else
+			or [pif[x][y]. or ].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].or;
+		serial[count_serial].gate = ::or;
+		serialize_gate(or[pif[x][y].or].input[0].x, or[pif[x][y].or].input[0].y);
+		serialize_gate(or[pif[x][y].or].input[1].x, or[pif[x][y].or].input[1].y);
+		return 1;
+	case ::xor:
+		if (xor[pif[x][y]. xor].serial == TRUE)
+			return 1;
+		else
+			xor[pif[x][y]. xor].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].xor;
+		serial[count_serial].gate = ::xor;
+		serialize_gate(xor[pif[x][y].xor].input[0].x, xor[pif[x][y].xor].input[0].y);
+		serialize_gate(xor[pif[x][y].xor].input[1].x, xor[pif[x][y].xor].input[1].y);
+		return 1;
+	case ::nand:
+		if (nand[pif[x][y].nand].serial == TRUE)
+			return 1;
+		else
+			nand[pif[x][y].nand].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].nand;
+		serial[count_serial].gate = ::nand;
+		serialize_gate(nand[pif[x][y].nand].input[0].x, nand[pif[x][y].nand].input[0].y);
+		serialize_gate(nand[pif[x][y].nand].input[1].x, nand[pif[x][y].nand].input[1].y);
+		return 1;
+	case ::nor:
+		if (nor[pif[x][y].nor].serial == TRUE)
+			return 1;
+		else
+			nor[pif[x][y].nor].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].nor;
+		serial[count_serial].gate = ::nor;
+		serialize_gate(nor[pif[x][y].nor].input[0].x, nor[pif[x][y].nor].input[0].y);
+		serialize_gate(nor[pif[x][y].nor].input[1].x, nor[pif[x][y].nor].input[1].y);
+		return 1;
+	case lsclock:
+		return 1;
+		break;
+	case ::dff:
+		if (dff[pif[x][y].dff].serial == TRUE)
+			return 1;
+		else
+			dff[pif[x][y].dff].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].dff;
+		serial[count_serial].gate = ::dff;
+		serialize_gate(dff[pif[x][y].dff].input.x, dff[pif[x][y].dff].input.y);
+		serialize_gate(dff[pif[x][y].dff].clock.x, dff[pif[x][y].dff].clock.y);
+		return 1;
+	case ::jkff:
+		if (jkff[pif[x][y].jkff].serial == TRUE)
+			return 1;
+		else
+			jkff[pif[x][y].jkff].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].jkff;
+		serial[count_serial].gate = ::jkff;
+		serialize_gate(jkff[pif[x][y].jkff].input[0].x, jkff[pif[x][y].jkff].input[0].y);
+		serialize_gate(jkff[pif[x][y].jkff].input[1].x, jkff[pif[x][y].jkff].input[1].y);
+		serialize_gate(jkff[pif[x][y].jkff].clock.x, jkff[pif[x][y].jkff].clock.y);
+		return 1;
+	case ::tff:
+		if (tff[pif[x][y].tff].serial == TRUE)
+			return 1;
+		else
+			tff[pif[x][y].tff].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].tff;
+		serial[count_serial].gate = ::tff;
+		serialize_gate(tff[pif[x][y].tff].input.x, tff[pif[x][y].tff].input.y);
+		serialize_gate(tff[pif[x][y].tff].clock.x, tff[pif[x][y].tff].clock.y);
+		return 1;
+	}
 }
-*/

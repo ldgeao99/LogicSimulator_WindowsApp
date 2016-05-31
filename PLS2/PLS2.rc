@@ -211,6 +211,11 @@ BEGIN
         MENUITEM "T-FF",                        ID_32781
         MENUITEM "클럭",                          ID_32782
     END
+    POPUP "실행"
+    BEGIN
+        MENUITEM "serialize",                   ID_Serialize
+        MENUITEM "run",                         ID_run
+    END
 END
 
 

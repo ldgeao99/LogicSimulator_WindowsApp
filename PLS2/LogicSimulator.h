@@ -50,6 +50,7 @@ public:
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
 		CPoint output;  // 값을 내보낼 수 있는 점.
+		BOOL serial = FALSE;
 	};
 
 	struct Output {
@@ -59,6 +60,7 @@ public:
 		CPoint min;
 		CPoint max;
 		CPoint input;
+		BOOL serial = FALSE;
 	};
 
 	struct OneLinePoint {
@@ -79,6 +81,7 @@ public:
 		CPoint max;
 		CPoint output;
 		CPoint input[2];
+		BOOL serial = FALSE;
 	};
 
 	struct XorGate {
@@ -89,6 +92,7 @@ public:
 		CPoint max; // 사각형의 오른쪽 끝점
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		CPoint input[2];
+		BOOL serial = FALSE;
 	};
 
 	struct NorGate {
@@ -99,6 +103,7 @@ public:
 		CPoint max; // 사각형의 오른쪽 끝점
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		CPoint input[2];
+		BOOL serial = FALSE;
 	};
 
 	struct NAndGate {
@@ -109,6 +114,7 @@ public:
 		CPoint max; // 사각형의 오른쪽 끝점
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		CPoint input[2];
+		BOOL serial = FALSE;
 	};
 
 	struct OrGate {
@@ -119,6 +125,7 @@ public:
 		CPoint max;
 		CPoint output;
 		CPoint input[2];
+		BOOL serial = FALSE;
 	};
 
 	struct NotGate {
@@ -129,6 +136,7 @@ public:
 		CPoint max;
 		CPoint output;
 		CPoint input;
+		BOOL serial = FALSE;
 	};
 
 	struct TFF{
@@ -143,6 +151,7 @@ public:
 		BOOL trigger = TRUE; //true->상승 false->하강
 		int newclock = 0;
 		int oldclock = 0;
+		BOOL serial = FALSE;
 	};
 
 	struct Clock {
@@ -152,6 +161,7 @@ public:
 		CPoint min;
 		CPoint max;
 		CPoint output;
+		BOOL serial = FALSE;
 	};
 
 	struct DFF {
@@ -163,6 +173,7 @@ public:
 		CPoint output[2];
 		CPoint input;
 		CPoint clock;
+		BOOL serial = FALSE;
 	};
 
 	struct JKFF {
@@ -174,6 +185,12 @@ public:
 		CPoint output[2];
 		CPoint input[2];
 		CPoint clock;
+		BOOL serial = FALSE;
+	};
+
+	struct serialize {
+		WhatGate gate;
+		int count;
 	};
 
 	//변수입니다.
@@ -218,6 +235,9 @@ public:
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
 
+	serialize serial[300];
+	int count_serial = -1;
+
 //함수입니다.
 public:
 	LogicSimulator::LogicSimulator();
@@ -245,4 +265,5 @@ public:
 	void calculate_tff(TFF *tff);
 	void calculate_and(AndGate *and);
 	void calculate_nand(NAndGate *nand);
+	int serialize_gate(int x, int y);
 };

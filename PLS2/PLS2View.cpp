@@ -45,6 +45,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32779, &CPLS2View::Create_DFF_BCLK)
 	ON_COMMAND(ID_32780, &CPLS2View::Create_JKFF_BCLK)
 	ON_WM_LBUTTONDBLCLK()
+	ON_COMMAND(ID_Serialize, &CPLS2View::OnSerialize)
+	ON_COMMAND(ID_run, &CPLS2View::Onrun)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -1062,4 +1064,79 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
+}
+
+
+void CPLS2View::OnSerialize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	repeat = 0;
+	se[0] = 0;
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.count_serial = -1;
+	for (int i = 0; i <= pDoc->ls.count_output; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.out[i].input.x, pDoc->ls.out[i].input.y);
+		repeat++;
+		se[repeat] = pDoc->ls.count_serial;
+	}
+}
+
+
+void CPLS2View::Onrun()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	int end, start;
+
+	for (int a = 0; a < repeat; a++) {
+		end = se[a] + 1;
+		start = se[a+1];
+		for (int i = start; i >= end; i--) {
+			switch (pDoc->ls.serial[i].gate) {
+			case input://
+				break;
+			case output://
+				break;
+			case ::and://
+				pDoc->ls.calculate_and(&pDoc->ls.and[pDoc->ls.serial[i].count]);
+				pDoc->ls.and[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case :: or ://
+				pDoc->ls.calculate_or(&pDoc->ls. or [pDoc->ls.serial[i].count]);
+				pDoc->ls. or [pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case ::xor:
+				pDoc->ls.calculate_xor(&pDoc->ls.xor[pDoc->ls.serial[i].count]);
+				pDoc->ls.xor[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case ::nand:
+				pDoc->ls.calculate_nand(&pDoc->ls.nand[pDoc->ls.serial[i].count]);
+				pDoc->ls.nand[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case ::nor:
+				pDoc->ls.calculate_nor(&pDoc->ls.nor[pDoc->ls.serial[i].count]);
+				pDoc->ls.nor[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case lsclock:
+				break;
+			case ::dff:
+				//pDoc->ls.calculate_dff(&pDoc->ls.dff[pDoc->ls.serial[i].count]);
+				//pDoc->ls.dff[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case ::jkff:
+				//pDoc->ls.calculate_jkff(&pDoc->ls.jkff[pDoc->ls.serial[i].count]);
+				//pDoc->ls.jkff[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			case ::tff:
+				pDoc->ls.calculate_tff(&pDoc->ls.tff[pDoc->ls.serial[i].count]);
+				pDoc->ls.tff[pDoc->ls.serial[i].count].serial = FALSE;
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < repeat; i++) {
+		if (pDoc->ls.pif[pDoc->ls.out[pDoc->ls.serial[i].count].input.x][pDoc->ls.out[pDoc->ls.serial[i].count].input.y].value != NULL)
+			pDoc->ls.out[pDoc->ls.serial[i].count].value = *(pDoc->ls.pif[pDoc->ls.out[pDoc->ls.serial[i].count].input.x][pDoc->ls.out[pDoc->ls.serial[i].count].input.y].value);
+	}
+	Invalidate();
 }

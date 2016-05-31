@@ -23,6 +23,8 @@ public:
 	int garo = 0, sero = 0;
 	int line = 0, inout = 0, gate = 0, ff = 0;
 	int zero = 0;
+	int se[10];
+	int repeat = 0;
 
 //로직 시뮬레이터 함수입니다.
 	CPoint DividedByTwenty(CPoint point);
@@ -76,6 +78,8 @@ public:
 	afx_msg void Create_DFF_BCLK();
 	afx_msg void Create_JKFF_BCLK();
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnSerialize();
+	afx_msg void Onrun();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전
