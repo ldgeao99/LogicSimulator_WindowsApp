@@ -135,6 +135,9 @@ void CPLS2Doc::Serialize(CArchive& ar)
 					ls.count_jkff++;
 					ls.create_jkff(&ls.jkff[ls.count_jkff], pointofpif);
 					break;
+				case seg7:
+					ls.count_seg7++;
+					ls.create_seg7(&ls.seg7[ls.count_seg7], pointofpif);
 				}
 			}
 		ls.line.Serialize(ar);

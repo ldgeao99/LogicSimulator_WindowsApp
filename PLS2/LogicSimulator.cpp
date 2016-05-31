@@ -420,8 +420,8 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 
 void LogicSimulator::calculate_tff(TFF * tff)
 {
-	if(this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL)
-		AfxMessageBox(_T("선을 연결해주세요."));
+	if(this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL){}
+		//AfxMessageBox(_T("선을 연결해주세요."));
 	else {
 		tff->newclock = *(this->pif[tff->clock.x][tff->clock.y].value);
 		if (tff->trigger == TRUE) {
@@ -645,29 +645,37 @@ void LogicSimulator::create_seg7(SEG7 * seg7, CPoint clicked)
 
 int LogicSimulator::serialize_gate(int x, int y) {
 	int tempx, tempy;
+	int seg = 0;
 	if (pif[x][y].gate == output) {
 		count_serial++;
 		serial[count_serial].gate = output;
 		serial[count_serial].count = pif[x][y].output;
 	}
-
-	if (pif[x][y].line < 0) {
-		AfxMessageBox(_T("선을 잘 연결해주세요."));
-		return 0;
+	if (pif[x][y].gate == ::seg7) {
+		count_serial++;
+		serial[count_serial].gate = ::seg7;
+		serial[count_serial].count = pif[x][y].seg7;
+		seg = 1;
 	}
-	else {
-		while (1) {
-			tempx = line.GetAt(pif[x][y].line).firstPt.x;
-			tempy = line.GetAt(pif[x][y].line).firstPt.y;
-			x = tempx / 20;
-			y = tempy / 20;
-			if (this->pif[x][y].gate != nothing)
-				break;
-			if (this->pif[x][y].line < 0)
-				return 0;
+	if (seg == 0) {
+		if (pif[x][y].line < 0) {
+			AfxMessageBox(_T("선을 잘 연결해주세요."));
+			return 0;
+		}
+		else {
+			if (seg == 0)
+				while (1) {
+					tempx = line.GetAt(pif[x][y].line).firstPt.x;
+					tempy = line.GetAt(pif[x][y].line).firstPt.y;
+					x = tempx / 20;
+					y = tempy / 20;
+					if (this->pif[x][y].gate != nothing)
+						break;
+					if (this->pif[x][y].line < 0)
+						return 0;
+				}
 		}
 	}
-
 	switch (pif[x][y].gate) {
 	case input://
 		return 1;
@@ -774,13 +782,29 @@ int LogicSimulator::serialize_gate(int x, int y) {
 		serialize_gate(tff[pif[x][y].tff].input.x, tff[pif[x][y].tff].input.y);
 		serialize_gate(tff[pif[x][y].tff].clock.x, tff[pif[x][y].tff].clock.y);
 		return 1;
+	case ::seg7:
+		if (seg7[pif[x][y].seg7].serial == TRUE)
+			return 1;
+		else
+			seg7[pif[x][y].seg7].serial = TRUE;
+		count_serial++;
+		serial[count_serial].count = pif[x][y].seg7;
+		serial[count_serial].gate = ::seg7;
+		serialize_gate(seg7[pif[x][y].seg7].input[0].x, seg7[pif[x][y].seg7].input[0].y);
+		serialize_gate(seg7[pif[x][y].seg7].input[1].x, seg7[pif[x][y].seg7].input[1].y);
+		serialize_gate(seg7[pif[x][y].seg7].input[2].x, seg7[pif[x][y].seg7].input[2].y);
+		serialize_gate(seg7[pif[x][y].seg7].input[3].x, seg7[pif[x][y].seg7].input[3].y);
+		serialize_gate(seg7[pif[x][y].seg7].input[4].x, seg7[pif[x][y].seg7].input[4].y);
+		serialize_gate(seg7[pif[x][y].seg7].input[5].x, seg7[pif[x][y].seg7].input[5].y);
+		serialize_gate(seg7[pif[x][y].seg7].input[6].x, seg7[pif[x][y].seg7].input[6].y);
+		return 1;
 	}
 }
 
 void LogicSimulator::run(int repeat, int se[10])
 {
 	int end, start;
-
+	int out = 0, se7 = 0;
 	for (int a = 0; a < repeat; a++) {
 		end = se[a] + 1;
 		start = se[a + 1];
@@ -789,6 +813,7 @@ void LogicSimulator::run(int repeat, int se[10])
 			case input://
 				break;
 			case output://
+				out++;
 				break;
 			case ::and://
 				this->calculate_and(&this->and[this->serial[i].count]);
@@ -824,10 +849,18 @@ void LogicSimulator::run(int repeat, int se[10])
 				this->calculate_tff(&this->tff[this->serial[i].count]);
 				this->tff[this->serial[i].count].serial = FALSE;
 				break;
+			case ::seg7:
+				se7++;
+				break;
 			}
 		}
 	}
-	for (int i = 0; i < repeat; i++) {
+	for (int i = 0; i < out; i++) {
 		this->calculate_output(&this->out[i]);
+		this->out[this->serial[i].count].serial = FALSE;
+	}
+	for (int i = 0; i < se7; i++) {
+		this->calculate_seg7(&this->seg7[this->serial[i].count]);
+		this->seg7[this->serial[i].count].serial = FALSE;
 	}
 }
