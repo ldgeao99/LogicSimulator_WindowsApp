@@ -18,7 +18,8 @@ public:
 public:
 	BOOL drawline = FALSE;
 	CPoint startline;
-	
+	CPoint rbuttonClickedPoint;
+
 	CPoint oldpoint = { 0,0 };
 	int garo = 0, sero = 0;
 	int line = 0, inout = 0, gate = 0, ff = 0;
@@ -87,6 +88,12 @@ public:
 	afx_msg void Onpoint25second();
 	afx_msg void Onpoint1second();
 	afx_msg void Onclockstop();
+	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void On_TurnToRight();
+	afx_msg void On_TurnToLeft();
+	afx_msg void On_TurnToTop();
+	afx_msg void On_TurnToBottom();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

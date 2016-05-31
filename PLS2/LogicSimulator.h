@@ -6,6 +6,7 @@
 //enum변수입니다.
 enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff, seg7};
 enum WhereFixed { DEFAULT, SERO, GARO }; // 그림그릴 때 가로가 고정되었나 세로가 고정되었나?
+enum Direct { RIGHT, LEFT, BOTTOM, TOP };
 
 class LogicSimulator
 {
@@ -52,6 +53,7 @@ public:
 		CPoint max; // 사각형의 오른쪽 끝점
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct Output {
@@ -62,6 +64,8 @@ public:
 		CPoint max;
 		CPoint input;
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
+
 	};
 
 	struct OneLinePoint {
@@ -83,6 +87,7 @@ public:
 		CPoint output;
 		CPoint input[2];
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct XorGate {
@@ -94,6 +99,7 @@ public:
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		CPoint input[2];
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct NorGate {
@@ -105,6 +111,7 @@ public:
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		CPoint input[2];
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct NAndGate {
@@ -116,6 +123,7 @@ public:
 		CPoint output;  // 값을 내보낼 수 있는 점.
 		CPoint input[2];
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct OrGate {
@@ -127,6 +135,7 @@ public:
 		CPoint output;
 		CPoint input[2];
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct NotGate {
@@ -138,6 +147,7 @@ public:
 		CPoint output;
 		CPoint input;
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct TFF{
@@ -154,6 +164,7 @@ public:
 		int newclock = 0;
 		int oldclock = 0;
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct Clock {
@@ -180,6 +191,7 @@ public:
 		int newclock = 0;
 		int oldclock = 0;
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct JKFF {
@@ -192,6 +204,7 @@ public:
 		CPoint input[2];
 		CPoint clock;
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct SEG7 {

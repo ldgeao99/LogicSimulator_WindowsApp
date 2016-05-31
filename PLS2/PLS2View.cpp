@@ -53,6 +53,12 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_point25second, &CPLS2View::Onpoint25second)
 	ON_COMMAND(ID_point1second, &CPLS2View::Onpoint1second)
 	ON_COMMAND(ID_clockstop, &CPLS2View::Onclockstop)
+	ON_WM_CONTEXTMENU()
+	ON_WM_RBUTTONDOWN()
+	ON_COMMAND(ID_32810, &CPLS2View::On_TurnToRight)
+	ON_COMMAND(ID_32811, &CPLS2View::On_TurnToLeft)
+	ON_COMMAND(ID_32812, &CPLS2View::On_TurnToTop)
+	ON_COMMAND(ID_32813, &CPLS2View::On_TurnToBottom)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -147,13 +153,46 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.and[i].clicked.x != 0 && pDoc->ls.and[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_GATE_AND);
-			BITMAP bmpinfo;
-			bitmap.GetBitmap(&bmpinfo);
-			CDC dcmem;
-			dcmem.CreateCompatibleDC(pDC);
-			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+
+			if (pDoc->ls.and[i].direct == RIGHT) {
+				bitmap.LoadBitmapW(IDB_GATE_AND);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.and[i].direct == BOTTOM) {
+				bitmap.LoadBitmapW(IDB_GATE_AND_BOTTOM);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+
+			else if (pDoc->ls.and[i].direct == TOP) {
+				bitmap.LoadBitmapW(IDB_GATE_AND_TOP);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+
+			else if (pDoc->ls.and[i].direct == LEFT) {
+				bitmap.LoadBitmapW(IDB_GATE_AND_LEFT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+
 			str.Format(_T("value = %d"), pDoc->ls.and[i].value);
 			pDC->TextOutW(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20 + 80, str);
 }
@@ -1281,4 +1320,215 @@ void CPLS2View::Onclockstop()
 	for (int i = 0; i <= pDoc->ls.count_clock; i++) {
 		KillTimer(i);
 	}
+}
+
+
+void CPLS2View::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	CMenu menu;
+	menu.LoadMenuW(IDR_MENU1);
+	CMenu* pMenu = menu.GetSubMenu(0);
+	if (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate != ::nothing)
+		pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd());
+}
+
+
+void CPLS2View::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	rbuttonClickedPoint = point; // 그냥 눌린 위치를 파악하기 위해서.
+	CView::OnRButtonDown(nFlags, point);
+}
+
+
+void CPLS2View::On_TurnToRight()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
+
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	{
+	case input:
+		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = RIGHT;
+		break;
+	case output:
+		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = RIGHT;
+		break;
+	case and:
+		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = RIGHT;
+		break;
+	case or :
+		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = RIGHT;
+		break;
+	case not:
+		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = RIGHT;
+		break;
+	case nand:
+		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = RIGHT;
+		break;
+	case nor:
+		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = RIGHT;
+		break;
+	case xor:
+		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = RIGHT;
+		break;
+	case dff:
+		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = RIGHT;
+		break;
+	case jkff:
+		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = RIGHT;
+		break;
+	case tff:
+		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = RIGHT;
+		break;
+	}
+
+	Invalidate();
+}
+
+
+void CPLS2View::On_TurnToLeft()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
+
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	{
+	case input:
+		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = LEFT;
+		break;
+	case output:
+		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = LEFT;
+		break;
+	case and:
+		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = LEFT;
+		break;
+	case or :
+		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = LEFT;
+		break;
+	case not:
+		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = LEFT;
+		break;
+	case nand:
+		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = LEFT;
+		break;
+	case nor:
+		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = LEFT;
+		break;
+	case xor:
+		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = LEFT;
+		break;
+	case dff:
+		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = LEFT;
+		break;
+	case jkff:
+		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = LEFT;
+		break;
+	case tff:
+		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = LEFT;
+		break;
+	}
+
+	Invalidate();
+}
+
+
+void CPLS2View::On_TurnToTop()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
+
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	{
+	case input:
+		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = TOP;
+		break;
+	case output:
+		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = TOP;
+		break;
+	case and:
+		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = TOP;
+		break;
+	case or :
+		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = TOP;
+		break;
+	case not:
+		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = TOP;
+		break;
+	case nand:
+		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = TOP;
+		break;
+	case nor:
+		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = TOP;
+		break;
+	case xor:
+		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = TOP;
+		break;
+	case dff:
+		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = TOP;
+		break;
+	case jkff:
+		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = TOP;
+		break;
+	case tff:
+		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = TOP;
+		break;
+	}
+
+	Invalidate();
+}
+
+
+void CPLS2View::On_TurnToBottom()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
+
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	{
+	case input:
+		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = BOTTOM;
+		break;
+	case output:
+		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = BOTTOM;
+		break;
+	case and:
+		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = BOTTOM;
+		break;
+	case or :
+		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = BOTTOM;
+		break;
+	case not:
+		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = BOTTOM;
+		break;
+	case nand:
+		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = BOTTOM;
+		break;
+	case nor:
+		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = BOTTOM;
+		break;
+	case xor:
+		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = BOTTOM;
+		break;
+	case dff:
+		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = BOTTOM;
+		break;
+	case jkff:
+		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = BOTTOM;
+		break;
+	case tff:
+		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = BOTTOM;
+		break;
+	}
+
+	Invalidate();
 }
