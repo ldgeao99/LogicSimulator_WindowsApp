@@ -1037,8 +1037,7 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 			pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].value = 1;
 		break;
 	case output:
-		if(pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value != NULL)
-			pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].value = *(pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value);
+		pDoc->ls.calculate_output(&pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output]);
 		break;
 	case and:
 		pDoc->ls.calculate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and]);
@@ -1086,6 +1085,8 @@ void CPLS2View::Onrun()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.run(repeat, se);
+	/*
 	int end, start;
 
 	for (int a = 0; a < repeat; a++) {
@@ -1135,8 +1136,8 @@ void CPLS2View::Onrun()
 		}
 	}
 	for (int i = 0; i < repeat; i++) {
-		if (pDoc->ls.pif[pDoc->ls.out[pDoc->ls.serial[i].count].input.x][pDoc->ls.out[pDoc->ls.serial[i].count].input.y].value != NULL)
-			pDoc->ls.out[pDoc->ls.serial[i].count].value = *(pDoc->ls.pif[pDoc->ls.out[pDoc->ls.serial[i].count].input.x][pDoc->ls.out[pDoc->ls.serial[i].count].input.y].value);
+		pDoc->ls.calculate_output(&pDoc->ls.out[i]);
 	}
+	*/
 	Invalidate();
 }

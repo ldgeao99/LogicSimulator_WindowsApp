@@ -227,6 +227,12 @@ void LogicSimulator::create_line(CPoint firstPt, CPoint secondPt, int index) {
 	}
 }
 
+void LogicSimulator::calculate_output(Output * out)
+{
+	if ( pif[out->input.x][out->input.y].value != NULL)
+		 out->value = *(pif[out->input.x][out->input.y].value);
+}
+
 void LogicSimulator::calculate_xor(XorGate * xor)
 {
 	if (this->pif[xor->input[0].x][xor->input[0].y].value == NULL || this->pif[xor->input[1].x][xor->input[1].y].value == NULL)
@@ -680,5 +686,60 @@ int LogicSimulator::serialize_gate(int x, int y) {
 		serialize_gate(tff[pif[x][y].tff].input.x, tff[pif[x][y].tff].input.y);
 		serialize_gate(tff[pif[x][y].tff].clock.x, tff[pif[x][y].tff].clock.y);
 		return 1;
+	}
+}
+
+void LogicSimulator::run(int repeat, int se[10])
+{
+	int end, start;
+
+	for (int a = 0; a < repeat; a++) {
+		end = se[a] + 1;
+		start = se[a + 1];
+		for (int i = start; i >= end; i--) {
+			switch (this->serial[i].gate) {
+			case input://
+				break;
+			case output://
+				break;
+			case ::and://
+				this->calculate_and(&this->and[this->serial[i].count]);
+				this->and[this->serial[i].count].serial = FALSE;
+				break;
+			case :: or ://
+				this->calculate_or(&this-> or [this->serial[i].count]);
+				this-> or [this->serial[i].count].serial = FALSE;
+				break;
+			case ::xor:
+				this->calculate_xor(&this->xor[this->serial[i].count]);
+				this->xor[this->serial[i].count].serial = FALSE;
+				break;
+			case ::nand:
+				this->calculate_nand(&this->nand[this->serial[i].count]);
+				this->nand[this->serial[i].count].serial = FALSE;
+				break;
+			case ::nor:
+				this->calculate_nor(&this->nor[this->serial[i].count]);
+				this->nor[this->serial[i].count].serial = FALSE;
+				break;
+			case lsclock:
+				break;
+			case ::dff:
+				//this->calculate_dff(&this->dff[this->serial[i].count]);
+				//this->dff[this->serial[i].count].serial = FALSE;
+				break;
+			case ::jkff:
+				//this->calculate_jkff(&this->jkff[this->serial[i].count]);
+				//this->jkff[this->serial[i].count].serial = FALSE;
+				break;
+			case ::tff:
+				this->calculate_tff(&this->tff[this->serial[i].count]);
+				this->tff[this->serial[i].count].serial = FALSE;
+				break;
+			}
+		}
+	}
+	for (int i = 0; i < repeat; i++) {
+		this->calculate_output(&this->out[i]);
 	}
 }

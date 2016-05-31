@@ -258,6 +258,7 @@ public:
 	void create_dff(DFF * dff, CPoint clicked);
 	void create_jkff(JKFF * jkff, CPoint clicked);
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
+	void calculate_output(Output *out);
 	void calculate_xor(XorGate *xor);
 	void calculate_nor(NorGate *nor);
 	void calculate_or(OrGate * or );
@@ -266,4 +267,5 @@ public:
 	void calculate_and(AndGate *and);
 	void calculate_nand(NAndGate *nand);
 	int serialize_gate(int x, int y);
+	void run(int repeat, int se[10]);
 };
