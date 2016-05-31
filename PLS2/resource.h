@@ -27,6 +27,7 @@
 #define IDB_GATE_AND_LEFT               324
 #define IDB_BITMAP7                     325
 #define IDB_GATE_AND_TOP                325
+#define IDR_MENU1                       326
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -66,13 +67,17 @@
 #define ID_point1second                 32807
 #define ID_32808                        32808
 #define ID_clockstop                    32809
+#define ID_32810                        32810
+#define ID_32811                        32811
+#define ID_32812                        32812
+#define ID_32813                        32813
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        326
-#define _APS_NEXT_COMMAND_VALUE         32810
+#define _APS_NEXT_RESOURCE_VALUE        327
+#define _APS_NEXT_COMMAND_VALUE         32814
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

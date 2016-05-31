@@ -235,6 +235,17 @@ BEGIN
     END
 END
 
+IDR_MENU1 MENU
+BEGIN
+    POPUP "방향"
+    BEGIN
+        MENUITEM "오른쪽(RIGHT)",                  ID_32810
+        MENUITEM "왼쪽(LEFT)",                    ID_32811
+        MENUITEM "위(TOP)",                      ID_32812
+        MENUITEM "아래(BOTTOM)",                  ID_32813
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
