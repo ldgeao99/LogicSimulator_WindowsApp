@@ -1154,8 +1154,13 @@ void CPLS2View::OnSerialize()
 	se[0] = 0;
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.count_serial = -1;
-	for (int i = 0; i <= pDoc->ls.count_output; i++) {
+	for (int i = -1; i < pDoc->ls.count_output; i++) {
 		pDoc->ls.serialize_gate(pDoc->ls.out[i].input.x, pDoc->ls.out[i].input.y);
+		repeat++;
+		se[repeat] = pDoc->ls.count_serial;
+	}
+	for (int i = -1; i < pDoc->ls.count_seg7; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.seg7[0].clicked.x, pDoc->ls.seg7[0].clicked.y);
 		repeat++;
 		se[repeat] = pDoc->ls.count_serial;
 	}
