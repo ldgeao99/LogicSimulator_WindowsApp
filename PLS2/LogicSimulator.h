@@ -166,7 +166,7 @@ public:
 	};
 
 	struct DFF {
-		int* value = NULL;
+		int value = 0;
 		CString name;
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
@@ -174,6 +174,9 @@ public:
 		CPoint output[2];
 		CPoint input;
 		CPoint clock;
+		BOOL trigger = TRUE; //true->»ó½Â false->ÇÏ°­
+		int newclock = 0;
+		int oldclock = 0;
 		BOOL serial = FALSE;
 	};
 
@@ -282,6 +285,7 @@ public:
 	void calculate_and(AndGate *and);
 	void calculate_nand(NAndGate *nand);
 	void calculate_seg7(SEG7 * seg7);
+	void calculate_dff(DFF *dff);
 	int serialize_gate(int x, int y);
 	void run(int repeat, int se[10]);
 };

@@ -491,6 +491,26 @@ void LogicSimulator::calculate_seg7(SEG7 * seg7) {
 	}
 }
 
+void LogicSimulator::calculate_dff(DFF * dff)
+{
+	if (this->pif[dff->input.x][dff->input.y].value == NULL || this->pif[dff->clock.x][dff->clock.y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else {
+		dff->newclock = *(this->pif[dff->clock.x][dff->clock.y].value);
+		if (dff->trigger == TRUE) {
+			if (dff->oldclock == 0 && dff->newclock == 1) {
+				dff->value = *(this->pif[dff->input.x][dff->input.y].value);
+			}
+		}
+		else {
+			if (dff->oldclock == 1 && dff->newclock == 0) {
+				dff->value = *(this->pif[dff->input.x][dff->input.y].value);
+			}
+		}
+		dff->oldclock = dff->newclock;
+	}
+}
+
 void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 {
 	tff->clicked = clicked; // 마우스가 눌린 위치.

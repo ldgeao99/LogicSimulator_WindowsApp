@@ -1139,6 +1139,9 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	case seg7:
 		pDoc->ls.calculate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7]);
 		break;
+	case dff:
+		pDoc->ls.calculate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff]);
+		break;
 	}
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
