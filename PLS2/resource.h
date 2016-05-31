@@ -20,7 +20,9 @@
 #define IDB_GATE_NOT                    318
 #define IDB_FF_D                        319
 #define IDB_FF_T                        320
+#define IDB_BITMAP4                     321
 #define IDB_FF_JK                       321
+#define IDB_GATE_SEG7                   322
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -34,16 +36,20 @@
 #define ID_32781                        32781
 #define ID_32782                        32782
 #define ID_32783                        32783
-#define ID_32784                        32784
-#define ID_Serialize                    32785
-#define ID_run                          32786
+#define ID_7_Segment                    32784
+#define ID_32785                        32785
+#define ID_32786                        32786
+#define ID_serialize                    32787
+#define ID_run                          32788
+#define ID_asdf                         32789
+#define ID_Serialize1                   32790
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        322
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_RESOURCE_VALUE        323
+#define _APS_NEXT_COMMAND_VALUE         32791
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

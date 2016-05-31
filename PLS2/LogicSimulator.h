@@ -4,7 +4,7 @@
 #define INDEX 200
 
 //enum변수입니다.
-enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff};
+enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff, seg7};
 enum WhereFixed { DEFAULT, SERO, GARO }; // 그림그릴 때 가로가 고정되었나 세로가 고정되었나?
 
 class LogicSimulator
@@ -29,6 +29,7 @@ public:
 		int dff = -1;
 		int jkff = -1;
 		int tff = -1;
+		int seg7 = -1;
 		int clock = -1;
 
 
@@ -188,6 +189,16 @@ public:
 		BOOL serial = FALSE;
 	};
 
+	struct SEG7 {
+		int value[7] = { 0, };
+		CString name;
+		CPoint clicked{ -1. - 1 };
+		CPoint min;
+		CPoint max;
+		CPoint input[7];
+		BOOL serial = FALSE;
+	};
+
 	struct serialize {
 		WhatGate gate;
 		int count;
@@ -209,6 +220,8 @@ public:
 	Clock clock[INDEX];
 	DFF dff[INDEX];
 	JKFF jkff[INDEX];
+	SEG7 seg7[INDEX];
+
 
 	CPoint downPoint;
 	CPoint upPoint;
@@ -232,6 +245,7 @@ public:
 	int count_dff = -1;
 	int count_jkff = -1;
 	int count_line = -1;
+	int count_seg7 = -1;
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
 
@@ -258,6 +272,7 @@ public:
 	void create_dff(DFF * dff, CPoint clicked);
 	void create_jkff(JKFF * jkff, CPoint clicked);
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
+	void create_seg7(SEG7 * seg7, CPoint clicked);
 	void calculate_output(Output *out);
 	void calculate_xor(XorGate *xor);
 	void calculate_nor(NorGate *nor);
@@ -266,6 +281,7 @@ public:
 	void calculate_tff(TFF *tff);
 	void calculate_and(AndGate *and);
 	void calculate_nand(NAndGate *nand);
+	void calculate_seg7(SEG7 * seg7);
 	int serialize_gate(int x, int y);
 	void run(int repeat, int se[10]);
 };

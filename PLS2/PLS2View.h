@@ -80,6 +80,7 @@ public:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnSerialize();
 	afx_msg void Onrun();
+	afx_msg void Create_7Segment_BCLK();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

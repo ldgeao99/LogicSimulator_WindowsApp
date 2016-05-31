@@ -103,6 +103,8 @@ IDB_FF_T                BITMAP                  "res\\bmp00002.bmp"
 
 IDB_FF_JK               BITMAP                  "res\\bmp00003.bmp"
 
+IDB_GATE_SEG7           BITMAP                  "res\\bmp00004.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -210,10 +212,11 @@ BEGIN
         MENUITEM "JK-FF",                       ID_32780
         MENUITEM "T-FF",                        ID_32781
         MENUITEM "클럭",                          ID_32782
+        MENUITEM "7-segment",                   ID_7_Segment
     END
     POPUP "실행"
     BEGIN
-        MENUITEM "serialize",                   ID_Serialize
+        MENUITEM "serialize",                   ID_serialize
         MENUITEM "run",                         ID_run
     END
 END

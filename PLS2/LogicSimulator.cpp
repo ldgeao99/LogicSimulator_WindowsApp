@@ -298,7 +298,6 @@ void LogicSimulator::calculate_nand(NAndGate *nand) {
 			nand->value = 1;
 }
 
-
 void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 {
 	xor->clicked = clicked; // 마우스가 눌린 위치.
@@ -447,6 +446,51 @@ void LogicSimulator::calculate_tff(TFF * tff)
 	}
 }
 
+void LogicSimulator::calculate_seg7(SEG7 * seg7) {
+	if (this->pif[seg7->input[0].x][seg7->input[0].y].value == NULL || this->pif[seg7->input[1].x][seg7->input[1].y].value == NULL
+		|| this->pif[seg7->input[2].x][seg7->input[2].y].value == NULL || this->pif[seg7->input[3].x][seg7->input[3].y].value == NULL
+		|| this->pif[seg7->input[4].x][seg7->input[4].y].value == NULL || this->pif[seg7->input[5].x][seg7->input[5].y].value == NULL
+		|| this->pif[seg7->input[6].x][seg7->input[6].y].value == NULL)
+		AfxMessageBox(_T("선을 연결해주세요."));
+	else
+	{
+		if (*(this->pif[seg7->input[0].x][seg7->input[0].y].value) == 1)
+			seg7->value[0] = 1;
+		else
+			seg7->value[0] = 0;
+
+		if (*(this->pif[seg7->input[1].x][seg7->input[1].y].value) == 1)
+			seg7->value[1] = 1;
+		else
+			seg7->value[1] = 0;
+
+		if (*(this->pif[seg7->input[2].x][seg7->input[2].y].value) == 1)
+			seg7->value[2] = 1;
+		else
+			seg7->value[2] = 0;
+
+		if (*(this->pif[seg7->input[3].x][seg7->input[3].y].value) == 1)
+			seg7->value[3] = 1;
+		else
+			seg7->value[3] = 0;
+
+		if (*(this->pif[seg7->input[4].x][seg7->input[4].y].value) == 1)
+			seg7->value[4] = 1;
+		else
+			seg7->value[4] = 0;
+
+		if (*(this->pif[seg7->input[5].x][seg7->input[5].y].value) == 1)
+			seg7->value[5] = 1;
+		else
+			seg7->value[5] = 0;
+
+		if (*(this->pif[seg7->input[6].x][seg7->input[6].y].value) == 1)
+			seg7->value[6] = 1;
+		else
+			seg7->value[6] = 0;
+	}
+}
+
 void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 {
 	tff->clicked = clicked; // 마우스가 눌린 위치.
@@ -553,6 +597,30 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 	this->pif[jkff->output[0].x][jkff->output[0].y].gateout = TRUE;
 	this->pif[jkff->output[1].x][jkff->output[1].y].lineok = TRUE;
 	this->pif[jkff->output[1].x][jkff->output[1].y].gateout = TRUE;
+}
+
+void LogicSimulator::create_seg7(SEG7 * seg7, CPoint clicked)
+{
+	seg7->clicked = clicked; // 마우스가 눌린 위치.
+	seg7->min = { clicked.x - 3, clicked.y - 3 };
+	seg7->max = { clicked.x + 3, clicked.y + 3 };
+	seg7->input[0] = { clicked.x - 3, clicked.y - 3 };
+	seg7->input[1] = { clicked.x - 3, clicked.y - 2 };
+	seg7->input[2] = { clicked.x - 3, clicked.y - 1 };
+	seg7->input[3] = { clicked.x - 3, clicked.y };
+	seg7->input[4] = { clicked.x - 3, clicked.y + 1 };
+	seg7->input[5] = { clicked.x - 3, clicked.y + 2 };
+	seg7->input[6] = { clicked.x - 3, clicked.y + 3 };
+
+	this->pif[clicked.x][clicked.y].serializegate = ::seg7;
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[seg7->min.x + i][seg7->min.y + j].usingpoint = TRUE;
+			this->pif[seg7->min.x + i][seg7->min.y + j].gate = ::seg7;
+			this->pif[seg7->min.x + i][seg7->min.y + j].seg7 = this->count_seg7;
+			this->pif[seg7->input[i].x][seg7->input[i].y].lineok = TRUE;
+			this->pif[seg7->input[i].x][seg7->input[i].y].gatein = TRUE;
+		}
 }
 
 int LogicSimulator::serialize_gate(int x, int y) {
