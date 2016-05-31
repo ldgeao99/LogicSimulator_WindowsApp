@@ -170,7 +170,7 @@ BEGIN
         MENUITEM "인쇄 미리 보기(&V)",                ID_FILE_PRINT_PREVIEW
         MENUITEM "인쇄 설정(&R)...",                ID_FILE_PRINT_SETUP
         MENUITEM SEPARATOR
-        MENUITEM "최근에 사용한 파일",                  ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "최근에 사용한 파일",                  ID_FILE_MRU_FILE1
         MENUITEM SEPARATOR
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
@@ -211,13 +211,21 @@ BEGIN
         MENUITEM "D-FF",                        ID_32779
         MENUITEM "JK-FF",                       ID_32780
         MENUITEM "T-FF",                        ID_32781
-        MENUITEM "클럭",                          ID_32782
         MENUITEM "7-segment",                   ID_7_Segment
+        MENUITEM "클럭",                          ID_32798
     END
     POPUP "실행"
     BEGIN
         MENUITEM "serialize",                   ID_serialize
         MENUITEM "run",                         ID_run
+    END
+    POPUP "클럭 주기"
+    BEGIN
+        MENUITEM "1초",                          ID_1second
+        MENUITEM "0.5초",                        ID_point5second
+        MENUITEM "0.25초",                       ID_point25second
+        MENUITEM "0.1초",                        ID_point1second
+        MENUITEM "stop",                        ID_clockstop
     END
 END
 

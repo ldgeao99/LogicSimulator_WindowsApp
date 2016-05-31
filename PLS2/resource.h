@@ -43,13 +43,32 @@
 #define ID_run                          32788
 #define ID_asdf                         32789
 #define ID_Serialize1                   32790
+#define ID_32791                        32791
+#define ID_32792                        32792
+#define ID_32793                        32793
+#define ID_32794                        32794
+#define ID_32795                        32795
+#define ID_Menu                         32796
+#define ID_32797                        32797
+#define ID_32798                        32798
+#define ID_32799                        32799
+#define ID_32800                        32800
+#define ID_32801                        32801
+#define ID_32802                        32802
+#define ID_1second                      32803
+#define ID_32804                        32804
+#define ID_point5second                 32805
+#define ID_point25second                32806
+#define ID_point1second                 32807
+#define ID_32808                        32808
+#define ID_clockstop                    32809
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        323
-#define _APS_NEXT_COMMAND_VALUE         32791
+#define _APS_NEXT_COMMAND_VALUE         32810
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

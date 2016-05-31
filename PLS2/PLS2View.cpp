@@ -38,7 +38,7 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32774, &CPLS2View::Create_OrGate_BCLK)
 	ON_COMMAND(ID_32776, &CPLS2View::Create_NotGate_BCLK)
 	ON_COMMAND(ID_32781, &CPLS2View::Create_TFF_BCLK)
-	ON_COMMAND(ID_32782, &CPLS2View::Create_Clock_BCLK)
+	ON_COMMAND(ID_32798, &CPLS2View::Create_Clock_BCLK)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
@@ -48,6 +48,11 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_serialize, &CPLS2View::OnSerialize)
 	ON_COMMAND(ID_run, &CPLS2View::Onrun)
 	ON_COMMAND(ID_7_Segment, &CPLS2View::Create_7Segment_BCLK)
+	ON_COMMAND(ID_1second, &CPLS2View::On1second)
+	ON_COMMAND(ID_point5second, &CPLS2View::Onpoint5second)
+	ON_COMMAND(ID_point25second, &CPLS2View::Onpoint25second)
+	ON_COMMAND(ID_point1second, &CPLS2View::Onpoint1second)
+	ON_COMMAND(ID_clockstop, &CPLS2View::Onclockstop)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -474,7 +479,6 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case lsclock:
 			pDoc->ls.count_clock++;
 			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
-			SetTimer(pDoc->ls.count_clock,500, NULL);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -1064,13 +1068,13 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 	CPLS2Doc* pDoc = GetDocument();
 	//for (int i = 0; i < pDoc->ls.count_clock; i++) {
 	//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
-	//pDoc->ls.run(repeat, se);
-		if (pDoc->ls.clock[nIDEvent].value == 0)
-			pDoc->ls.clock[nIDEvent].value = 1;
-		else
-			pDoc->ls.clock[nIDEvent].value = 0;
+	if (pDoc->ls.clock[nIDEvent].value == 0)
+		pDoc->ls.clock[nIDEvent].value = 1;
+	else
+		pDoc->ls.clock[nIDEvent].value = 0;
+	pDoc->ls.run(repeat, se);
 		//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
-		Invalidate(0);
+		Invalidate(1);
 	//}
 	CView::OnTimer(nIDEvent);
 }
@@ -1079,7 +1083,6 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 void CPLS2View::OnDestroy()
 {
 	CView::OnDestroy();
-	KillTimer(0);
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }
 
@@ -1144,6 +1147,8 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	case dff:
 		pDoc->ls.calculate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff]);
 		break;
+	case lsclock:
+		SetTimer(pDoc->ls.pif[p1.x / 20][p1.y / 20].clock, hz / (pDoc->ls.pif[p1.x / 20][p1.y / 20].clock + 1), NULL);
 	}
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
@@ -1237,4 +1242,43 @@ void CPLS2View::Create_7Segment_BCLK()
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = seg7;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CPLS2View::On1second()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	hz = 1000;
+
+}
+
+
+void CPLS2View::Onpoint5second()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	hz = 500;
+}
+
+
+void CPLS2View::Onpoint25second()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	hz = 250;
+}
+
+
+void CPLS2View::Onpoint1second()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	hz = 100;
+}
+
+
+void CPLS2View::Onclockstop()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	for (int i = 0; i <= pDoc->ls.count_clock; i++) {
+		KillTimer(i);
+	}
 }

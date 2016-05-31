@@ -142,6 +142,7 @@ public:
 
 	struct TFF{
 		int value = 0;
+		int value2 = 1;
 		CString name;
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
@@ -167,6 +168,7 @@ public:
 
 	struct DFF {
 		int value = 0;
+		int value2 = 1;
 		CString name;
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
