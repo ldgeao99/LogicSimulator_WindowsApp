@@ -56,6 +56,7 @@ BOOL CPLS2Doc::OnNewDocument()
 
 void CPLS2Doc::Serialize(CArchive& ar)
 {
+	int max = 0;
 	int gate = -1;
 	CPoint pointofpif;
 	if (ar.IsStoring())
@@ -67,6 +68,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 				ar << gate;
 			}
 		ls.line.Serialize(ar);
+		ar << ls.count_line;
 	}
 	else
 	{
@@ -88,6 +90,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 					break;
 				case and:
 					ls.count_and++;
+					ls.pif[i][j].and = ls.count_and;
 					ls.create_and(&ls.and[ls.count_and], pointofpif); // 만드는 함수 호출.
 					break;
 				case xor:
@@ -97,10 +100,12 @@ void CPLS2Doc::Serialize(CArchive& ar)
 					break;
 				case nor:
 					ls.count_nor++;
+					ls.pif[i][j].nor = ls.count_nor;
 					ls.create_nor(&ls.nor[ls.count_nor], pointofpif); // 만드는 함수 호출.
 					break;
 				case nand:
 					ls.count_nand++;
+					ls.pif[i][j].nand = ls.count_nand;
 					ls.create_nand(&ls.nand[ls.count_nand], pointofpif); // 만드는 함수 호출.
 					break;
 				case or :
@@ -133,6 +138,11 @@ void CPLS2Doc::Serialize(CArchive& ar)
 				}
 			}
 		ls.line.Serialize(ar);
+		ar >> max;
+		for (int i = 0; i <= max; i++) {
+			ls.count_line++;
+			ls.create_line(ls.line[i].firstPt, ls.line[i].secondPt, i);
+		}
 	}
 }
 
