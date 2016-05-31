@@ -303,4 +303,7 @@ public:
 	void calculate_dff(DFF *dff);
 	int serialize_gate(int x, int y);
 	void run(int repeat, int se[10]);
+	void rotate_and(AndGate *and, Direct dir);
+	void rotate_input(Input *in, Direct dir);
+	void rotate_output(Output *out, Direct dir);
 };

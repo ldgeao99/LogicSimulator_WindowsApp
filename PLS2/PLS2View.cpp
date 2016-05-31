@@ -132,7 +132,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			if (pDoc->ls.in[i].min.x * 20 > 0 ) {
 				//str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.in[i].clicked.x + 1][pDoc->ls.in[i].clicked.y].value));
 				str.Format(_T("value = %d"), pDoc->ls.in[i].value);
-				pDC->TextOutW(pDoc->ls.in[i].min.x * 20, pDoc->ls.in[i].min.y * 20 + 40, str);
+				pDC->TextOutW(pDoc->ls.in[i].min.x * 20, pDoc->ls.in[i].min.y * 20 + 40 + 20, str);
 			}
 		}
 	}
@@ -194,7 +194,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			}
 
 			str.Format(_T("value = %d"), pDoc->ls.and[i].value);
-			pDC->TextOutW(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20 + 80, str);
+			pDC->TextOutW(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20 + 80 + 20, str);
 }
 	}
 
@@ -1346,21 +1346,22 @@ void CPLS2View::OnRButtonDown(UINT nFlags, CPoint point)
 
 void CPLS2View::On_TurnToRight()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
 
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = RIGHT;
+		pDoc->ls.rotate_input(&pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input], RIGHT);
 		break;
 	case output:
 		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = RIGHT;
+		pDoc->ls.rotate_output(&pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output], RIGHT);
 		break;
 	case and:
 		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = RIGHT;
+		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], RIGHT);
 		break;
 	case or :
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = RIGHT;
@@ -1394,21 +1395,22 @@ void CPLS2View::On_TurnToRight()
 
 void CPLS2View::On_TurnToLeft()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
 
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = LEFT;
+		pDoc->ls.rotate_input(&pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input], LEFT);
 		break;
 	case output:
 		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = LEFT;
+		pDoc->ls.rotate_output(&pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output], LEFT);
 		break;
 	case and:
 		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = LEFT;
+		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], LEFT);
 		break;
 	case or :
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = LEFT;
@@ -1444,18 +1446,20 @@ void CPLS2View::On_TurnToTop()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
 
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = TOP;
+		pDoc->ls.rotate_input(&pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input], TOP);
 		break;
 	case output:
 		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = TOP;
+		pDoc->ls.rotate_output(&pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output], TOP);
 		break;
 	case and:
 		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = TOP;
+		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], TOP);
 		break;
 	case or :
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = TOP;
@@ -1491,18 +1495,20 @@ void CPLS2View::On_TurnToBottom()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-	//int num = pDoc->ls.pif[p1.x / 20][p1.y / 20].and; // 몇번째 게이트인가?
 
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = BOTTOM;
+		pDoc->ls.rotate_input(&pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input], BOTTOM);
 		break;
 	case output:
 		pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct = BOTTOM;
+		pDoc->ls.rotate_output(&pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output], BOTTOM);
 		break;
 	case and:
 		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = BOTTOM;
+		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], BOTTOM);
 		break;
 	case or :
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = BOTTOM;
