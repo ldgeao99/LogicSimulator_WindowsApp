@@ -28,6 +28,27 @@
 #define IDB_BITMAP7                     325
 #define IDB_GATE_AND_TOP                325
 #define IDR_MENU1                       326
+#define IDB_GATE_OR_LEFT                331
+#define IDB_GATE_OR_TOP                 332
+#define IDB_GATE_XOR_BOTTOM             333
+#define IDB_GATE_XOR_LEFT               334
+#define IDB_GATE_XOR_TOP                335
+#define IDB_GATE_NAND_BOTTOM            336
+#define IDB_GATE_NAND_LEFT              337
+#define IDB_GATE_NAND_TOP               338
+#define IDB_GATE_NOR_BOTTOM             339
+#define IDB_GATE_NOR_LEFT               340
+#define IDB_GATE_NOR_TOP                341
+#define IDB_GATE_NOT_BOTTOM             342
+#define IDB_GATE__NOT_LEFT              343
+#define IDB_GATE_NOT_LEFT               343
+#define IDB_GATE_NOT_TOP                344
+#define IDB_FF_D_BOTTOM                 345
+#define IDB_FF_D_LEFT                   346
+#define IDB_FF_D_TOP                    347
+#define IDB_FF_T_BOTTOM                 348
+#define IDB_FF_T_LEFT                   349
+#define IDB_FF_T_TOP                    350
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -76,7 +97,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        327
+#define _APS_NEXT_RESOURCE_VALUE        351
 #define _APS_NEXT_COMMAND_VALUE         32814
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

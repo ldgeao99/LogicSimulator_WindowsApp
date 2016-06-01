@@ -111,6 +111,46 @@ IDB_GATE_AND_LEFT       BITMAP                  "res\\bitmap1 - left.bmp"
 
 IDB_GATE_AND_TOP        BITMAP                  "res\\bitmap1 - top.bmp"
 
+IDB_GATE_OR_LEFT        BITMAP                  "res\\bitmap2 - left.bmp"
+
+IDB_GATE_OR_TOP         BITMAP                  "res\\bitmap2 - top.bmp"
+
+IDB_GATE_XOR_BOTTOM     BITMAP                  "res\\bitmap4 - bottom.bmp"
+
+IDB_GATE_XOR_LEFT       BITMAP                  "res\\bitmap4 - left.bmp"
+
+IDB_GATE_XOR_TOP        BITMAP                  "res\\bitmap4 - top.bmp"
+
+IDB_GATE_NAND_BOTTOM    BITMAP                  "res\\bitmap5 - bottom.bmp"
+
+IDB_GATE_NAND_LEFT      BITMAP                  "res\\bitmap5 - left.bmp"
+
+IDB_GATE_NAND_TOP       BITMAP                  "res\\bitmap5 - top.bmp"
+
+IDB_GATE_NOR_BOTTOM     BITMAP                  "res\\bitmap6 - bottom.bmp"
+
+IDB_GATE_NOR_LEFT       BITMAP                  "res\\bitmap6 - left.bmp"
+
+IDB_GATE_NOR_TOP        BITMAP                  "res\\bitmap6 - top.bmp"
+
+IDB_GATE_NOT_BOTTOM     BITMAP                  "res\\bitmap8 - bottom.bmp"
+
+IDB_GATE_NOT_LEFT       BITMAP                  "res\\bitmap8 - left.bmp"
+
+IDB_GATE_NOT_TOP        BITMAP                  "res\\bitmap8 - top.bmp"
+
+IDB_FF_D_BOTTOM         BITMAP                  "res\\bmp00001 - bottom.bmp"
+
+IDB_FF_D_LEFT           BITMAP                  "res\\bmp00001 - left.bmp"
+
+IDB_FF_D_TOP            BITMAP                  "res\\bmp00001 - top.bmp"
+
+IDB_FF_T_BOTTOM         BITMAP                  "res\\bmp00002 - bottom.bmp"
+
+IDB_FF_T_LEFT           BITMAP                  "res\\bmp00002 - left.bmp"
+
+IDB_FF_T_TOP            BITMAP                  "res\\bmp00002 - top.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
