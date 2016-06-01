@@ -177,6 +177,7 @@ public:
 		CPoint max;
 		CPoint output;
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct DFF {
@@ -221,6 +222,7 @@ public:
 		CPoint max;
 		CPoint input[7];
 		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
 	};
 
 	struct serialize {
@@ -321,4 +323,6 @@ public:
 	void rotate_dff(DFF *dff, Direct dir);
 	void rotate_jkff(JKFF *jkff, Direct dir);
 	void rotate_tff(TFF *tff, Direct dir);
+	void rotate_clock(Clock *clock, Direct dir);
+	void rotate_seg7(SEG7 *seg7, Direct dir);
 };

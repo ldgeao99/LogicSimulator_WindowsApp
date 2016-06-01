@@ -1515,6 +1515,14 @@ void CPLS2View::On_TurnToRight()
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = RIGHT;
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], RIGHT);
 		break;
+	case lsclock:
+		pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock].direct = RIGHT;
+		pDoc->ls.rotate_clock(&pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock], RIGHT);
+		break;
+	case seg7:
+		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = RIGHT;
+		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], RIGHT);
+		break;
 	}
 	int max = pDoc->ls.count_line;
 	pDoc->ls.count_line = -1;
@@ -1576,6 +1584,14 @@ void CPLS2View::On_TurnToLeft()
 	case tff:
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = LEFT;
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], LEFT);
+		break;
+	case lsclock:
+		pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock].direct = LEFT;
+		pDoc->ls.rotate_clock(&pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock], LEFT);
+		break;
+	case seg7:
+		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = LEFT;
+		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], LEFT);
 		break;
 	}
 	int max = pDoc->ls.count_line;
@@ -1639,6 +1655,14 @@ void CPLS2View::On_TurnToTop()
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = TOP;
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], TOP);
 		break;
+	case lsclock:
+		pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock].direct = TOP;
+		pDoc->ls.rotate_clock(&pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock], TOP);
+		break;
+	case seg7:
+		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = TOP;
+		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], TOP);
+		break;
 	}
 	int max = pDoc->ls.count_line;
 	pDoc->ls.count_line = -1;
@@ -1700,6 +1724,14 @@ void CPLS2View::On_TurnToBottom()
 	case tff:
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = BOTTOM;
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], BOTTOM);
+		break;
+	case lsclock:
+		pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock].direct = BOTTOM;
+		pDoc->ls.rotate_clock(&pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock], BOTTOM);
+		break;
+	case seg7:
+		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = BOTTOM;
+		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], BOTTOM);
 		break;
 	}
 	int max = pDoc->ls.count_line;

@@ -629,11 +629,10 @@ void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
 			this->pif[clock->min.x + i][clock->min.y + j].gate = lsclock;
 			this->pif[clock->min.x + i][clock->min.y + j].clock = this->count_clock;
 		}
-	for (int i = 0; i < 4; i++) {
-		this->pif[clock->output.x][clock->output.y].lineok = TRUE;
-		this->pif[clock->output.x][clock->output.y].gateout = TRUE;
-		this->pif[clock->output.x][clock->output.y].value = this->pif[clicked.x][clicked.y].value;
-	}
+
+	this->pif[clock->output.x][clock->output.y].lineok = TRUE;
+	this->pif[clock->output.x][clock->output.y].gateout = TRUE;
+	this->pif[clock->output.x][clock->output.y].value = this->pif[clicked.x][clicked.y].value;
 }
 
 void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
@@ -1391,4 +1390,83 @@ void LogicSimulator::rotate_tff(TFF *tff, Direct dir) {
 	this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
 	this->pif[tff->output[0].x][tff->output[0].y].value = &tff->value;
 	this->pif[tff->output[1].x][tff->output[1].y].value = &tff->value2;
+}
+
+void LogicSimulator::rotate_clock(Clock *clock, Direct dir) {
+	clock->direct = dir;
+
+	this->pif[clock->output.x][clock->output.y].lineok = FALSE;
+	this->pif[clock->output.x][clock->output.y].gateout = FALSE;
+	this->pif[clock->clicked.x][clock->clicked.y].value = NULL;
+	this->pif[clock->output.x][clock->output.y].value = NULL;
+	switch (dir) {
+	case LEFT:
+		clock->output = { clock->clicked.x - 1, clock->clicked.y };
+		break;
+	case RIGHT:
+		clock->output = { clock->clicked.x + 1, clock->clicked.y };
+		break;
+	case TOP:
+		clock->output = { clock->clicked.x, clock->clicked.y-1 };
+		break;
+	case BOTTOM:
+		clock->output = { clock->clicked.x, clock->clicked.y+1 };
+		break;
+	}
+	this->pif[clock->output.x][clock->output.y].lineok = TRUE;
+	this->pif[clock->output.x][clock->output.y].gateout = TRUE;
+	this->pif[clock->clicked.x][clock->clicked.y].value = &(clock->value);
+	this->pif[clock->output.x][clock->output.y].value = this->pif[clock->clicked.x][clock->clicked.y].value;
+}
+void LogicSimulator::rotate_seg7(SEG7 *seg7, Direct dir) {
+	seg7->direct = dir;
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[seg7->input[i].x][seg7->input[i].y].lineok = FALSE;
+			this->pif[seg7->input[i].x][seg7->input[i].y].gatein = FALSE;
+		}
+	switch (dir) {
+	case LEFT:
+		seg7->input[0] = { seg7->clicked.x - 3, seg7->clicked.y - 3 };
+		seg7->input[1] = { seg7->clicked.x - 3, seg7->clicked.y - 2 };
+		seg7->input[2] = { seg7->clicked.x - 3, seg7->clicked.y - 1 };
+		seg7->input[3] = { seg7->clicked.x - 3, seg7->clicked.y };
+		seg7->input[4] = { seg7->clicked.x - 3, seg7->clicked.y + 1 };
+		seg7->input[5] = { seg7->clicked.x - 3, seg7->clicked.y + 2 };
+		seg7->input[6] = { seg7->clicked.x - 3, seg7->clicked.y + 3 };
+		break;
+	case RIGHT:
+		seg7->input[0] = { seg7->clicked.x + 3, seg7->clicked.y - 3 };
+		seg7->input[1] = { seg7->clicked.x + 3, seg7->clicked.y - 2 };
+		seg7->input[2] = { seg7->clicked.x + 3, seg7->clicked.y - 1 };
+		seg7->input[3] = { seg7->clicked.x + 3, seg7->clicked.y };
+		seg7->input[4] = { seg7->clicked.x + 3, seg7->clicked.y + 1 };
+		seg7->input[5] = { seg7->clicked.x + 3, seg7->clicked.y + 2 };
+		seg7->input[6] = { seg7->clicked.x + 3, seg7->clicked.y + 3 };
+		break;
+	case TOP:
+		seg7->input[0] = { seg7->clicked.x - 3, seg7->clicked.y - 3 };
+		seg7->input[1] = { seg7->clicked.x - 2, seg7->clicked.y - 3 };
+		seg7->input[2] = { seg7->clicked.x - 1, seg7->clicked.y - 3 };
+		seg7->input[3] = { seg7->clicked.x, seg7->clicked.y - 3 };
+		seg7->input[4] = { seg7->clicked.x + 1, seg7->clicked.y - 3 };
+		seg7->input[5] = { seg7->clicked.x + 2, seg7->clicked.y - 3 };
+		seg7->input[6] = { seg7->clicked.x + 3, seg7->clicked.y - 3 };
+		break;
+	case BOTTOM:
+		seg7->input[0] = { seg7->clicked.x - 3, seg7->clicked.y + 3 };
+		seg7->input[1] = { seg7->clicked.x - 2, seg7->clicked.y + 3 };
+		seg7->input[2] = { seg7->clicked.x - 1, seg7->clicked.y + 3 };
+		seg7->input[3] = { seg7->clicked.x, seg7->clicked.y + 3 };
+		seg7->input[4] = { seg7->clicked.x + 1, seg7->clicked.y + 3 };
+		seg7->input[5] = { seg7->clicked.x + 2, seg7->clicked.y + 3 };
+		seg7->input[6] = { seg7->clicked.x + 3, seg7->clicked.y + 3 };
+		break;
+	}
+
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[seg7->input[i].x][seg7->input[i].y].lineok = TRUE;
+			this->pif[seg7->input[i].x][seg7->input[i].y].gatein = TRUE;
+		}
 }
