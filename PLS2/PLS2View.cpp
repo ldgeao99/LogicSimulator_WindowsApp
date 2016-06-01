@@ -343,7 +343,19 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.tff[i].clicked.x != 0 && pDoc->ls.tff[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_FF_T);
+
+			if (pDoc->ls. tff [i].direct == RIGHT)
+				bitmap.LoadBitmapW(IDB_FF_T);
+
+			else if (pDoc->ls.tff[i].direct == BOTTOM)
+				bitmap.LoadBitmapW(IDB_FF_T_BOTTOM);
+
+			else if (pDoc->ls.tff[i].direct == TOP)
+				bitmap.LoadBitmapW(IDB_FF_T_TOP);
+
+			else if (pDoc->ls.tff[i].direct == LEFT)
+				bitmap.LoadBitmapW(IDB_FF_T_LEFT);
+
 			BITMAP bmpinfo;
 			bitmap.GetBitmap(&bmpinfo);
 			CDC dcmem;
@@ -359,7 +371,19 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.dff[i].clicked.x != 0 && pDoc->ls.dff[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_FF_D);
+
+			if (pDoc->ls.dff[i].direct == RIGHT)
+				bitmap.LoadBitmapW(IDB_FF_D);
+
+			else if (pDoc->ls.dff[i].direct == BOTTOM)
+				bitmap.LoadBitmapW(IDB_FF_D_BOTTOM);
+
+			else if (pDoc->ls.dff[i].direct == TOP)
+				bitmap.LoadBitmapW(IDB_FF_D_TOP);
+
+			else if (pDoc->ls.dff[i].direct == LEFT)
+				bitmap.LoadBitmapW(IDB_FF_D_LEFT);
+
 			BITMAP bmpinfo;
 			bitmap.GetBitmap(&bmpinfo);
 			CDC dcmem;
@@ -367,7 +391,7 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			str.Format(_T("value = %d"), pDoc->ls.dff[i].value);
-			pDC->TextOutW(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20 + 120, str);
+			pDC->TextOutW(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20 + 120+20, str);
 		}
 	}
 	
@@ -375,13 +399,27 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.jkff[i].clicked.x != 0 && pDoc->ls.jkff[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_FF_JK);
+
+			if (pDoc->ls.jkff[i].direct == RIGHT)
+				bitmap.LoadBitmapW(IDB_FF_JK);
+
+			else if (pDoc->ls.jkff[i].direct == BOTTOM)
+				bitmap.LoadBitmapW(IDB_FF_JK_BOTTOM);
+
+			else if (pDoc->ls.jkff[i].direct == TOP)
+				bitmap.LoadBitmapW(IDB_FF_JK_TOP);
+
+			else if (pDoc->ls.jkff[i].direct == LEFT)
+				bitmap.LoadBitmapW(IDB_FF_JK_LEFT);
+
 			BITMAP bmpinfo;
 			bitmap.GetBitmap(&bmpinfo);
 			CDC dcmem;
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.jkff[i].min.x * 20, pDoc->ls.jkff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			str.Format(_T("value = %d"), pDoc->ls.jkff[i].value);
+			pDC->TextOutW(pDoc->ls.jkff[i].min.x * 20, pDoc->ls.jkff[i].min.y * 20 + 120, str);
 		}
 	}
 
