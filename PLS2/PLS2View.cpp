@@ -1186,6 +1186,9 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	case dff:
 		pDoc->ls.calculate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff]);
 		break;
+	case jkff:
+		pDoc->ls.calculate_jkff(&pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff]);
+		break;
 	case lsclock:
 		SetTimer(pDoc->ls.pif[p1.x / 20][p1.y / 20].clock, hz / (pDoc->ls.pif[p1.x / 20][p1.y / 20].clock + 1), NULL);
 	}

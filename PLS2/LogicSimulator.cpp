@@ -453,6 +453,62 @@ void LogicSimulator::calculate_tff(TFF * tff)
 	}
 }
 
+void LogicSimulator::calculate_jkff(JKFF * jkff) {
+	if (this->pif[jkff->input[0].x][jkff->input[0].y].value == NULL || this->pif[jkff->input[1].x][jkff->input[1].y].value == NULL || this->pif[jkff->clock.x][jkff->clock.y].value == NULL)
+		AfxMessageBox(_T("jkff 선을 연결해주세요."));
+	else {
+		jkff->newclock = *(this->pif[jkff->clock.x][jkff->clock.y].value);
+		if (jkff->trigger == TRUE) {
+			if (jkff->oldclock == 0 && jkff->newclock == 1) {
+				if (*(this->pif[jkff->input[0].x][jkff->input[0].y].value) == 0 && *(this->pif[jkff->input[1].x][jkff->input[1].y].value) == 1)
+				{
+					jkff->value = 0;
+					jkff->value2 = 1;
+				}
+				else if (*(this->pif[jkff->input[0].x][jkff->input[0].y].value) == 1 && *(this->pif[jkff->input[1].x][jkff->input[1].y].value) == 0) {
+					jkff->value = 1;
+					jkff->value2 = 0;
+				}
+				else if (*(this->pif[jkff->input[0].x][jkff->input[0].y].value) == 1 && *(this->pif[jkff->input[1].x][jkff->input[1].y].value) == 1) {
+					if (jkff->value == 1) {
+						jkff->value = 0;
+						jkff->value2 = 1;
+					}
+					else {
+						jkff->value = 1;
+						jkff->value2 = 0;
+					}
+				}
+			}
+		}
+		else {
+			if (jkff->oldclock == 1 && jkff->newclock == 0) {
+				if (*(this->pif[jkff->input[0].x][jkff->input[0].y].value) == 0 && *(this->pif[jkff->input[1].x][jkff->input[1].y].value) == 1)
+				{
+					jkff->value = 0;
+					jkff->value2 = 1;
+				}
+				else if (*(this->pif[jkff->input[0].x][jkff->input[0].y].value) == 1 && *(this->pif[jkff->input[1].x][jkff->input[1].y].value) == 0) {
+					jkff->value = 1;
+					jkff->value2 = 0;
+				}
+				else if (*(this->pif[jkff->input[0].x][jkff->input[0].y].value) == 1 && *(this->pif[jkff->input[1].x][jkff->input[1].y].value) == 1) {
+					if (jkff->value == 1) {
+						jkff->value = 0;
+						jkff->value2 = 1;
+					}
+					else {
+						jkff->value = 1;
+						jkff->value2 = 0;
+					}
+				}
+			}
+		}
+		jkff->oldclock = jkff->newclock;
+	}
+
+}
+
 void LogicSimulator::calculate_seg7(SEG7 * seg7) {
 	if (this->pif[seg7->input[0].x][seg7->input[0].y].value == NULL || this->pif[seg7->input[1].x][seg7->input[1].y].value == NULL
 		|| this->pif[seg7->input[2].x][seg7->input[2].y].value == NULL || this->pif[seg7->input[3].x][seg7->input[3].y].value == NULL
@@ -636,6 +692,8 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 	this->pif[jkff->output[0].x][jkff->output[0].y].gateout = TRUE;
 	this->pif[jkff->output[1].x][jkff->output[1].y].lineok = TRUE;
 	this->pif[jkff->output[1].x][jkff->output[1].y].gateout = TRUE;
+	this->pif[jkff->output[0].x][jkff->output[0].y].value = &jkff->value;
+	this->pif[jkff->output[1].x][jkff->output[1].y].value = &jkff->value2;
 }
 
 void LogicSimulator::create_seg7(SEG7 * seg7, CPoint clicked)
@@ -864,8 +922,8 @@ void LogicSimulator::run(int repeat, int se[10])
 				this->dff[this->serial[i].count].serial = FALSE;
 				break;
 			case ::jkff:
-				//this->calculate_jkff(&this->jkff[this->serial[i].count]);
-				//this->jkff[this->serial[i].count].serial = FALSE;
+				this->calculate_jkff(&this->jkff[this->serial[i].count]);
+				this->jkff[this->serial[i].count].serial = FALSE;
 				break;
 			case ::tff:
 				this->calculate_tff(&this->tff[this->serial[i].count]);

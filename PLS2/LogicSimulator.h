@@ -195,7 +195,8 @@ public:
 	};
 
 	struct JKFF {
-		int* value = NULL;
+		int value = 0;
+		int value2 = 1;
 		CString name;
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
@@ -203,6 +204,9 @@ public:
 		CPoint output[2];
 		CPoint input[2];
 		CPoint clock;
+		BOOL trigger = TRUE; //true->»ó½Â false->ÇÏ°­
+		int newclock = 0;
+		int oldclock = 0;
 		BOOL serial = FALSE;
 		Direct direct = ::RIGHT;
 	};
@@ -297,6 +301,7 @@ public:
 	void calculate_or(OrGate * or );
 	void calculate_not(NotGate * not);
 	void calculate_tff(TFF *tff);
+	void calculate_jkff(JKFF *jkff);
 	void calculate_and(AndGate *and);
 	void calculate_nand(NAndGate *nand);
 	void calculate_seg7(SEG7 * seg7);
