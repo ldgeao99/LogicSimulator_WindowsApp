@@ -311,4 +311,12 @@ public:
 	void rotate_and(AndGate *and, Direct dir);
 	void rotate_input(Input *in, Direct dir);
 	void rotate_output(Output *out, Direct dir);
+	void rotate_or(OrGate *or, Direct dir);
+	void rotate_not(NotGate * not , Direct dir);
+	void rotate_nand(NAndGate * nand , Direct dir);
+	void rotate_nor(NorGate * nor , Direct dir);
+	void rotate_xor(XorGate * xor , Direct dir);
+	void rotate_dff(DFF *dff, Direct dir);
+	void rotate_jkff(JKFF *jkff, Direct dir);
+	void rotate_tff(TFF *tff, Direct dir);
 };

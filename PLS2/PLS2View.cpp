@@ -202,15 +202,45 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.xor[i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_GATE_XOR);
-			BITMAP bmpinfo;
-			bitmap.GetBitmap(&bmpinfo);
-			CDC dcmem;
-			dcmem.CreateCompatibleDC(pDC);
-			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			if (pDoc->ls.xor[i].direct == RIGHT) {
+				bitmap.LoadBitmapW(IDB_GATE_XOR);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.xor[i].direct == BOTTOM) {
+				bitmap.LoadBitmapW(IDB_GATE_XOR_BOTTOM);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.xor[i].direct == TOP) {
+				bitmap.LoadBitmapW(IDB_GATE_XOR_TOP);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.xor[i].direct == LEFT) {
+				bitmap.LoadBitmapW(IDB_GATE_XOR_LEFT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+
 			str.Format(_T("value = %d"), pDoc->ls.xor[i].value);
-			pDC->TextOutW(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20 + 80, str);
+			pDC->TextOutW(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20 + 80+20, str);
 		}
 	}
 
@@ -218,45 +248,134 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.nor[i].clicked.x != 0 && pDoc->ls.nor[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_GATE_NOR);
-			BITMAP bmpinfo;
-			bitmap.GetBitmap(&bmpinfo);
-			CDC dcmem;
-			dcmem.CreateCompatibleDC(pDC);
-			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			if (pDoc->ls.nor[i].direct == RIGHT) {
+				bitmap.LoadBitmapW(IDB_GATE_NOR);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.nor[i].direct == BOTTOM) {
+				bitmap.LoadBitmapW(IDB_GATE_NOR_BOTTOM);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.nor[i].direct == TOP) {
+				bitmap.LoadBitmapW(IDB_GATE_NOR_TOP);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.nor[i].direct == LEFT) {
+				bitmap.LoadBitmapW(IDB_GATE_NOR_LEFT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+
 			str.Format(_T("value = %d"), pDoc->ls.nor[i].value);
-			pDC->TextOutW(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20 + 80, str);
+			pDC->TextOutW(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20 + 80+20, str);
 		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_or; i++) {
 		if (pDoc->ls. or [i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0) {
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_GATE_OR);
-			BITMAP bmpinfo;
-			bitmap.GetBitmap(&bmpinfo);
-			CDC dcmem;
-			dcmem.CreateCompatibleDC(pDC);
-			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			if (pDoc->ls.or[i].direct == RIGHT) {
+				bitmap.LoadBitmapW(IDB_GATE_OR);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.or[i].direct == BOTTOM) {
+				bitmap.LoadBitmapW(IDB_GATE_OR_BOTTOM);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls. or [i].direct == TOP) {
+				bitmap.LoadBitmapW(IDB_GATE_OR_TOP);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls. or [i].direct == LEFT) {
+				bitmap.LoadBitmapW(IDB_GATE_OR_LEFT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
 			str.Format(_T("value = %d"), pDoc->ls.or[i].value);
-			pDC->TextOutW(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20 + 80, str);
+			pDC->TextOutW(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20 + 80+20, str);
 		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_not; i++) {
 		if (pDoc->ls. not [i].clicked.x != 0 && pDoc->ls.not[i].clicked.y != 0) {
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_GATE_NOT);
-			BITMAP bmpinfo;
-			bitmap.GetBitmap(&bmpinfo);
-			CDC dcmem;
-			dcmem.CreateCompatibleDC(pDC);
-			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			if (pDoc->ls.not[i].direct == RIGHT) {
+				bitmap.LoadBitmapW(IDB_GATE_NOT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.not[i].direct == BOTTOM) {
+				bitmap.LoadBitmapW(IDB_GATE_NOT_BOTTOM);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.not[i].direct == TOP) {
+				bitmap.LoadBitmapW(IDB_GATE_NOT_TOP);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.not[i].direct == LEFT) {
+				bitmap.LoadBitmapW(IDB_GATE_NOT_LEFT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+
 			str.Format(_T("value = %d"), pDoc->ls. not [i].value);
-			pDC->TextOutW(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20 + 80, str);
+			pDC->TextOutW(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20 + 80+20, str);
 		}
 	}
 
@@ -265,15 +384,44 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.nand[i].clicked.x != 0 && pDoc->ls.nand[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			bitmap.LoadBitmapW(IDB_GATE_NAND);
-			BITMAP bmpinfo;
-			bitmap.GetBitmap(&bmpinfo);
-			CDC dcmem;
-			dcmem.CreateCompatibleDC(pDC);
-			dcmem.SelectObject(&bitmap);
-			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			if (pDoc->ls.nand[i].direct == RIGHT) {
+				bitmap.LoadBitmapW(IDB_GATE_NAND);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.nand[i].direct == BOTTOM) {
+				bitmap.LoadBitmapW(IDB_GATE_NAND_BOTTOM);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.nand[i].direct == TOP) {
+				bitmap.LoadBitmapW(IDB_GATE_NAND_TOP);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
+			else if (pDoc->ls.nand[i].direct == LEFT) {
+				bitmap.LoadBitmapW(IDB_GATE_NAND_LEFT);
+				BITMAP bmpinfo;
+				bitmap.GetBitmap(&bmpinfo);
+				CDC dcmem;
+				dcmem.CreateCompatibleDC(pDC);
+				dcmem.SelectObject(&bitmap);
+				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			}
 			str.Format(_T("value = %d"), pDoc->ls.nand[i].value);
-			pDC->TextOutW(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20 + 80, str);
+			pDC->TextOutW(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20 + 80+20, str);
 		}
 	}
 
@@ -1367,28 +1515,36 @@ void CPLS2View::On_TurnToRight()
 		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], RIGHT);
 		break;
 	case or :
-		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = RIGHT;
+		pDoc->ls.or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = RIGHT;
+		pDoc->ls.rotate_or(&pDoc->ls.or[pDoc->ls.pif[p1.x / 20][p1.y / 20].or], RIGHT);
 		break;
 	case not:
 		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = RIGHT;
+		pDoc->ls.rotate_not(&pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not], RIGHT);
 		break;
 	case nand:
 		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = RIGHT;
+		pDoc->ls.rotate_nand(&pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand], RIGHT);
 		break;
 	case nor:
 		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = RIGHT;
+		pDoc->ls.rotate_nor(&pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor], RIGHT);
 		break;
 	case xor:
 		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = RIGHT;
+		pDoc->ls.rotate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor], RIGHT);
 		break;
 	case dff:
 		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = RIGHT;
+		pDoc->ls.rotate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff], RIGHT);
 		break;
 	case jkff:
 		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = RIGHT;
+		pDoc->ls.rotate_jkff(&pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff], RIGHT);
 		break;
 	case tff:
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = RIGHT;
+		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], RIGHT);
 		break;
 	}
 
@@ -1415,29 +1571,37 @@ void CPLS2View::On_TurnToLeft()
 		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = LEFT;
 		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], LEFT);
 		break;
-	case or :
+	case or:
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = LEFT;
+		pDoc->ls.rotate_or(&pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ], LEFT);
 		break;
 	case not:
 		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = LEFT;
+		pDoc->ls.rotate_not(&pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not], LEFT);
 		break;
 	case nand:
 		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = LEFT;
+		pDoc->ls.rotate_nand(&pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand], LEFT);
 		break;
 	case nor:
 		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = LEFT;
+		pDoc->ls.rotate_nor(&pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor], LEFT);
 		break;
 	case xor:
 		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = LEFT;
+		pDoc->ls.rotate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor], LEFT);
 		break;
 	case dff:
 		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = LEFT;
+		pDoc->ls.rotate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff], LEFT);
 		break;
 	case jkff:
 		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = LEFT;
+		pDoc->ls.rotate_jkff(&pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff], LEFT);
 		break;
 	case tff:
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = LEFT;
+		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], LEFT);
 		break;
 	}
 
@@ -1464,29 +1628,37 @@ void CPLS2View::On_TurnToTop()
 		pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct = TOP;
 		pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], TOP);
 		break;
-	case or :
+	case or:
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = TOP;
+		pDoc->ls.rotate_or(&pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ], TOP);
 		break;
 	case not:
 		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = TOP;
+		pDoc->ls.rotate_not(&pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not], TOP);
 		break;
 	case nand:
 		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = TOP;
+		pDoc->ls.rotate_nand(&pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand], TOP);
 		break;
 	case nor:
 		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = TOP;
+		pDoc->ls.rotate_nor(&pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor], TOP);
 		break;
 	case xor:
 		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = TOP;
+		pDoc->ls.rotate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor], TOP);
 		break;
 	case dff:
 		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = TOP;
+		pDoc->ls.rotate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff], TOP);
 		break;
 	case jkff:
 		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = TOP;
+		pDoc->ls.rotate_jkff(&pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff], TOP);
 		break;
 	case tff:
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = TOP;
+		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], TOP);
 		break;
 	}
 
@@ -1515,27 +1687,35 @@ void CPLS2View::On_TurnToBottom()
 		break;
 	case or :
 		pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ].direct = BOTTOM;
+		pDoc->ls.rotate_or(&pDoc->ls. or [pDoc->ls.pif[p1.x / 20][p1.y / 20]. or ], BOTTOM);
 		break;
 	case not:
 		pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct = BOTTOM;
+		pDoc->ls.rotate_not(&pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not], BOTTOM);
 		break;
 	case nand:
 		pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct = BOTTOM;
+		pDoc->ls.rotate_nand(&pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand], BOTTOM);
 		break;
 	case nor:
 		pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct = BOTTOM;
+		pDoc->ls.rotate_nor(&pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor], BOTTOM);
 		break;
 	case xor:
 		pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct = BOTTOM;
+		pDoc->ls.rotate_xor(&pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor], BOTTOM);
 		break;
 	case dff:
 		pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct = BOTTOM;
+		pDoc->ls.rotate_dff(&pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff], BOTTOM);
 		break;
 	case jkff:
 		pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct = BOTTOM;
+		pDoc->ls.rotate_jkff(&pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff], BOTTOM);
 		break;
 	case tff:
 		pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct = BOTTOM;
+		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], BOTTOM);
 		break;
 	}
 
