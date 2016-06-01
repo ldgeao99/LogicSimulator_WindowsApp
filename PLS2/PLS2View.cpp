@@ -153,91 +153,55 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.and[i].clicked.x != 0 && pDoc->ls.and[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-
-			if (pDoc->ls.and[i].direct == RIGHT) {
+			
+			if (pDoc->ls.and[i].direct == RIGHT)
 				bitmap.LoadBitmapW(IDB_GATE_AND);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.and[i].direct == BOTTOM) {
+
+			else if (pDoc->ls.and[i].direct == BOTTOM)
 				bitmap.LoadBitmapW(IDB_GATE_AND_BOTTOM);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
 
-			else if (pDoc->ls.and[i].direct == TOP) {
+			else if (pDoc->ls.and[i].direct == TOP)
 				bitmap.LoadBitmapW(IDB_GATE_AND_TOP);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
 
-			else if (pDoc->ls.and[i].direct == LEFT) {
+			else if (pDoc->ls.and[i].direct == LEFT)
 				bitmap.LoadBitmapW(IDB_GATE_AND_LEFT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
+
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
 			str.Format(_T("value = %d"), pDoc->ls.and[i].value);
 			pDC->TextOutW(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20 + 80 + 20, str);
-}
+
+		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_xor; i++) {
 		if (pDoc->ls.xor[i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			if (pDoc->ls.xor[i].direct == RIGHT) {
+
+			if (pDoc->ls.xor[i].direct == RIGHT)
 				bitmap.LoadBitmapW(IDB_GATE_XOR);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.xor[i].direct == BOTTOM) {
+
+			else if (pDoc->ls.xor[i].direct == BOTTOM)
 				bitmap.LoadBitmapW(IDB_GATE_XOR_BOTTOM);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.xor[i].direct == TOP) {
+
+			else if (pDoc->ls.xor[i].direct == TOP) 
 				bitmap.LoadBitmapW(IDB_GATE_XOR_TOP);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.xor[i].direct == LEFT) {
+
+			else if (pDoc->ls.xor[i].direct == LEFT)
 				bitmap.LoadBitmapW(IDB_GATE_XOR_LEFT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
+
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
 			str.Format(_T("value = %d"), pDoc->ls.xor[i].value);
 			pDC->TextOutW(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20 + 80+20, str);
@@ -248,42 +212,25 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.nor[i].clicked.x != 0 && pDoc->ls.nor[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			if (pDoc->ls.nor[i].direct == RIGHT) {
+
+			if (pDoc->ls.nor[i].direct == RIGHT)
 				bitmap.LoadBitmapW(IDB_GATE_NOR);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.nor[i].direct == BOTTOM) {
+
+			else if (pDoc->ls.nor[i].direct == BOTTOM)
 				bitmap.LoadBitmapW(IDB_GATE_NOR_BOTTOM);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.nor[i].direct == TOP) {
+
+			else if (pDoc->ls.nor[i].direct == TOP)
 				bitmap.LoadBitmapW(IDB_GATE_NOR_TOP);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.nor[i].direct == LEFT) {
+
+			else if (pDoc->ls.nor[i].direct == LEFT)
 				bitmap.LoadBitmapW(IDB_GATE_NOR_LEFT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
+
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
 			str.Format(_T("value = %d"), pDoc->ls.nor[i].value);
 			pDC->TextOutW(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20 + 80+20, str);
@@ -291,88 +238,58 @@ void CPLS2View::OnDraw(CDC* pDC)
 	}
 
 	for (i = 0; i <= pDoc->ls.count_or; i++) {
-		if (pDoc->ls. or [i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0) {
+		if (pDoc->ls. or [i].clicked.x != 0 && pDoc->ls.xor[i].clicked.y != 0) 
+		{
 			CBitmap bitmap;
-			if (pDoc->ls.or[i].direct == RIGHT) {
+
+			if (pDoc->ls.or[i].direct == RIGHT)
 				bitmap.LoadBitmapW(IDB_GATE_OR);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.or[i].direct == BOTTOM) {
+
+			else if (pDoc->ls.or[i].direct == BOTTOM)
 				bitmap.LoadBitmapW(IDB_GATE_OR_BOTTOM);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls. or [i].direct == TOP) {
+
+			else if (pDoc->ls. or [i].direct == TOP)
 				bitmap.LoadBitmapW(IDB_GATE_OR_TOP);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls. or [i].direct == LEFT) {
+
+			else if (pDoc->ls. or [i].direct == LEFT)
 				bitmap.LoadBitmapW(IDB_GATE_OR_LEFT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
+
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+
 			str.Format(_T("value = %d"), pDoc->ls.or[i].value);
 			pDC->TextOutW(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20 + 80+20, str);
 		}
 	}
 
 	for (i = 0; i <= pDoc->ls.count_not; i++) {
-		if (pDoc->ls. not [i].clicked.x != 0 && pDoc->ls.not[i].clicked.y != 0) {
+		if (pDoc->ls. not [i].clicked.x != 0 && pDoc->ls.not[i].clicked.y != 0) 
+		{
 			CBitmap bitmap;
-			if (pDoc->ls.not[i].direct == RIGHT) {
+
+			if (pDoc->ls.not[i].direct == RIGHT)
 				bitmap.LoadBitmapW(IDB_GATE_NOT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.not[i].direct == BOTTOM) {
+
+			else if (pDoc->ls.not[i].direct == BOTTOM) 
 				bitmap.LoadBitmapW(IDB_GATE_NOT_BOTTOM);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.not[i].direct == TOP) {
+
+			else if (pDoc->ls.not[i].direct == TOP)
 				bitmap.LoadBitmapW(IDB_GATE_NOT_TOP);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.not[i].direct == LEFT) {
+
+			else if (pDoc->ls.not[i].direct == LEFT) 
 				bitmap.LoadBitmapW(IDB_GATE_NOT_LEFT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
+
+
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
 			str.Format(_T("value = %d"), pDoc->ls. not [i].value);
 			pDC->TextOutW(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20 + 80+20, str);
@@ -384,42 +301,26 @@ void CPLS2View::OnDraw(CDC* pDC)
 		if (pDoc->ls.nand[i].clicked.x != 0 && pDoc->ls.nand[i].clicked.y != 0)
 		{
 			CBitmap bitmap;
-			if (pDoc->ls.nand[i].direct == RIGHT) {
+
+			if (pDoc->ls.nand[i].direct == RIGHT)
 				bitmap.LoadBitmapW(IDB_GATE_NAND);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.nand[i].direct == BOTTOM) {
+
+			else if (pDoc->ls.nand[i].direct == BOTTOM)
 				bitmap.LoadBitmapW(IDB_GATE_NAND_BOTTOM);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.nand[i].direct == TOP) {
+
+			else if (pDoc->ls.nand[i].direct == TOP)
 				bitmap.LoadBitmapW(IDB_GATE_NAND_TOP);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
-			else if (pDoc->ls.nand[i].direct == LEFT) {
+
+			else if (pDoc->ls.nand[i].direct == LEFT)
 				bitmap.LoadBitmapW(IDB_GATE_NAND_LEFT);
-				BITMAP bmpinfo;
-				bitmap.GetBitmap(&bmpinfo);
-				CDC dcmem;
-				dcmem.CreateCompatibleDC(pDC);
-				dcmem.SelectObject(&bitmap);
-				pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			}
+
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+
 			str.Format(_T("value = %d"), pDoc->ls.nand[i].value);
 			pDC->TextOutW(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20 + 80+20, str);
 		}
