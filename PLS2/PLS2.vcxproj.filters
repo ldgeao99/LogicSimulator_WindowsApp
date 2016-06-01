@@ -198,5 +198,14 @@
     <Image Include="res\bmp00002 - top.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="res\bmp00003 - bottom.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00003 - left.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00003 - top.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

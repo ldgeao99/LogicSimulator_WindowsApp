@@ -113,7 +113,7 @@ IDB_GATE_AND_TOP        BITMAP                  "res\\bitmap1 - top.bmp"
 
 IDB_GATE_OR_LEFT        BITMAP                  "res\\bitmap2 - left.bmp"
 
-IDB_GATE_OR_TOP         BITMAP                  "res\\bitmap2 - top.bmp"
+IDB_GATE_OR_TOP         BITMAP                  "C:\\Users\\DG\\Source\\Repos\\Project_LS2\\PLS2\\res\\bitmap2 - top.bmp"
 
 IDB_GATE_XOR_BOTTOM     BITMAP                  "res\\bitmap4 - bottom.bmp"
 
@@ -150,6 +150,12 @@ IDB_FF_T_BOTTOM         BITMAP                  "res\\bmp00002 - bottom.bmp"
 IDB_FF_T_LEFT           BITMAP                  "res\\bmp00002 - left.bmp"
 
 IDB_FF_T_TOP            BITMAP                  "res\\bmp00002 - top.bmp"
+
+IDB_FF_JK_BOTTOM        BITMAP                  "res\\bmp00003 - bottom.bmp"
+
+IDB_FF_JK_LEFT          BITMAP                  "res\\bmp00003 - left.bmp"
+
+IDB_FF_JK_TOP           BITMAP                  "res\\bmp00003 - top.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////

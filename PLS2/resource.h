@@ -49,6 +49,10 @@
 #define IDB_FF_T_BOTTOM                 348
 #define IDB_FF_T_LEFT                   349
 #define IDB_FF_T_TOP                    350
+#define IDB_BITMAP5                     352
+#define IDB_FF_JK_BOTTOM                352
+#define IDB_FF_JK_LEFT                  353
+#define IDB_FF_JK_TOP                   354
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -97,7 +101,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        351
+#define _APS_NEXT_RESOURCE_VALUE        355
 #define _APS_NEXT_COMMAND_VALUE         32814
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

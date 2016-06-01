@@ -251,6 +251,9 @@
     <Image Include="res\bmp00002 - left.bmp" />
     <Image Include="res\bmp00002 - top.bmp" />
     <Image Include="res\bmp00002.bmp" />
+    <Image Include="res\bmp00003 - bottom.bmp" />
+    <Image Include="res\bmp00003 - left.bmp" />
+    <Image Include="res\bmp00003 - top.bmp" />
     <Image Include="res\bmp00003.bmp" />
     <Image Include="res\bmp00004.bmp" />
     <Image Include="res\PLS2.ico" />
