@@ -103,9 +103,8 @@ void CPLS2View::OnDraw(CDC* pDC)
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CString str;
-	
 	CPen black3pen(PS_SOLID, 3, RGB(0, 0, 0));
-
+	pDC->SetTextColor(RGB(0, 0, 255));
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -131,8 +130,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			pDC->Rectangle(pDoc->ls.in[i].min.x*20, pDoc->ls.in[i].min.y*20, pDoc->ls.in[i].max.x*20, pDoc->ls.in[i].max.y*20);
 			if (pDoc->ls.in[i].min.x * 20 > 0 ) {
 				//str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.in[i].clicked.x + 1][pDoc->ls.in[i].clicked.y].value));
-				str.Format(_T("value = %d"), pDoc->ls.in[i].value);
-				pDC->TextOutW(pDoc->ls.in[i].min.x * 20, pDoc->ls.in[i].min.y * 20 + 40 + 20, str);
+				str.Format(_T("%s(%d)"), pDoc->ls.in[i].name, pDoc->ls.in[i].value);
+				pDC->SetBkMode(TRANSPARENT);
+				pDC->TextOutW(pDoc->ls.in[i].min.x * 20, pDoc->ls.in[i].min.y * 20, str);
+				pDC->SetBkMode(OPAQUE);
 			}
 		}
 	}
@@ -142,8 +143,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 		{
 			pDC->Ellipse(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20, pDoc->ls.out[i].max.x * 20, pDoc->ls.out[i].max.y * 20);
 			if (pDoc->ls.out[i].min.x * 20 > 0) {
-				str.Format(_T("value = %d"), pDoc->ls.out[i].value);
-				pDC->TextOutW(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20 + 40, str);
+				str.Format(_T("%s(%d)"), pDoc->ls.out[i].name, pDoc->ls.out[i].value);
+				pDC->SetBkMode(TRANSPARENT);
+				pDC->TextOutW(pDoc->ls.out[i].min.x * 20, pDoc->ls.out[i].min.y * 20, str);
+				pDC->SetBkMode(OPAQUE);
 			}
 		}
 	}
@@ -173,8 +176,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
-			str.Format(_T("value = %d"), pDoc->ls.and[i].value);
-			pDC->TextOutW(pDoc->ls.and[i].min.x * 20, pDoc->ls.and[i].min.y * 20 + 80 + 20, str);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.and[i].name, pDoc->ls.and[i].value);
+			pDC->TextOutW(pDoc->ls.and[i].min.x * 20 + 5, pDoc->ls.and[i].min.y * 20 + 30, str);
+			pDC->SetBkMode(OPAQUE);
 
 		}
 	}
@@ -203,8 +208,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
-			str.Format(_T("value = %d"), pDoc->ls.xor[i].value);
-			pDC->TextOutW(pDoc->ls.xor[i].min.x * 20, pDoc->ls.xor[i].min.y * 20 + 80+20, str);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.xor[i].name, pDoc->ls.xor[i].value);
+			pDC->TextOutW(pDoc->ls.xor[i].min.x * 20 + 5, pDoc->ls.xor[i].min.y * 20 + 30, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -232,8 +239,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
-			str.Format(_T("value = %d"), pDoc->ls.nor[i].value);
-			pDC->TextOutW(pDoc->ls.nor[i].min.x * 20, pDoc->ls.nor[i].min.y * 20 + 80+20, str);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.nor[i].name, pDoc->ls.nor[i].value);
+			pDC->TextOutW(pDoc->ls.nor[i].min.x * 20 + 5, pDoc->ls.nor[i].min.y * 20 + 30, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -261,8 +270,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls. or [i].min.x * 20, pDoc->ls. or [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
-			str.Format(_T("value = %d"), pDoc->ls.or[i].value);
-			pDC->TextOutW(pDoc->ls.or[i].min.x * 20, pDoc->ls.or[i].min.y * 20 + 80+20, str);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.or[i].name, pDoc->ls. or [i].value);
+			pDC->TextOutW(pDoc->ls.or[i].min.x * 20 + 5, pDoc->ls.or[i].min.y * 20 + 30, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -291,8 +302,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
-			str.Format(_T("value = %d"), pDoc->ls. not [i].value);
-			pDC->TextOutW(pDoc->ls. not [i].min.x * 20, pDoc->ls. not [i].min.y * 20 + 80+20, str);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.not[i].name, pDoc->ls.not[i].value);
+			pDC->TextOutW(pDoc->ls. not [i].min.x * 20 + 5, pDoc->ls. not [i].min.y * 20 + 30, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -321,8 +334,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20, 80, 80, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 
-			str.Format(_T("value = %d"), pDoc->ls.nand[i].value);
-			pDC->TextOutW(pDoc->ls.nand[i].min.x * 20, pDoc->ls.nand[i].min.y * 20 + 80+20, str);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.nand[i].name, pDoc->ls.nand[i].value);
+			pDC->TextOutW(pDoc->ls.nand[i].min.x * 20 + 5, pDoc->ls.nand[i].min.y * 20 + 30, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -333,8 +348,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			pDC->Ellipse(pDoc->ls.clock[i].min.x * 20, pDoc->ls.clock[i].min.y * 20, pDoc->ls.clock[i].max.x * 20, pDoc->ls.clock[i].max.y * 20);
 			if (pDoc->ls.clock[i].min.x * 20 > 0) {
 				//str.Format(_T("value = %d"), *(pDoc->ls.pif[pDoc->ls.clock[i].clicked.x + 1][pDoc->ls.clock[i].clicked.y].value));
-				str.Format(_T("value = %d"), pDoc->ls.clock[pDoc->ls.count_clock].value);
-				pDC->TextOutW(pDoc->ls.clock[i].min.x * 20, pDoc->ls.clock[i].min.y * 20 + 40, str);
+				pDC->SetBkMode(TRANSPARENT);
+				str.Format(_T("%s(%d)"), pDoc->ls.clock[i].name, pDoc->ls.clock[i].value);
+				pDC->TextOutW(pDoc->ls.clock[i].min.x * 20, pDoc->ls.clock[i].min.y * 20, str);
+				pDC->SetBkMode(OPAQUE);
 			}
 		}
 	}
@@ -362,8 +379,11 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.tff[i].min.x * 20, pDoc->ls.tff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			str.Format(_T("value = %d"), pDoc->ls.tff[i].value);
-			pDC->TextOutW(pDoc->ls.tff[i].min.x * 20, pDoc->ls.tff[i].min.y * 20 + 120, str);
+
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.tff[i].name, pDoc->ls.tff[i].value);
+			pDC->TextOutW(pDoc->ls.tff[i].min.x * 20 + 5, pDoc->ls.tff[i].min.y * 20 + 20, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -390,8 +410,11 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			str.Format(_T("value = %d"), pDoc->ls.dff[i].value);
-			pDC->TextOutW(pDoc->ls.dff[i].min.x * 20, pDoc->ls.dff[i].min.y * 20 + 120+20, str);
+
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.dff[i].name, pDoc->ls.dff[i].value);
+			pDC->TextOutW(pDoc->ls.dff[i].min.x * 20 + 5, pDoc->ls.dff[i].min.y * 20 + 20, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 	
@@ -418,8 +441,11 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.CreateCompatibleDC(pDC);
 			dcmem.SelectObject(&bitmap);
 			pDC->StretchBlt(pDoc->ls.jkff[i].min.x * 20, pDoc->ls.jkff[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
-			str.Format(_T("value = %d"), pDoc->ls.jkff[i].value);
-			pDC->TextOutW(pDoc->ls.jkff[i].min.x * 20, pDoc->ls.jkff[i].min.y * 20 + 120, str);
+
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s(%d)"), pDoc->ls.jkff[i].name, pDoc->ls.jkff[i].value);
+			pDC->TextOutW(pDoc->ls.jkff[i].min.x * 20 + 5, pDoc->ls.jkff[i].min.y * 20 + 20, str);
+			pDC->SetBkMode(OPAQUE);
 		}
 	}
 
@@ -435,6 +461,10 @@ void CPLS2View::OnDraw(CDC* pDC)
 			dcmem.SelectObject(&bitmap);
 			pDC->SelectObject(&black3pen);
 			pDC->StretchBlt(pDoc->ls.seg7[i].min.x * 20, pDoc->ls.seg7[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s"), pDoc->ls.seg7[i].name);
+			pDC->TextOutW(pDoc->ls.seg7[i].min.x * 20 + 5, pDoc->ls.seg7[i].min.y * 20 + 20, str);
+			pDC->SetBkMode(OPAQUE);
 			if (pDoc->ls.seg7[i].value[0] == 1)
 			{
 				pDC->MoveTo((pDoc->ls.seg7[i].min.x + 2) * 20, (pDoc->ls.seg7[i].min.y + 1) * 20);
@@ -936,7 +966,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 
 		//선을 저장하지는 않고 움진인 위치로 그리기만 함.
 		if (oldpoint != p1) {
-			Invalidate(false);
+			Invalidate(0);
 		}
 		drawingline(startPoint, p1, pDoc->ls.wherefixed);
 
@@ -1438,7 +1468,7 @@ void CPLS2View::On_TurnToRight()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-
+	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = RIGHT;
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
@@ -1486,7 +1516,12 @@ void CPLS2View::On_TurnToRight()
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], RIGHT);
 		break;
 	}
-
+	int max = pDoc->ls.count_line;
+	pDoc->ls.count_line = -1;
+	for (int i = 0; i <= max; i++) {
+		pDoc->ls.count_line++;
+		pDoc->ls.create_line(pDoc->ls.line[i].firstPt, pDoc->ls.line[i].secondPt, i);
+	}
 	Invalidate();
 }
 
@@ -1495,7 +1530,7 @@ void CPLS2View::On_TurnToLeft()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-
+	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = LEFT;
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
@@ -1543,7 +1578,12 @@ void CPLS2View::On_TurnToLeft()
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], LEFT);
 		break;
 	}
-
+	int max = pDoc->ls.count_line;
+	pDoc->ls.count_line = -1;
+	for (int i = 0; i <= max; i++) {
+		pDoc->ls.count_line++;
+		pDoc->ls.create_line(pDoc->ls.line[i].firstPt, pDoc->ls.line[i].secondPt, i);
+	}
 	Invalidate();
 }
 
@@ -1552,7 +1592,7 @@ void CPLS2View::On_TurnToTop()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-
+	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = TOP;
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
@@ -1600,7 +1640,12 @@ void CPLS2View::On_TurnToTop()
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], TOP);
 		break;
 	}
-
+	int max = pDoc->ls.count_line;
+	pDoc->ls.count_line = -1;
+	for (int i = 0; i <= max; i++) {
+		pDoc->ls.count_line++;
+		pDoc->ls.create_line(pDoc->ls.line[i].firstPt, pDoc->ls.line[i].secondPt, i);
+	}
 	Invalidate();
 }
 
@@ -1609,7 +1654,7 @@ void CPLS2View::On_TurnToBottom()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-
+	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = BOTTOM;
 	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
 	case input:
@@ -1657,6 +1702,11 @@ void CPLS2View::On_TurnToBottom()
 		pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff], BOTTOM);
 		break;
 	}
-
+	int max = pDoc->ls.count_line;
+	pDoc->ls.count_line = -1;
+	for (int i = 0; i <= max; i++) {
+		pDoc->ls.count_line++;
+		pDoc->ls.create_line(pDoc->ls.line[i].firstPt, pDoc->ls.line[i].secondPt, i);
+	}
 	Invalidate();
 }

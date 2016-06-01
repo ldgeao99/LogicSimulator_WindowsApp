@@ -42,12 +42,14 @@ public:
 		WhatGate serializegate = nothing;
 		BOOL usingpoint = FALSE;
 
+		int direct = 0;
+
 		int* value = NULL;
 	}pinfo;
 
 	struct Input {
-		int value = 1; // 가지는 값.
-		CString name;
+		int value = 0; // 가지는 값.
+		CString name = _T("IN");
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
@@ -57,8 +59,8 @@ public:
 	};
 
 	struct Output {
-		int value = 1;
-		CString name;
+		int value = 0;
+		CString name = _T("OUT");
 		CPoint clicked{ -1, -1 };
 		CPoint min;
 		CPoint max;
@@ -79,8 +81,8 @@ public:
 	};
 
 	struct AndGate { // 입력값은 pif[input[0].x][input[0].y].value * 뭐 이런식으로 얻을 수 있음.
-		int value = NULL;  // 값을 내보내는 변수
-		CString name;
+		int value = 0;  // 값을 내보내는 변수
+		CString name = _T("AND");
 		CPoint clicked{ -1, -1 };
 		CPoint min;
 		CPoint max;
@@ -91,8 +93,8 @@ public:
 	};
 
 	struct XorGate {
-		int value = NULL;
-		CString name; // caption
+		int value = 0;
+		CString name = _T("XOR"); // caption
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
@@ -103,8 +105,8 @@ public:
 	};
 
 	struct NorGate {
-		int value = NULL;
-		CString name; // caption
+		int value = 0;
+		CString name = _T("NOR"); // caption
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
@@ -115,8 +117,8 @@ public:
 	};
 
 	struct NAndGate {
-		int value = NULL;
-		CString name;
+		int value = 0;
+		CString name = _T("NAND");
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
 		CPoint min; // 사각형의 왼쪽 끝점
 		CPoint max; // 사각형의 오른쪽 끝점
@@ -127,8 +129,8 @@ public:
 	};
 
 	struct OrGate {
-		int value = NULL;
-		CString name;
+		int value = 0;
+		CString name = _T("OR");
 		CPoint clicked{ -1, -1 };
 		CPoint min;
 		CPoint max;
@@ -139,8 +141,8 @@ public:
 	};
 
 	struct NotGate {
-		int value = NULL;
-		CString name;
+		int value = 0;
+		CString name = _T("NOT");
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
 		CPoint max;
@@ -153,7 +155,7 @@ public:
 	struct TFF{
 		int value = 0;
 		int value2 = 1;
-		CString name;
+		CString name = _T("TFF");
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
 		CPoint max;
@@ -169,7 +171,7 @@ public:
 
 	struct Clock {
 		int value = 0;
-		CString name;
+		CString name = _T("CLK");
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
 		CPoint max;
@@ -180,7 +182,7 @@ public:
 	struct DFF {
 		int value = 0;
 		int value2 = 1;
-		CString name;
+		CString name = _T("DFF");
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
 		CPoint max;
@@ -197,7 +199,7 @@ public:
 	struct JKFF {
 		int value = 0;
 		int value2 = 1;
-		CString name;
+		CString name = _T("JKFF");
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
 		CPoint max;
@@ -213,7 +215,7 @@ public:
 
 	struct SEG7 {
 		int value[7] = { 0, };
-		CString name;
+		CString name = _T("7SEG");
 		CPoint clicked{ -1. - 1 };
 		CPoint min;
 		CPoint max;

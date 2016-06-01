@@ -722,6 +722,7 @@ void LogicSimulator::create_seg7(SEG7 * seg7, CPoint clicked)
 
 int LogicSimulator::serialize_gate(int x, int y) {
 	int tempx, tempy;
+	int ou = 0;
 	int seg = 0;
 	if (pif[x][y].gate == output) {
 		count_serial++;
@@ -736,7 +737,7 @@ int LogicSimulator::serialize_gate(int x, int y) {
 	}
 	if (seg == 0) {
 		if (pif[x][y].line < 0) {
-			AfxMessageBox(_T("run() : 선을 잘 연결해주세요."));
+			//AfxMessageBox(_T("run() : 선을 잘 연결해주세요."));
 			return 0;
 		}
 		else {
@@ -753,129 +754,135 @@ int LogicSimulator::serialize_gate(int x, int y) {
 				}
 		}
 	}
-	switch (pif[x][y].gate) {
-	case input://
-		return 1;
-		break;
-	case output://
-		if (out[pif[x][y].output].serial == TRUE)
-			return 1;
-		else
-			out[pif[x][y].output].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].output;
-		serial[count_serial].gate = output;
-		serialize_gate(out[pif[x][y].output].input.x, out[pif[x][y].output].input.y);
-		return 1;
-	case ::and://
-		if (and[pif[x][y].and].serial == TRUE)
-			return 1;
-		else
-			and[pif[x][y].and].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].and;
-		serial[count_serial].gate = ::and;
-		serialize_gate(and[pif[x][y].and].input[0].x, and[pif[x][y].and].input[0].y);
-		serialize_gate(and[pif[x][y].and].input[1].x, and[pif[x][y].and].input[1].y);
-		return 1;
-	case ::or://
-		if (or [pif[x][y]. or ].serial == TRUE)
-			return 1;
-		else
-			or [pif[x][y]. or ].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].or;
-		serial[count_serial].gate = ::or;
-		serialize_gate(or[pif[x][y].or].input[0].x, or[pif[x][y].or].input[0].y);
-		serialize_gate(or[pif[x][y].or].input[1].x, or[pif[x][y].or].input[1].y);
-		return 1;
-	case ::xor:
-		if (xor[pif[x][y]. xor].serial == TRUE)
-			return 1;
-		else
-			xor[pif[x][y]. xor].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].xor;
-		serial[count_serial].gate = ::xor;
-		serialize_gate(xor[pif[x][y].xor].input[0].x, xor[pif[x][y].xor].input[0].y);
-		serialize_gate(xor[pif[x][y].xor].input[1].x, xor[pif[x][y].xor].input[1].y);
-		return 1;
-	case ::nand:
-		if (nand[pif[x][y].nand].serial == TRUE)
-			return 1;
-		else
-			nand[pif[x][y].nand].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].nand;
-		serial[count_serial].gate = ::nand;
-		serialize_gate(nand[pif[x][y].nand].input[0].x, nand[pif[x][y].nand].input[0].y);
-		serialize_gate(nand[pif[x][y].nand].input[1].x, nand[pif[x][y].nand].input[1].y);
-		return 1;
-	case ::nor:
-		if (nor[pif[x][y].nor].serial == TRUE)
-			return 1;
-		else
-			nor[pif[x][y].nor].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].nor;
-		serial[count_serial].gate = ::nor;
-		serialize_gate(nor[pif[x][y].nor].input[0].x, nor[pif[x][y].nor].input[0].y);
-		serialize_gate(nor[pif[x][y].nor].input[1].x, nor[pif[x][y].nor].input[1].y);
-		return 1;
-	case lsclock:
-		return 1;
-		break;
-	case ::dff:
-		if (dff[pif[x][y].dff].serial == TRUE)
-			return 1;
-		else
-			dff[pif[x][y].dff].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].dff;
-		serial[count_serial].gate = ::dff;
-		serialize_gate(dff[pif[x][y].dff].input.x, dff[pif[x][y].dff].input.y);
-		serialize_gate(dff[pif[x][y].dff].clock.x, dff[pif[x][y].dff].clock.y);
-		return 1;
-	case ::jkff:
-		if (jkff[pif[x][y].jkff].serial == TRUE)
-			return 1;
-		else
-			jkff[pif[x][y].jkff].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].jkff;
-		serial[count_serial].gate = ::jkff;
-		serialize_gate(jkff[pif[x][y].jkff].input[0].x, jkff[pif[x][y].jkff].input[0].y);
-		serialize_gate(jkff[pif[x][y].jkff].input[1].x, jkff[pif[x][y].jkff].input[1].y);
-		serialize_gate(jkff[pif[x][y].jkff].clock.x, jkff[pif[x][y].jkff].clock.y);
-		return 1;
-	case ::tff:
-		if (tff[pif[x][y].tff].serial == TRUE)
-			return 1;
-		else
-			tff[pif[x][y].tff].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].tff;
-		serial[count_serial].gate = ::tff;
-		serialize_gate(tff[pif[x][y].tff].input.x, tff[pif[x][y].tff].input.y);
-		serialize_gate(tff[pif[x][y].tff].clock.x, tff[pif[x][y].tff].clock.y);
-		return 1;
-	case ::seg7:
-		if (seg7[pif[x][y].seg7].serial == TRUE)
-			return 1;
-		else
-			seg7[pif[x][y].seg7].serial = TRUE;
-		count_serial++;
-		serial[count_serial].count = pif[x][y].seg7;
-		serial[count_serial].gate = ::seg7;
-		serialize_gate(seg7[pif[x][y].seg7].input[0].x, seg7[pif[x][y].seg7].input[0].y);
-		serialize_gate(seg7[pif[x][y].seg7].input[1].x, seg7[pif[x][y].seg7].input[1].y);
-		serialize_gate(seg7[pif[x][y].seg7].input[2].x, seg7[pif[x][y].seg7].input[2].y);
-		serialize_gate(seg7[pif[x][y].seg7].input[3].x, seg7[pif[x][y].seg7].input[3].y);
-		serialize_gate(seg7[pif[x][y].seg7].input[4].x, seg7[pif[x][y].seg7].input[4].y);
-		serialize_gate(seg7[pif[x][y].seg7].input[5].x, seg7[pif[x][y].seg7].input[5].y);
-		serialize_gate(seg7[pif[x][y].seg7].input[6].x, seg7[pif[x][y].seg7].input[6].y);
-		return 1;
+	if (pif[x][y].value == NULL) {
+		if (ou == 1)
+			count_serial--;
+		else if (seg == 1)
+			count_serial--;
 	}
+	else
+		switch (pif[x][y].gate) {
+		case input:
+			return 1;
+		case output:
+			if (out[pif[x][y].output].serial == TRUE)
+				return 1;
+			else
+				out[pif[x][y].output].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].output;
+			serial[count_serial].gate = output;
+			serialize_gate(out[pif[x][y].output].input.x, out[pif[x][y].output].input.y);
+			return 1;
+		case ::and://
+			if (and[pif[x][y].and].serial == TRUE)
+				return 1;
+			else
+				and[pif[x][y].and].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].and;
+			serial[count_serial].gate = ::and;
+			serialize_gate(and[pif[x][y].and].input[0].x, and[pif[x][y].and].input[0].y);
+			serialize_gate(and[pif[x][y].and].input[1].x, and[pif[x][y].and].input[1].y);
+			return 1;
+		case :: or ://
+			if (or [pif[x][y]. or ].serial == TRUE)
+				return 1;
+			else
+				or [pif[x][y]. or ].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y]. or ;
+			serial[count_serial].gate = :: or ;
+			serialize_gate(or [pif[x][y]. or ].input[0].x, or [pif[x][y]. or ].input[0].y);
+			serialize_gate(or [pif[x][y]. or ].input[1].x, or [pif[x][y]. or ].input[1].y);
+			return 1;
+		case ::xor:
+			if (xor[pif[x][y]. xor].serial == TRUE)
+				return 1;
+			else
+				xor[pif[x][y]. xor].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].xor;
+			serial[count_serial].gate = ::xor;
+			serialize_gate(xor[pif[x][y].xor].input[0].x, xor[pif[x][y].xor].input[0].y);
+			serialize_gate(xor[pif[x][y].xor].input[1].x, xor[pif[x][y].xor].input[1].y);
+			return 1;
+		case ::nand:
+			if (nand[pif[x][y].nand].serial == TRUE)
+				return 1;
+			else
+				nand[pif[x][y].nand].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].nand;
+			serial[count_serial].gate = ::nand;
+			serialize_gate(nand[pif[x][y].nand].input[0].x, nand[pif[x][y].nand].input[0].y);
+			serialize_gate(nand[pif[x][y].nand].input[1].x, nand[pif[x][y].nand].input[1].y);
+			return 1;
+		case ::nor:
+			if (nor[pif[x][y].nor].serial == TRUE)
+				return 1;
+			else
+				nor[pif[x][y].nor].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].nor;
+			serial[count_serial].gate = ::nor;
+			serialize_gate(nor[pif[x][y].nor].input[0].x, nor[pif[x][y].nor].input[0].y);
+			serialize_gate(nor[pif[x][y].nor].input[1].x, nor[pif[x][y].nor].input[1].y);
+			return 1;
+		case lsclock:
+			return 1;
+			break;
+		case ::dff:
+			if (dff[pif[x][y].dff].serial == TRUE)
+				return 1;
+			else
+				dff[pif[x][y].dff].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].dff;
+			serial[count_serial].gate = ::dff;
+			serialize_gate(dff[pif[x][y].dff].input.x, dff[pif[x][y].dff].input.y);
+			serialize_gate(dff[pif[x][y].dff].clock.x, dff[pif[x][y].dff].clock.y);
+			return 1;
+		case ::jkff:
+			if (jkff[pif[x][y].jkff].serial == TRUE)
+				return 1;
+			else
+				jkff[pif[x][y].jkff].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].jkff;
+			serial[count_serial].gate = ::jkff;
+			serialize_gate(jkff[pif[x][y].jkff].input[0].x, jkff[pif[x][y].jkff].input[0].y);
+			serialize_gate(jkff[pif[x][y].jkff].input[1].x, jkff[pif[x][y].jkff].input[1].y);
+			serialize_gate(jkff[pif[x][y].jkff].clock.x, jkff[pif[x][y].jkff].clock.y);
+			return 1;
+		case ::tff:
+			if (tff[pif[x][y].tff].serial == TRUE)
+				return 1;
+			else
+				tff[pif[x][y].tff].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].tff;
+			serial[count_serial].gate = ::tff;
+			serialize_gate(tff[pif[x][y].tff].input.x, tff[pif[x][y].tff].input.y);
+			serialize_gate(tff[pif[x][y].tff].clock.x, tff[pif[x][y].tff].clock.y);
+			return 1;
+		case ::seg7:
+			if (seg7[pif[x][y].seg7].serial == TRUE)
+				return 1;
+			else
+				seg7[pif[x][y].seg7].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].seg7;
+			serial[count_serial].gate = ::seg7;
+			serialize_gate(seg7[pif[x][y].seg7].input[0].x, seg7[pif[x][y].seg7].input[0].y);
+			serialize_gate(seg7[pif[x][y].seg7].input[1].x, seg7[pif[x][y].seg7].input[1].y);
+			serialize_gate(seg7[pif[x][y].seg7].input[2].x, seg7[pif[x][y].seg7].input[2].y);
+			serialize_gate(seg7[pif[x][y].seg7].input[3].x, seg7[pif[x][y].seg7].input[3].y);
+			serialize_gate(seg7[pif[x][y].seg7].input[4].x, seg7[pif[x][y].seg7].input[4].y);
+			serialize_gate(seg7[pif[x][y].seg7].input[5].x, seg7[pif[x][y].seg7].input[5].y);
+			serialize_gate(seg7[pif[x][y].seg7].input[6].x, seg7[pif[x][y].seg7].input[6].y);
+			return 1;
+		}
 }
 
 void LogicSimulator::run(int repeat, int se[10])
@@ -946,6 +953,7 @@ void LogicSimulator::run(int repeat, int se[10])
 }
 
 void LogicSimulator::rotate_and(AndGate *and, Direct dir) {
+	and->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[and->input[0].x][and->input[0].y].lineok = FALSE;
@@ -1035,6 +1043,7 @@ void LogicSimulator::rotate_and(AndGate *and, Direct dir) {
 }
 
 void LogicSimulator::rotate_input(Input *in, Direct dir) {
+	in->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[in->output.x][in->output.y].lineok = FALSE;
@@ -1078,6 +1087,7 @@ void LogicSimulator::rotate_input(Input *in, Direct dir) {
 	}
 }
 void LogicSimulator::rotate_output(Output *out, Direct dir) {
+	out->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[out->input.x][out->input.y].lineok = FALSE;
@@ -1124,6 +1134,7 @@ void LogicSimulator::rotate_output(Output *out, Direct dir) {
 }
 
 void LogicSimulator::rotate_or(OrGate * or , Direct dir) {
+	or ->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[or ->input[0].x][or ->input[0].y].lineok = FALSE;
@@ -1209,6 +1220,7 @@ void LogicSimulator::rotate_or(OrGate * or , Direct dir) {
 }
 
 void LogicSimulator::rotate_not(NotGate * not , Direct dir) {
+	not->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[not->input.x][not->input.y].lineok = FALSE;
@@ -1274,6 +1286,7 @@ void LogicSimulator::rotate_not(NotGate * not , Direct dir) {
 }
 
 void LogicSimulator::rotate_nand(NAndGate * nand , Direct dir) {
+	nand->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = FALSE;
@@ -1358,6 +1371,7 @@ void LogicSimulator::rotate_nand(NAndGate * nand , Direct dir) {
 	}
 }
 void LogicSimulator::rotate_nor(NorGate * nor , Direct dir) {
+	nor->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = FALSE;
@@ -1442,6 +1456,7 @@ void LogicSimulator::rotate_nor(NorGate * nor , Direct dir) {
 	}
 }
 void LogicSimulator::rotate_xor(XorGate * xor , Direct dir) {
+	xor->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = FALSE;
@@ -1526,6 +1541,7 @@ void LogicSimulator::rotate_xor(XorGate * xor , Direct dir) {
 	}
 }
 void LogicSimulator::rotate_dff(DFF *dff, Direct dir) {
+	dff->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[dff->input.x][dff->input.y].lineok = FALSE;
@@ -1639,6 +1655,7 @@ void LogicSimulator::rotate_dff(DFF *dff, Direct dir) {
 }
 
 void LogicSimulator::rotate_jkff(JKFF *jkff, Direct dir) {
+	jkff->direct = dir;
 	this->pif[jkff->input[0].x][jkff->input[0].y].lineok = FALSE;
 	this->pif[jkff->input[0].x][jkff->input[0].y].gatein = FALSE;
 	this->pif[jkff->input[1].x][jkff->input[1].y].lineok = FALSE;
@@ -1698,6 +1715,7 @@ void LogicSimulator::rotate_jkff(JKFF *jkff, Direct dir) {
 }
 
 void LogicSimulator::rotate_tff(TFF *tff, Direct dir) {
+	tff->direct = dir;
 	switch (dir) {
 	case LEFT:
 		this->pif[tff->input.x][tff->input.y].lineok = FALSE;

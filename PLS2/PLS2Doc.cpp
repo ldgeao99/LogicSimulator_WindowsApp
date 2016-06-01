@@ -58,6 +58,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 {
 	int max = 0;
 	int gate = -1;
+	int direct = 0;
 	CPoint pointofpif;
 	if (ar.IsStoring())
 	{
@@ -66,6 +67,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 			for (int j = 0; j < INDEX; j++) {
 				gate = ls.pif[i][j].serializegate;
 				ar << gate;
+				ar << ls.pif[i][j].direct;
 			}
 		ls.line.Serialize(ar);
 		ar << ls.count_line;
@@ -76,68 +78,81 @@ void CPLS2Doc::Serialize(CArchive& ar)
 		for (int i = 0; i < INDEX; i++)
 			for (int j = 0; j < INDEX; j++) {
 				ar >> gate;
+				ar >> direct;
 				ls.pif[i][j].serializegate = (WhatGate)gate;
 				pointofpif = { i,j };
 				switch (ls.pif[i][j].serializegate) {
 				case input:
 					ls.count_input++;
 					ls.create_input(&(ls.in[ls.count_input]), pointofpif);
+					ls.rotate_input(&(ls.in[ls.count_input]), (Direct)direct);
 					break;
 				case output:
 					ls.count_output++;
 					ls.pif[i][j].value;
 					ls.create_output(&ls.out[ls.count_output], pointofpif);
+					ls.rotate_output(&ls.out[ls.count_output], (Direct)direct);
 					break;
 				case and:
 					ls.count_and++;
 					ls.pif[i][j].and = ls.count_and;
 					ls.create_and(&ls.and[ls.count_and], pointofpif); // 만드는 함수 호출.
+					ls.rotate_and(&ls.and[ls.count_and], (Direct)direct);
 					break;
 				case xor:
 					ls.count_xor++;
 					ls.pif[i][j].xor = ls.count_xor;
 					ls.create_xor(&ls.xor[ls.count_xor], pointofpif); // 만드는 함수 호출.
+					ls.rotate_xor(&ls.xor[ls.count_xor], (Direct)direct);
 					break;
 				case nor:
 					ls.count_nor++;
 					ls.pif[i][j].nor = ls.count_nor;
 					ls.create_nor(&ls.nor[ls.count_nor], pointofpif); // 만드는 함수 호출.
+					ls.rotate_nor(&ls.nor[ls.count_nor], (Direct)direct);
 					break;
 				case nand:
 					ls.count_nand++;
 					ls.pif[i][j].nand = ls.count_nand;
 					ls.create_nand(&ls.nand[ls.count_nand], pointofpif); // 만드는 함수 호출.
+					ls.rotate_nand(&ls.nand[ls.count_nand], (Direct)direct);
 					break;
 				case or :
 					ls.count_or++;
 					ls.pif[i][j]. or = ls.count_or;
 					ls.create_or(&ls. or [ls.count_or], pointofpif);
+					ls.rotate_or(&ls. or [ls.count_or], (Direct)direct);
 					break;
 				case not:
 					ls.count_not++;
 					ls.pif[i][j].not = ls.count_not;
 					ls.create_not(&ls. not [ls.count_not], pointofpif);
+					ls.rotate_not(&ls. not [ls.count_not], (Direct)direct);
 					break;
 				case tff:
 					ls.count_tff++;
 					ls.create_tff(&ls.tff[ls.count_tff], pointofpif);
+					ls.rotate_tff(&ls.tff[ls.count_tff], (Direct)direct);
 					break;
 				case lsclock:
 					ls.count_clock++;
 					ls.create_clock(&ls.clock[ls.count_clock], pointofpif);
-					//SetTimer(ls.count_clock, 500, NULL);
+					//ls.rotate_clock(&ls.clock[ls.count_clock], (Direct)direct);
 					break;
 				case dff:
 					ls.count_dff++;
 					ls.create_dff(&ls.dff[ls.count_dff], pointofpif);
+					ls.rotate_dff(&ls.dff[ls.count_dff], (Direct)direct);
 					break;
 				case jkff:
 					ls.count_jkff++;
 					ls.create_jkff(&ls.jkff[ls.count_jkff], pointofpif);
+					ls.rotate_jkff(&ls.jkff[ls.count_jkff], (Direct)direct);
 					break;
 				case seg7:
 					ls.count_seg7++;
 					ls.create_seg7(&ls.seg7[ls.count_seg7], pointofpif);
+					//ls.rotate_seg7(&ls.seg7[ls.count_seg7], (Direct)direct);
 				}
 			}
 		ls.line.Serialize(ar);
