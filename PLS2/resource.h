@@ -29,7 +29,6 @@
 #define IDB_GATE_AND_TOP                325
 #define IDR_MENU1                       326
 #define IDB_GATE_OR_LEFT                331
-#define IDB_GATE_OR_TOP                 332
 #define IDB_GATE_XOR_BOTTOM             333
 #define IDB_GATE_XOR_LEFT               334
 #define IDB_GATE_XOR_TOP                335
@@ -53,6 +52,9 @@
 #define IDB_FF_JK_BOTTOM                352
 #define IDB_FF_JK_LEFT                  353
 #define IDB_FF_JK_TOP                   354
+#define IDB_GATE_OR_BOTTOM              355
+#define IDB_BITMAP6                     356
+#define IDB_GATE_OR_TOP                 356
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -101,7 +103,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        355
+#define _APS_NEXT_RESOURCE_VALUE        357
 #define _APS_NEXT_COMMAND_VALUE         32814
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
