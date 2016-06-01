@@ -113,6 +113,8 @@ IDB_GATE_AND_TOP        BITMAP                  "res\\bitmap1 - top.bmp"
 
 IDB_GATE_OR_LEFT        BITMAP                  "res\\bitmap2 - left.bmp"
 
+IDB_GATE_OR_TOP         BITMAP                  "res\\bitmap2 - top.bmp"
+
 IDB_GATE_XOR_BOTTOM     BITMAP                  "res\\bitmap4 - bottom.bmp"
 
 IDB_GATE_XOR_LEFT       BITMAP                  "res\\bitmap4 - left.bmp"
@@ -156,8 +158,6 @@ IDB_FF_JK_LEFT          BITMAP                  "res\\bmp00003 - left.bmp"
 IDB_FF_JK_TOP           BITMAP                  "res\\bmp00003 - top.bmp"
 
 IDB_GATE_OR_BOTTOM      BITMAP                  "res\\bitmap2 - bottom.bmp"
-
-IDB_GATE_OR_TOP         BITMAP                  "res\\bitmap2 - top.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
