@@ -954,704 +954,332 @@ void LogicSimulator::run(int repeat, int se[10])
 
 void LogicSimulator::rotate_and(AndGate *and, Direct dir) {
 	and->direct = dir;
+	this->pif[and->input[0].x][and->input[0].y].lineok = FALSE;
+	this->pif[and->input[0].x][and->input[0].y].gatein = FALSE;
+	this->pif[and->input[1].x][and->input[1].y].lineok = FALSE;
+	this->pif[and->input[1].x][and->input[1].y].gatein = FALSE;
+	this->pif[and->output.x][and->output.y].lineok = FALSE;
+	this->pif[and->output.x][and->output.y].gateout = FALSE;
+	this->pif[and->output.x][and->output.y].value = NULL;
+
 	switch (dir) {
 	case LEFT:
-		this->pif[and->input[0].x][and->input[0].y].lineok = FALSE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = FALSE;
-		this->pif[and->output.x][and->output.y].lineok = FALSE;
-		this->pif[and->output.x][and->output.y].gateout = FALSE;
-		this->pif[and->output.x][and->output.y].value = NULL;
-
 		and->output = { and->clicked.x - 2, and->clicked.y };//값을 내보낼 수 있는 점.
 		and->input[0] = { and->clicked.x + 2, and->clicked.y - 1 }; // 값을 받는 점.
 		and->input[1] = { and->clicked.x + 2, and->clicked.y + 1 };
-
-		this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
-		this->pif[and->output.x][and->output.y].lineok = TRUE;
-		this->pif[and->output.x][and->output.y].gateout = TRUE;
-		this->pif[and->output.x][and->output.y].value = &(and->value);
 		break;
 	case RIGHT:
-		this->pif[and->input[0].x][and->input[0].y].lineok = FALSE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = FALSE;
-		this->pif[and->output.x][and->output.y].lineok = FALSE;
-		this->pif[and->output.x][and->output.y].gateout = FALSE;
-		this->pif[and->output.x][and->output.y].value = NULL;
-
 		and->output = { and->clicked.x + 2, and->clicked.y };//값을 내보낼 수 있는 점.
 		and->input[0] = { and->clicked.x - 2, and->clicked.y - 1 }; // 값을 받는 점.
 		and->input[1] = { and->clicked.x - 2, and->clicked.y + 1 };
-
-		this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
-		this->pif[and->output.x][and->output.y].lineok = TRUE;
-		this->pif[and->output.x][and->output.y].gateout = TRUE;
-		this->pif[and->output.x][and->output.y].value = &(and->value);
 		break;
 	case TOP:
-		this->pif[and->input[0].x][and->input[0].y].lineok = FALSE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = FALSE;
-		this->pif[and->output.x][and->output.y].lineok = FALSE;
-		this->pif[and->output.x][and->output.y].gateout = FALSE;
-		this->pif[and->output.x][and->output.y].value = NULL;
-
 		and->output = { and->clicked.x, and->clicked.y-2 };//값을 내보낼 수 있는 점.
 		and->input[0] = { and->clicked.x - 1, and->clicked.y + 2 }; // 값을 받는 점.
 		and->input[1] = { and->clicked.x + 1, and->clicked.y + 2 };
-
-		this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
-		this->pif[and->output.x][and->output.y].lineok = TRUE;
-		this->pif[and->output.x][and->output.y].gateout = TRUE;
-		this->pif[and->output.x][and->output.y].value = &(and->value);
 		break;
 	case BOTTOM:
-		this->pif[and->input[0].x][and->input[0].y].lineok = FALSE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = FALSE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = FALSE;
-		this->pif[and->output.x][and->output.y].lineok = FALSE;
-		this->pif[and->output.x][and->output.y].gateout = FALSE;
-		this->pif[and->output.x][and->output.y].value = NULL;
-
 		and->output = { and->clicked.x, and->clicked.y + 2 };//값을 내보낼 수 있는 점.
 		and->input[0] = { and->clicked.x - 1, and->clicked.y - 2 }; // 값을 받는 점.
 		and->input[1] = { and->clicked.x + 1, and->clicked.y - 2 };
-
-		this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
-		this->pif[and->input[0].x][and->input[0].y].gatein = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
-		this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
-		this->pif[and->output.x][and->output.y].lineok = TRUE;
-		this->pif[and->output.x][and->output.y].gateout = TRUE;
-		this->pif[and->output.x][and->output.y].value = &(and->value);
 		break;
 	}
+	this->pif[and->input[0].x][and->input[0].y].lineok = TRUE;
+	this->pif[and->input[0].x][and->input[0].y].gatein = TRUE;
+	this->pif[and->input[1].x][and->input[1].y].lineok = TRUE;
+	this->pif[and->input[1].x][and->input[1].y].gatein = TRUE;
+	this->pif[and->output.x][and->output.y].lineok = TRUE;
+	this->pif[and->output.x][and->output.y].gateout = TRUE;
+	this->pif[and->output.x][and->output.y].value = &(and->value);
 }
 
 void LogicSimulator::rotate_input(Input *in, Direct dir) {
 	in->direct = dir;
+	this->pif[in->output.x][in->output.y].lineok = FALSE;
+	this->pif[in->output.x][in->output.y].gateout = FALSE;
+	this->pif[in->output.x][in->output.y].value = NULL;
 	switch (dir) {
 	case LEFT:
-		this->pif[in->output.x][in->output.y].lineok = FALSE;
-		this->pif[in->output.x][in->output.y].gateout = FALSE;
-		this->pif[in->output.x][in->output.y].value = NULL;
 		in->output = { in->clicked.x - 1, in->clicked.y };
-		this->pif[in->output.x][in->output.y].lineok = TRUE;
-		this->pif[in->output.x][in->output.y].gateout = TRUE;
-		this->pif[in->output.x][in->output.y].value = &in->value;
 		break;
 	case RIGHT:
-		this->pif[in->output.x][in->output.y].lineok = FALSE;
-		this->pif[in->output.x][in->output.y].gateout = FALSE;
-		this->pif[in->output.x][in->output.y].value = NULL;
-
 		in->output = { in->clicked.x + 1, in->clicked.y };
-		this->pif[in->output.x][in->output.y].lineok = TRUE;
-		this->pif[in->output.x][in->output.y].gateout = TRUE;
-		this->pif[in->output.x][in->output.y].value = &in->value;
 		break;
 	case TOP:
-		this->pif[in->output.x][in->output.y].lineok = FALSE;
-		this->pif[in->output.x][in->output.y].gateout = FALSE;
-		this->pif[in->output.x][in->output.y].value = NULL;
-
-		in->output = { in->clicked.x, in->clicked.y - 1 }; //13, 6
-		this->pif[in->output.x][in->output.y].lineok = TRUE;
-		this->pif[in->output.x][in->output.y].gateout = TRUE;
-		this->pif[in->output.x][in->output.y].value = &in->value;
+		in->output = { in->clicked.x, in->clicked.y - 1 };
 		break;
 	case BOTTOM:
-		this->pif[in->output.x][in->output.y].lineok = FALSE;
-		this->pif[in->output.x][in->output.y].gateout = FALSE;
-		this->pif[in->output.x][in->output.y].value = NULL;
-
 		in->output = { in->clicked.x, in->clicked.y + 1 };
-		this->pif[in->output.x][in->output.y].lineok = TRUE;
-		this->pif[in->output.x][in->output.y].gateout = TRUE;
-		this->pif[in->output.x][in->output.y].value = &in->value;
 		break;
 	}
+	this->pif[in->output.x][in->output.y].lineok = TRUE;
+	this->pif[in->output.x][in->output.y].gateout = TRUE;
+	this->pif[in->output.x][in->output.y].value = &in->value;
 }
 void LogicSimulator::rotate_output(Output *out, Direct dir) {
 	out->direct = dir;
+	this->pif[out->input.x][out->input.y].lineok = FALSE;
+	this->pif[out->input.x][out->input.y].gatein = FALSE;
+
 	switch (dir) {
 	case LEFT:
-		this->pif[out->input.x][out->input.y].lineok = FALSE;
-		this->pif[out->input.x][out->input.y].gatein = FALSE;
-
 		out->input = { out->clicked.x-1, out->clicked.y};
-		this->pif[out->input.x][out->input.y].lineok = TRUE;
-		this->pif[out->input.x][out->input.y].gatein = TRUE;
-		if (this->pif[out->input.x][out->input.y].value != NULL)
-			out->value = *(this->pif[out->input.x][out->input.y].value);
-
 		break;
 	case RIGHT:
-		this->pif[out->input.x][out->input.y].lineok = FALSE;
-		this->pif[out->input.x][out->input.y].gatein = FALSE;
-
 		out->input = { out->clicked.x + 1, out->clicked.y };
-		this->pif[out->input.x][out->input.y].lineok = TRUE;
-		this->pif[out->input.x][out->input.y].gatein = TRUE;
-		if (this->pif[out->input.x][out->input.y].value != NULL)
-			out->value = *(this->pif[out->input.x][out->input.y].value);
 		break;
 	case TOP:
-		this->pif[out->input.x][out->input.y].lineok = FALSE;
-		this->pif[out->input.x][out->input.y].gatein = FALSE;
-
 		out->input = { out->clicked.x, out->clicked.y -1};
-		this->pif[out->input.x][out->input.y].lineok = TRUE;
-		this->pif[out->input.x][out->input.y].gatein = TRUE;
-		if (this->pif[out->input.x][out->input.y].value != NULL)
-			out->value = *(this->pif[out->input.x][out->input.y].value);
-		break;
 	case BOTTOM:
-		this->pif[out->input.x][out->input.y].lineok = FALSE;
-		this->pif[out->input.x][out->input.y].gatein = FALSE;
-
 		out->input = { out->clicked.x, out->clicked.y+1 };
-		this->pif[out->input.x][out->input.y].lineok = TRUE;
-		this->pif[out->input.x][out->input.y].gatein = TRUE;
-		if (this->pif[out->input.x][out->input.y].value != NULL)
-			out->value = *(this->pif[out->input.x][out->input.y].value);
 		break;
 	}
+	this->pif[out->input.x][out->input.y].lineok = TRUE;
+	this->pif[out->input.x][out->input.y].gatein = TRUE;
+	if (this->pif[out->input.x][out->input.y].value != NULL)
+		out->value = *(this->pif[out->input.x][out->input.y].value);
 }
 
 void LogicSimulator::rotate_or(OrGate * or , Direct dir) {
 	or ->direct = dir;
+	this->pif[or ->input[0].x][or ->input[0].y].lineok = FALSE;
+	this->pif[or ->input[0].x][or ->input[0].y].gatein = FALSE;
+	this->pif[or ->input[1].x][or ->input[1].y].lineok = FALSE;
+	this->pif[or ->input[1].x][or ->input[1].y].gatein = FALSE;
+	this->pif[or ->output.x][or ->output.y].lineok = FALSE;
+	this->pif[or ->output.x][or ->output.y].gateout = FALSE;
+	this->pif[or ->output.x][or ->output.y].value = NULL;
+
 	switch (dir) {
 	case LEFT:
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = FALSE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = FALSE;
-		this->pif[or ->output.x][or ->output.y].lineok = FALSE;
-		this->pif[or ->output.x][or ->output.y].gateout = FALSE;
-		this->pif[or ->output.x][or ->output.y].value = NULL;
-
 		or ->output = { or ->clicked.x - 2, or ->clicked.y };
 		or ->input[0] = { or ->clicked.x + 2, or ->clicked.y - 1 };
 		or ->input[1] = { or ->clicked.x + 2, or ->clicked.y + 1 };
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
-		this->pif[or ->output.x][or ->output.y].lineok = TRUE;
-		this->pif[or ->output.x][or ->output.y].gateout = TRUE;
-		this->pif[or ->output.x][or ->output.y].value = &or ->value;
 		break;
 	case RIGHT:
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = FALSE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = FALSE;
-		this->pif[or ->output.x][or ->output.y].lineok = FALSE;
-		this->pif[or ->output.x][or ->output.y].gateout = FALSE;
-		this->pif[or ->output.x][or ->output.y].value = NULL;
-
 		or ->output = { or->clicked.x + 2, or->clicked.y };
 		or ->input[0] = { or ->clicked.x - 2, or ->clicked.y - 1 };
 		or ->input[1] = { or ->clicked.x - 2, or ->clicked.y + 1 };
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
-		this->pif[or ->output.x][or ->output.y].lineok = TRUE;
-		this->pif[or ->output.x][or ->output.y].gateout = TRUE;
-		this->pif[or ->output.x][or ->output.y].value = &or->value;
 		break;
 	case TOP:
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = FALSE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = FALSE;
-		this->pif[or ->output.x][or ->output.y].lineok = FALSE;
-		this->pif[or ->output.x][or ->output.y].gateout = FALSE;
-		this->pif[or ->output.x][or ->output.y].value = NULL;
-
 		or ->output = { or ->clicked.x, or ->clicked.y-2 };
 		or ->input[0] = { or ->clicked.x - 1, or ->clicked.y + 2 };
 		or ->input[1] = { or ->clicked.x + 1, or ->clicked.y + 2 };
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
-		this->pif[or ->output.x][or ->output.y].lineok = TRUE;
-		this->pif[or ->output.x][or ->output.y].gateout = TRUE;
-		this->pif[or ->output.x][or ->output.y].value = &or ->value;
 		break;
 	case BOTTOM:
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = FALSE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = FALSE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = FALSE;
-		this->pif[or ->output.x][or ->output.y].lineok = FALSE;
-		this->pif[or ->output.x][or ->output.y].gateout = FALSE;
-		this->pif[or ->output.x][or ->output.y].value = NULL;
-
 		or ->output = { or ->clicked.x, or ->clicked.y + 2 };
 		or ->input[0] = { or ->clicked.x - 1, or ->clicked.y - 2 };
 		or ->input[1] = { or ->clicked.x + 1, or ->clicked.y - 2 };
-		this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
-		this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].lineok = TRUE;
-		this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
-		this->pif[or ->output.x][or ->output.y].lineok = TRUE;
-		this->pif[or ->output.x][or ->output.y].gateout = TRUE;
-		this->pif[or ->output.x][or ->output.y].value = &or ->value;
 		break;
 	}
+	this->pif[or ->input[0].x][or ->input[0].y].lineok = TRUE;
+	this->pif[or ->input[0].x][or ->input[0].y].gatein = TRUE;
+	this->pif[or ->input[1].x][or ->input[1].y].lineok = TRUE;
+	this->pif[or ->input[1].x][or ->input[1].y].gatein = TRUE;
+	this->pif[or ->output.x][or ->output.y].lineok = TRUE;
+	this->pif[or ->output.x][or ->output.y].gateout = TRUE;
+	this->pif[or ->output.x][or ->output.y].value = &or ->value;
 }
 
 void LogicSimulator::rotate_not(NotGate * not , Direct dir) {
 	not->direct = dir;
+	this->pif[not->input.x][not->input.y].lineok = FALSE;
+	this->pif[not->input.x][not->input.y].gatein = FALSE;
+	this->pif[not->output.x][not->output.y].lineok = FALSE;
+	this->pif[not->output.x][not->output.y].gateout = FALSE;
+	this->pif[not->output.x][not->output.y].value = NULL;
+
 	switch (dir) {
 	case LEFT:
-		this->pif[not->input.x][not->input.y].lineok = FALSE;
-		this->pif[not->input.x][not->input.y].gatein = FALSE;
-		this->pif[not->output.x][not->output.y].lineok = FALSE;
-		this->pif[not->output.x][not->output.y].gateout = FALSE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
-
 		not->output = { not->clicked.x - 2, not->clicked.y };
 		not->input = { not->clicked.x + 2, not->clicked.y };
-		this->pif[not->input.x][not->input.y].lineok = TRUE;
-		this->pif[not->input.x][not->input.y].gatein = TRUE;
-		this->pif[not->output.x][not->output.y].lineok = TRUE;
-		this->pif[not->output.x][not->output.y].gateout = TRUE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
 		break;
 	case RIGHT:
-		this->pif[not->input.x][not->input.y].lineok = FALSE;
-		this->pif[not->input.x][not->input.y].gatein = FALSE;
-		this->pif[not->output.x][not->output.y].lineok = FALSE;
-		this->pif[not->output.x][not->output.y].gateout = FALSE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
-
 		not->output = { not->clicked.x + 2, not->clicked.y };
 		not->input = { not->clicked.x - 2, not->clicked.y };
-		this->pif[not->input.x][not->input.y].lineok = TRUE;
-		this->pif[not->input.x][not->input.y].gatein = TRUE;
-		this->pif[not->output.x][not->output.y].lineok = TRUE;
-		this->pif[not->output.x][not->output.y].gateout = TRUE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
 		break;
 	case TOP:
-		this->pif[not->input.x][not->input.y].lineok = FALSE;
-		this->pif[not->input.x][not->input.y].gatein = FALSE;
-		this->pif[not->output.x][not->output.y].lineok = FALSE;
-		this->pif[not->output.x][not->output.y].gateout = FALSE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
-
 		not->output = { not->clicked.x, not->clicked.y - 2 };
 		not->input = { not->clicked.x, not->clicked.y + 2 };
-		this->pif[not->input.x][not->input.y].lineok = TRUE;
-		this->pif[not->input.x][not->input.y].gatein = TRUE;
-		this->pif[not->output.x][not->output.y].lineok = TRUE;
-		this->pif[not->output.x][not->output.y].gateout = TRUE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
 		break;
 	case BOTTOM:
-		this->pif[not->input.x][not->input.y].lineok = FALSE;
-		this->pif[not->input.x][not->input.y].gatein = FALSE;
-		this->pif[not->output.x][not->output.y].lineok = FALSE;
-		this->pif[not->output.x][not->output.y].gateout = FALSE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
-
 		not->output = { not->clicked.x, not->clicked.y + 2 };
 		not->input = { not->clicked.x, not->clicked.y - 2 };
-		this->pif[not->input.x][not->input.y].lineok = TRUE;
-		this->pif[not->input.x][not->input.y].gatein = TRUE;
-		this->pif[not->output.x][not->output.y].lineok = TRUE;
-		this->pif[not->output.x][not->output.y].gateout = TRUE;
-		this->pif[not->output.x][not->output.y].value = &(not->value);
+
 		break;
 	}
+	this->pif[not->input.x][not->input.y].lineok = TRUE;
+	this->pif[not->input.x][not->input.y].gatein = TRUE;
+	this->pif[not->output.x][not->output.y].lineok = TRUE;
+	this->pif[not->output.x][not->output.y].gateout = TRUE;
+	this->pif[not->output.x][not->output.y].value = &(not->value);
 }
 
 void LogicSimulator::rotate_nand(NAndGate * nand , Direct dir) {
 	nand->direct = dir;
+	this->pif[nand->input[0].x][nand->input[0].y].lineok = FALSE;
+	this->pif[nand->input[0].x][nand->input[0].y].gatein = FALSE;
+	this->pif[nand->input[1].x][nand->input[1].y].lineok = FALSE;
+	this->pif[nand->input[1].x][nand->input[1].y].gatein = FALSE;
+	this->pif[nand->output.x][nand->output.y].lineok = FALSE;
+	this->pif[nand->output.x][nand->output.y].gateout = FALSE;
+	this->pif[nand->output.x][nand->output.y].value = NULL;
 	switch (dir) {
 	case LEFT:
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = FALSE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].value = NULL;
-
 		nand ->output = { nand ->clicked.x - 2, nand ->clicked.y };
 		nand ->input[0] = { nand ->clicked.x + 2, nand ->clicked.y - 1 };
 		nand ->input[1] = { nand ->clicked.x + 2, nand ->clicked.y + 1 };
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = TRUE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].value = &nand ->value;
 		break;
 	case RIGHT:
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = FALSE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].value = NULL;
-
 		nand ->output = { nand ->clicked.x + 2, nand ->clicked.y };
 		nand ->input[0] = { nand ->clicked.x - 2, nand ->clicked.y - 1 };
 		nand ->input[1] = { nand ->clicked.x - 2, nand ->clicked.y + 1 };
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = TRUE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].value = &nand ->value;
 		break;
 	case TOP:
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = FALSE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].value = NULL;
-
 		nand ->output = { nand ->clicked.x, nand ->clicked.y - 2 };
 		nand ->input[0] = { nand ->clicked.x - 1, nand ->clicked.y + 2 };
 		nand ->input[1] = { nand ->clicked.x + 1, nand ->clicked.y + 2 };
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = TRUE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].value = &nand ->value;
 		break;
 	case BOTTOM:
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = FALSE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = FALSE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = FALSE;
-		this->pif[nand ->output.x][nand ->output.y].value = NULL;
-
 		nand ->output = { nand ->clicked.x, nand ->clicked.y + 2 };
 		nand ->input[0] = { nand ->clicked.x - 1, nand ->clicked.y - 2 };
 		nand ->input[1] = { nand ->clicked.x + 1, nand ->clicked.y - 2 };
-		this->pif[nand ->input[0].x][nand ->input[0].y].lineok = TRUE;
-		this->pif[nand ->input[0].x][nand ->input[0].y].gatein = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].lineok = TRUE;
-		this->pif[nand ->input[1].x][nand ->input[1].y].gatein = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].lineok = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].gateout = TRUE;
-		this->pif[nand ->output.x][nand ->output.y].value = &nand ->value;
 		break;
 	}
+	this->pif[nand->input[0].x][nand->input[0].y].lineok = TRUE;
+	this->pif[nand->input[0].x][nand->input[0].y].gatein = TRUE;
+	this->pif[nand->input[1].x][nand->input[1].y].lineok = TRUE;
+	this->pif[nand->input[1].x][nand->input[1].y].gatein = TRUE;
+	this->pif[nand->output.x][nand->output.y].lineok = TRUE;
+	this->pif[nand->output.x][nand->output.y].gateout = TRUE;
+	this->pif[nand->output.x][nand->output.y].value = &nand->value;
 }
 void LogicSimulator::rotate_nor(NorGate * nor , Direct dir) {
 	nor->direct = dir;
+	this->pif[nor->input[0].x][nor->input[0].y].lineok = FALSE;
+	this->pif[nor->input[0].x][nor->input[0].y].gatein = FALSE;
+	this->pif[nor->input[1].x][nor->input[1].y].lineok = FALSE;
+	this->pif[nor->input[1].x][nor->input[1].y].gatein = FALSE;
+	this->pif[nor->output.x][nor->output.y].lineok = FALSE;
+	this->pif[nor->output.x][nor->output.y].gateout = FALSE;
+	this->pif[nor->output.x][nor->output.y].value = NULL;
 	switch (dir) {
 	case LEFT:
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = FALSE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].value = NULL;
-
 		nor ->output = { nor ->clicked.x - 2, nor ->clicked.y };
 		nor ->input[0] = { nor ->clicked.x + 2, nor ->clicked.y - 1 };
 		nor ->input[1] = { nor ->clicked.x + 2, nor ->clicked.y + 1 };
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = TRUE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].value = &nor ->value;
 		break;
 	case RIGHT:
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = FALSE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].value = NULL;
-
 		nor ->output = { nor ->clicked.x + 2, nor ->clicked.y };
 		nor ->input[0] = { nor ->clicked.x - 2, nor ->clicked.y - 1 };
 		nor ->input[1] = { nor ->clicked.x - 2, nor ->clicked.y + 1 };
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = TRUE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].value = &nor ->value;
 		break;
 	case TOP:
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = FALSE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].value = NULL;
-
 		nor ->output = { nor ->clicked.x, nor ->clicked.y - 2 };
 		nor ->input[0] = { nor ->clicked.x - 1, nor ->clicked.y + 2 };
 		nor ->input[1] = { nor ->clicked.x + 1, nor ->clicked.y + 2 };
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = TRUE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].value = &nor ->value;
 		break;
 	case BOTTOM:
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = FALSE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = FALSE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = FALSE;
-		this->pif[nor ->output.x][nor ->output.y].value = NULL;
-
 		nor ->output = { nor ->clicked.x, nor ->clicked.y + 2 };
 		nor ->input[0] = { nor ->clicked.x - 1, nor ->clicked.y - 2 };
 		nor ->input[1] = { nor ->clicked.x + 1, nor ->clicked.y - 2 };
-		this->pif[nor ->input[0].x][nor ->input[0].y].lineok = TRUE;
-		this->pif[nor ->input[0].x][nor ->input[0].y].gatein = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].lineok = TRUE;
-		this->pif[nor ->input[1].x][nor ->input[1].y].gatein = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].lineok = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].gateout = TRUE;
-		this->pif[nor ->output.x][nor ->output.y].value = &nor ->value;
 		break;
 	}
+	this->pif[nor->input[0].x][nor->input[0].y].lineok = TRUE;
+	this->pif[nor->input[0].x][nor->input[0].y].gatein = TRUE;
+	this->pif[nor->input[1].x][nor->input[1].y].lineok = TRUE;
+	this->pif[nor->input[1].x][nor->input[1].y].gatein = TRUE;
+	this->pif[nor->output.x][nor->output.y].lineok = TRUE;
+	this->pif[nor->output.x][nor->output.y].gateout = TRUE;
+	this->pif[nor->output.x][nor->output.y].value = &nor->value;
 }
 void LogicSimulator::rotate_xor(XorGate * xor , Direct dir) {
 	xor->direct = dir;
+	this->pif[xor->input[0].x][xor->input[0].y].lineok = FALSE;
+	this->pif[xor->input[0].x][xor->input[0].y].gatein = FALSE;
+	this->pif[xor->input[1].x][xor->input[1].y].lineok = FALSE;
+	this->pif[xor->input[1].x][xor->input[1].y].gatein = FALSE;
+	this->pif[xor->output.x][xor->output.y].lineok = FALSE;
+	this->pif[xor->output.x][xor->output.y].gateout = FALSE;
+	this->pif[xor->output.x][xor->output.y].value = NULL;
 	switch (dir) {
 	case LEFT:
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = FALSE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].value = NULL;
-
 		xor ->output = { xor ->clicked.x - 2, xor ->clicked.y };
 		xor ->input[0] = { xor ->clicked.x + 2, xor ->clicked.y - 1 };
 		xor ->input[1] = { xor ->clicked.x + 2, xor ->clicked.y + 1 };
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = TRUE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].value = &xor ->value;
 		break;
 	case RIGHT:
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = FALSE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].value = NULL;
-
 		xor ->output = { xor ->clicked.x + 2, xor ->clicked.y };
 		xor ->input[0] = { xor ->clicked.x - 2, xor ->clicked.y - 1 };
 		xor ->input[1] = { xor ->clicked.x - 2, xor ->clicked.y + 1 };
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = TRUE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].value = &xor ->value;
 		break;
 	case TOP:
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = FALSE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].value = NULL;
-
 		xor ->output = { xor ->clicked.x, xor ->clicked.y - 2 };
 		xor ->input[0] = { xor ->clicked.x - 1, xor ->clicked.y + 2 };
 		xor ->input[1] = { xor ->clicked.x + 1, xor ->clicked.y + 2 };
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = TRUE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].value = &xor ->value;
 		break;
 	case BOTTOM:
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = FALSE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = FALSE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = FALSE;
-		this->pif[xor ->output.x][xor ->output.y].value = NULL;
-
 		xor ->output = { xor ->clicked.x, xor ->clicked.y + 2 };
 		xor ->input[0] = { xor ->clicked.x - 1, xor ->clicked.y - 2 };
 		xor ->input[1] = { xor ->clicked.x + 1, xor ->clicked.y - 2 };
-		this->pif[xor ->input[0].x][xor ->input[0].y].lineok = TRUE;
-		this->pif[xor ->input[0].x][xor ->input[0].y].gatein = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].lineok = TRUE;
-		this->pif[xor ->input[1].x][xor ->input[1].y].gatein = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].lineok = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].gateout = TRUE;
-		this->pif[xor ->output.x][xor ->output.y].value = &xor->value;
 		break;
 	}
+	this->pif[xor->input[0].x][xor->input[0].y].lineok = TRUE;
+	this->pif[xor->input[0].x][xor->input[0].y].gatein = TRUE;
+	this->pif[xor->input[1].x][xor->input[1].y].lineok = TRUE;
+	this->pif[xor->input[1].x][xor->input[1].y].gatein = TRUE;
+	this->pif[xor->output.x][xor->output.y].lineok = TRUE;
+	this->pif[xor->output.x][xor->output.y].gateout = TRUE;
+	this->pif[xor->output.x][xor->output.y].value = &xor->value;
 }
 void LogicSimulator::rotate_dff(DFF *dff, Direct dir) {
 	dff->direct = dir;
+	this->pif[dff->input.x][dff->input.y].lineok = FALSE;
+	this->pif[dff->input.x][dff->input.y].gatein = FALSE;
+	this->pif[dff->clock.x][dff->clock.y].lineok = FALSE;
+	this->pif[dff->clock.x][dff->clock.y].gatein = FALSE;
+	this->pif[dff->output[0].x][dff->output[0].y].lineok = FALSE;
+	this->pif[dff->output[0].x][dff->output[0].y].gateout = FALSE;
+	this->pif[dff->output[1].x][dff->output[1].y].lineok = FALSE;
+	this->pif[dff->output[1].x][dff->output[1].y].gateout = FALSE;
+	this->pif[dff->output[0].x][dff->output[0].y].value = NULL;
+	this->pif[dff->output[1].x][dff->output[1].y].value = NULL;
 	switch (dir) {
 	case LEFT:
-		this->pif[dff->input.x][dff->input.y].lineok = FALSE;
-		this->pif[dff->input.x][dff->input.y].gatein = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = NULL;
-		this->pif[dff->output[1].x][dff->output[1].y].value = NULL;
-
 		dff->input = { dff->clicked.x + 3, dff->clicked.y + 1 };
 		dff->clock = { dff->clicked.x + 3, dff->clicked.y - 1 };
 		dff->output[0] = { dff->clicked.x - 3,dff->clicked.y + 1 };
 		dff->output[1] = { dff->clicked.x - 3, dff->clicked.y - 1 };
-		this->pif[dff->input.x][dff->input.y].lineok = TRUE;
-		this->pif[dff->input.x][dff->input.y].gatein = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = &dff->value;
-		this->pif[dff->output[1].x][dff->output[1].y].value = &dff->value2;
 		break;
 	case RIGHT:
-		this->pif[dff->input.x][dff->input.y].lineok = FALSE;
-		this->pif[dff->input.x][dff->input.y].gatein = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = NULL;
-		this->pif[dff->output[1].x][dff->output[1].y].value = NULL;
-
 		dff->input = { dff->clicked.x - 3, dff->clicked.y - 1 };
 		dff->clock = { dff->clicked.x - 3, dff->clicked.y + 1 };
 		dff->output[0] = { dff->clicked.x + 3,dff->clicked.y - 1 };
 		dff->output[1] = { dff->clicked.x + 3, dff->clicked.y + 1 };
-		this->pif[dff->input.x][dff->input.y].lineok = TRUE;
-		this->pif[dff->input.x][dff->input.y].gatein = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = &dff->value;
-		this->pif[dff->output[1].x][dff->output[1].y].value = &dff->value2;
 		break;
 	case TOP:
-		this->pif[dff->input.x][dff->input.y].lineok = FALSE;
-		this->pif[dff->input.x][dff->input.y].gatein = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = NULL;
-		this->pif[dff->output[1].x][dff->output[1].y].value = NULL;
-
 		dff->input = { dff->clicked.x - 1, dff->clicked.y + 3 };
 		dff->clock = { dff->clicked.x + 1, dff->clicked.y + 3 };
 		dff->output[0] = { dff->clicked.x - 1,dff->clicked.y - 3 };
 		dff->output[1] = { dff->clicked.x + 1, dff->clicked.y - 3 };
-		this->pif[dff->input.x][dff->input.y].lineok = TRUE;
-		this->pif[dff->input.x][dff->input.y].gatein = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = &dff->value;
-		this->pif[dff->output[1].x][dff->output[1].y].value = &dff->value2;
 		break;
 	case BOTTOM:
-		this->pif[dff->input.x][dff->input.y].lineok = FALSE;
-		this->pif[dff->input.x][dff->input.y].gatein = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = FALSE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = FALSE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = FALSE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = NULL;
-		this->pif[dff->output[1].x][dff->output[1].y].value = NULL;
-
 		dff->input = { dff->clicked.x + 1, dff->clicked.y - 3 };
 		dff->clock = { dff->clicked.x - 1, dff->clicked.y - 3 };
 		dff->output[0] = { dff->clicked.x + 1,dff->clicked.y + 3 };
 		dff->output[1] = { dff->clicked.x - 1, dff->clicked.y + 3 };
-		this->pif[dff->input.x][dff->input.y].lineok = TRUE;
-		this->pif[dff->input.x][dff->input.y].gatein = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].lineok = TRUE;
-		this->pif[dff->clock.x][dff->clock.y].gatein = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].lineok = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].gateout = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].lineok = TRUE;
-		this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
-		this->pif[dff->output[0].x][dff->output[0].y].value = &dff->value;
-		this->pif[dff->output[1].x][dff->output[1].y].value = &dff->value2;
 		break;
 	}
+	this->pif[dff->input.x][dff->input.y].lineok = TRUE;
+	this->pif[dff->input.x][dff->input.y].gatein = TRUE;
+	this->pif[dff->clock.x][dff->clock.y].lineok = TRUE;
+	this->pif[dff->clock.x][dff->clock.y].gatein = TRUE;
+	this->pif[dff->output[0].x][dff->output[0].y].lineok = TRUE;
+	this->pif[dff->output[0].x][dff->output[0].y].gateout = TRUE;
+	this->pif[dff->output[1].x][dff->output[1].y].lineok = TRUE;
+	this->pif[dff->output[1].x][dff->output[1].y].gateout = TRUE;
+	this->pif[dff->output[0].x][dff->output[0].y].value = &dff->value;
+	this->pif[dff->output[1].x][dff->output[1].y].value = &dff->value2;
 }
 
 void LogicSimulator::rotate_jkff(JKFF *jkff, Direct dir) {
@@ -1716,114 +1344,51 @@ void LogicSimulator::rotate_jkff(JKFF *jkff, Direct dir) {
 
 void LogicSimulator::rotate_tff(TFF *tff, Direct dir) {
 	tff->direct = dir;
+	this->pif[tff->input.x][tff->input.y].lineok = FALSE;
+	this->pif[tff->input.x][tff->input.y].gatein = FALSE;
+	this->pif[tff->clock.x][tff->clock.y].lineok = FALSE;
+	this->pif[tff->clock.x][tff->clock.y].gatein = FALSE;
+	this->pif[tff->output[0].x][tff->output[0].y].lineok = FALSE;
+	this->pif[tff->output[0].x][tff->output[0].y].gateout = FALSE;
+	this->pif[tff->output[1].x][tff->output[1].y].lineok = FALSE;
+	this->pif[tff->output[1].x][tff->output[1].y].gateout = FALSE;
+	this->pif[tff->output[0].x][tff->output[0].y].value = NULL;
+	this->pif[tff->output[1].x][tff->output[1].y].value = NULL;
+
 	switch (dir) {
 	case LEFT:
-		this->pif[tff->input.x][tff->input.y].lineok = FALSE;
-		this->pif[tff->input.x][tff->input.y].gatein = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = NULL;
-		this->pif[tff->output[1].x][tff->output[1].y].value = NULL;
-
 		tff->input = { tff->clicked.x + 3, tff->clicked.y + 1 };
 		tff->clock = { tff->clicked.x + 3, tff->clicked.y - 1 };
 		tff->output[0] = { tff->clicked.x - 3,tff->clicked.y + 1 };
 		tff->output[1] = { tff->clicked.x - 3, tff->clicked.y - 1 };
-		this->pif[tff->input.x][tff->input.y].lineok = TRUE;
-		this->pif[tff->input.x][tff->input.y].gatein = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = &tff->value;
-		this->pif[tff->output[1].x][tff->output[1].y].value = &tff->value2;
 		break;
 	case RIGHT:
-		this->pif[tff->input.x][tff->input.y].lineok = FALSE;
-		this->pif[tff->input.x][tff->input.y].gatein = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = NULL;
-		this->pif[tff->output[1].x][tff->output[1].y].value = NULL;
-
 		tff->input = { tff->clicked.x - 3, tff->clicked.y - 1 };
 		tff->clock = { tff->clicked.x - 3, tff->clicked.y + 1 };
 		tff->output[0] = { tff->clicked.x + 3,tff->clicked.y - 1 };
 		tff->output[1] = { tff->clicked.x + 3, tff->clicked.y + 1 };
-		this->pif[tff->input.x][tff->input.y].lineok = TRUE;
-		this->pif[tff->input.x][tff->input.y].gatein = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = &tff->value;
-		this->pif[tff->output[1].x][tff->output[1].y].value = &tff->value2;
 		break;
 	case TOP:
-		this->pif[tff->input.x][tff->input.y].lineok = FALSE;
-		this->pif[tff->input.x][tff->input.y].gatein = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = NULL;
-		this->pif[tff->output[1].x][tff->output[1].y].value = NULL;
-
 		tff->input = { tff->clicked.x - 1, tff->clicked.y + 3 };
 		tff->clock = { tff->clicked.x + 1, tff->clicked.y + 3 };
 		tff->output[0] = { tff->clicked.x - 1,tff->clicked.y - 3 };
 		tff->output[1] = { tff->clicked.x + 1, tff->clicked.y - 3 };
-		this->pif[tff->input.x][tff->input.y].lineok = TRUE;
-		this->pif[tff->input.x][tff->input.y].gatein = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = &tff->value;
-		this->pif[tff->output[1].x][tff->output[1].y].value = &tff->value2;
 		break;
 	case BOTTOM:
-		this->pif[tff->input.x][tff->input.y].lineok = FALSE;
-		this->pif[tff->input.x][tff->input.y].gatein = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = FALSE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = FALSE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = FALSE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = NULL;
-		this->pif[tff->output[1].x][tff->output[1].y].value = NULL;
-
 		tff->input = { tff->clicked.x + 1, tff->clicked.y - 3 };
 		tff->clock = { tff->clicked.x - 1, tff->clicked.y - 3 };
 		tff->output[0] = { tff->clicked.x + 1,tff->clicked.y + 3 };
 		tff->output[1] = { tff->clicked.x - 1, tff->clicked.y + 3 };
-		this->pif[tff->input.x][tff->input.y].lineok = TRUE;
-		this->pif[tff->input.x][tff->input.y].gatein = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
-		this->pif[tff->clock.x][tff->clock.y].gatein = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].gateout = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
-		this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
-		this->pif[tff->output[0].x][tff->output[0].y].value = &tff->value;
-		this->pif[tff->output[1].x][tff->output[1].y].value = &tff->value2;
 		break;
 	}
+	this->pif[tff->input.x][tff->input.y].lineok = TRUE;
+	this->pif[tff->input.x][tff->input.y].gatein = TRUE;
+	this->pif[tff->clock.x][tff->clock.y].lineok = TRUE;
+	this->pif[tff->clock.x][tff->clock.y].gatein = TRUE;
+	this->pif[tff->output[0].x][tff->output[0].y].lineok = TRUE;
+	this->pif[tff->output[0].x][tff->output[0].y].gateout = TRUE;
+	this->pif[tff->output[1].x][tff->output[1].y].lineok = TRUE;
+	this->pif[tff->output[1].x][tff->output[1].y].gateout = TRUE;
+	this->pif[tff->output[0].x][tff->output[0].y].value = &tff->value;
+	this->pif[tff->output[1].x][tff->output[1].y].value = &tff->value2;
 }
