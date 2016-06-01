@@ -1001,11 +1001,12 @@ void LogicSimulator::rotate_input(Input *in, Direct dir) {
 		this->pif[in->output.x][in->output.y].lineok = FALSE;
 		this->pif[in->output.x][in->output.y].gateout = FALSE;
 		this->pif[in->output.x][in->output.y].value = NULL;
-		in->output;
-		in->output = { in->clicked.x, in->clicked.y - 1 };
+
+		in->output = { in->clicked.x, in->clicked.y - 1 }; //13, 6
 		this->pif[in->output.x][in->output.y].lineok = TRUE;
 		this->pif[in->output.x][in->output.y].gateout = TRUE;
 		this->pif[in->output.x][in->output.y].value = &in->value;
+		break;
 	case BOTTOM:
 		this->pif[in->output.x][in->output.y].lineok = FALSE;
 		this->pif[in->output.x][in->output.y].gateout = FALSE;
