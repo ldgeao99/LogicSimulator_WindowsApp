@@ -278,13 +278,18 @@ BEGIN
         MENUITEM "autorun",                     ID_autorun
         MENUITEM "stop",                        ID_runstop
     END
-    POPUP "클럭 주기"
+    POPUP "클럭"
     BEGIN
         MENUITEM "1초",                          ID_1second
         MENUITEM "0.5초",                        ID_point5second
         MENUITEM "0.25초",                       ID_point25second
         MENUITEM "0.1초",                        ID_point1second
         MENUITEM "stop",                        ID_clockstop
+        POPUP "트리거 방식"
+        BEGIN
+            MENUITEM "상승엣지",                        ID_32825
+            MENUITEM "하강엣지",                        ID_32826
+        END
     END
     POPUP "라이브러리"
     BEGIN

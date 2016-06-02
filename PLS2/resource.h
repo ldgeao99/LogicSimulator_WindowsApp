@@ -110,13 +110,16 @@
 #define ID_32821                        32821
 #define ID_autorun                      32822
 #define ID_runstop                      32823
+#define ID_32824                        32824
+#define ID_32825                        32825
+#define ID_32826                        32826
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        358
-#define _APS_NEXT_COMMAND_VALUE         32824
+#define _APS_NEXT_COMMAND_VALUE         32827
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

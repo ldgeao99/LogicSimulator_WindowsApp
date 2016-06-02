@@ -64,6 +64,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_decoder, &CPLS2View::Ondecoder)
 	ON_COMMAND(ID_autorun, &CPLS2View::Onautorun)
 	ON_COMMAND(ID_runstop, &CPLS2View::Onrunstop)
+	ON_COMMAND(ID_32825, &CPLS2View::On32825)
+	ON_COMMAND(ID_32826, &CPLS2View::On32826)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -1834,4 +1836,28 @@ void CPLS2View::Onrunstop()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	KillTimer(999);
+}
+
+
+void CPLS2View::On32825()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	for (int i = 0; i < INDEX; i++) {
+		pDoc->ls.dff[i].trigger = TRUE;
+		pDoc->ls.jkff[i].trigger = TRUE;
+		pDoc->ls.tff[i].trigger = TRUE;
+	}
+}
+
+
+void CPLS2View::On32826()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	for (int i = 0; i < INDEX; i++) {
+		pDoc->ls.dff[i].trigger = FALSE;
+		pDoc->ls.jkff[i].trigger = FALSE;
+		pDoc->ls.tff[i].trigger = FALSE;
+	}
 }
