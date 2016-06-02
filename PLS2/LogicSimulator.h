@@ -60,7 +60,7 @@ public:
 		Direct direct = ::RIGHT;
 	};
 
-	struct Output {
+	struct Output {//¿Ï¼º
 		int value = 0;
 		CString name = _T("OUT");
 		CPoint clicked{ -1, -1 };
