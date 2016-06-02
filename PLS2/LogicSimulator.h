@@ -49,7 +49,7 @@ public:
 		int* value = NULL;
 	}pinfo;
 
-	struct Input {
+	struct Input {//완성
 		int value = 0; // 가지는 값.
 		CString name = _T("IN");
 		CPoint clicked{ -1, -1 }; // 사각형의 중점.
