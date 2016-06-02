@@ -959,7 +959,7 @@ int LogicSimulator::serialize_gate(int x, int y) {
 		count_serial++;
 		serial[count_serial].gate = output;
 		serial[count_serial].count = pif[x][y].output;
-		ou == 1;
+		ou = 1;
 	}
 	if (pif[x][y].gate == ::seg7) {
 		count_serial++;
@@ -969,7 +969,8 @@ int LogicSimulator::serialize_gate(int x, int y) {
 	}
 
 	if (this->pif[x][y].value == NULL) {
-		count_serial--;
+		if(ou == 1 || seg == 1)
+			count_serial--;
 		return 0;
 	}
 	else
