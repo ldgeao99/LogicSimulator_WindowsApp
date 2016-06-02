@@ -1460,7 +1460,7 @@ void CPLS2View::Create_7Segment_BCLK()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+//주기설정 완성
 void CPLS2View::On1second()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -1479,7 +1479,7 @@ void CPLS2View::Onpoint5second()
 void CPLS2View::Onpoint25second()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	hz = 250;
+	hz = 200;
 }
 
 

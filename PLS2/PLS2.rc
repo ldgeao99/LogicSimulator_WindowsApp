@@ -280,10 +280,10 @@ BEGIN
     END
     POPUP "클럭"
     BEGIN
-        MENUITEM "1초",                          ID_1second
-        MENUITEM "0.5초",                        ID_point5second
-        MENUITEM "0.25초",                       ID_point25second
-        MENUITEM "0.1초",                        ID_point1second
+        MENUITEM "0.5hz",                       ID_1second
+        MENUITEM "1hz",                         ID_point5second
+        MENUITEM "2.5hz",                       ID_point25second
+        MENUITEM "5hz",                         ID_point1second
         MENUITEM "stop",                        ID_clockstop
         POPUP "트리거 방식"
         BEGIN
