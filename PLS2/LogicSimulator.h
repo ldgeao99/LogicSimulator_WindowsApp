@@ -4,7 +4,7 @@
 #define INDEX 200
 
 //enum변수입니다.
-enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff, seg7};
+enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff, seg7, lib};
 enum WhereFixed { DEFAULT, SERO, GARO }; // 그림그릴 때 가로가 고정되었나 세로가 고정되었나?
 enum Direct { RIGHT, LEFT, BOTTOM, TOP };
 
@@ -31,6 +31,7 @@ public:
 		int jkff = -1;
 		int tff = -1;
 		int seg7 = -1;
+		int lib = -1;
 		int clock = -1;
 
 
@@ -230,6 +231,18 @@ public:
 		int count;
 	};
 
+	struct Library {
+		int value[7] = { 0,0,0,0,0,0,0 };
+		CString name = _T("LIB");
+		CPoint clicked{ -1. - 1 };
+		CPoint min;
+		CPoint max;
+		CPoint input[7];
+		CPoint output[7];
+		BOOL serial = FALSE;
+		Direct direct = ::RIGHT;
+	};
+
 	//변수입니다.
 public:
 	PointInfo pif[INDEX][INDEX];
@@ -247,7 +260,7 @@ public:
 	DFF dff[INDEX];
 	JKFF jkff[INDEX];
 	SEG7 seg7[INDEX];
-
+	Library lib[INDEX];
 
 	CPoint downPoint;
 	CPoint upPoint;
@@ -272,6 +285,7 @@ public:
 	int count_jkff = -1;
 	int count_line = -1;
 	int count_seg7 = -1;
+	int count_lib = -1;
 
 	int create = -1; // 이 숫자에 따라 무엇을 생성할 지가 정해짐.
 
@@ -298,6 +312,7 @@ public:
 	void create_dff(DFF * dff, CPoint clicked);
 	void create_jkff(JKFF * jkff, CPoint clicked);
 	void create_line(CPoint firstPt, CPoint secondPt, int index);
+	void create_lib(Library *lib, CPoint clicked);
 	void create_seg7(SEG7 * seg7, CPoint clicked);
 	void calculate_output(Output *out);
 	void calculate_xor(XorGate *xor);
@@ -310,8 +325,9 @@ public:
 	void calculate_nand(NAndGate *nand);
 	void calculate_seg7(SEG7 * seg7);
 	void calculate_dff(DFF *dff);
+	void calculate_lib(Library *lib, LogicSimulator *ls);
 	int serialize_gate(int x, int y);
-	void run(int repeat, int se[10]);
+	void run(int repeat, int se[10], LogicSimulator *lib);
 	void rotate_and(AndGate *and, Direct dir);
 	void rotate_input(Input *in, Direct dir);
 	void rotate_output(Output *out, Direct dir);

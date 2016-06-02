@@ -14,7 +14,7 @@ protected: // serialization에서만 만들어집니다.
 // 로직시뮬레이터 변수입니다.
 public:
 	LogicSimulator ls;
-
+	LogicSimulator library;
 // 특성입니다.
 public:
 

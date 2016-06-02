@@ -243,6 +243,7 @@
     <Image Include="res\bitmap8 - left.bmp" />
     <Image Include="res\bitmap8 - top.bmp" />
     <Image Include="res\bitmap8.bmp" />
+    <Image Include="res\bitmap9.bmp" />
     <Image Include="res\bmp00001 - bottom.bmp" />
     <Image Include="res\bmp00001 - left.bmp" />
     <Image Include="res\bmp00001 - top.bmp" />

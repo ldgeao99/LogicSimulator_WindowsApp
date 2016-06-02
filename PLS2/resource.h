@@ -55,6 +55,8 @@
 #define IDB_GATE_OR_BOTTOM              355
 #define IDB_BITMAP6                     356
 #define IDB_GATE_OR_TOP                 356
+#define IDB_BITMAP9                     357
+#define IDB_LIB                         357
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -98,13 +100,17 @@
 #define ID_32811                        32811
 #define ID_32812                        32812
 #define ID_32813                        32813
+#define ID_32814                        32814
+#define ID_32815                        32815
+#define ID_lib_ready                    32816
+#define ID_create_lib                   32817
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        356
-#define _APS_NEXT_COMMAND_VALUE         32814
+#define _APS_NEXT_RESOURCE_VALUE        358
+#define _APS_NEXT_COMMAND_VALUE         32818
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -59,6 +59,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32811, &CPLS2View::On_TurnToLeft)
 	ON_COMMAND(ID_32812, &CPLS2View::On_TurnToTop)
 	ON_COMMAND(ID_32813, &CPLS2View::On_TurnToBottom)
+	ON_COMMAND(ID_lib_ready, &CPLS2View::Onlibready)
+	ON_COMMAND(ID_create_lib, &CPLS2View::Oncreatelib)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -503,6 +505,27 @@ void CPLS2View::OnDraw(CDC* pDC)
 		}
 	}
 
+	for (i = 0; i <= pDoc->ls.count_lib; i++) {
+		if (pDoc->ls.lib[i].clicked.x != 0 && pDoc->ls.lib[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_LIB);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->SelectObject(&black3pen);
+			pDC->StretchBlt(pDoc->ls.lib[i].min.x * 20, pDoc->ls.lib[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s"), pDoc->ls.lib[i].name);
+			pDC->TextOutW(pDoc->ls.lib[i].min.x * 20 + 5, pDoc->ls.lib[i].min.y * 20 + 20, str);
+			str.Format(_T("%d %d %d %d %d %d %d"), pDoc->ls.lib[i].value[0], pDoc->ls.lib[i].value[1],pDoc->ls.lib[i].value[2],pDoc->ls.lib[i].value[3]
+				,pDoc->ls.lib[i].value[4],pDoc->ls.lib[i].value[5],pDoc->ls.lib[i].value[6]);
+			pDC->TextOutW(pDoc->ls.lib[i].min.x * 20 + 5, pDoc->ls.lib[i].min.y * 20 + 40, str);
+			pDC->SetBkMode(OPAQUE);
+		}
+	}
 	CString s;
 
 	for (int i = 0; i < 100; i++) {
@@ -653,6 +676,12 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case seg7:
 			pDoc->ls.count_seg7++;
 			pDoc->ls.create_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case lib:
+			pDoc->ls.count_lib++;
+			pDoc->ls.create_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -946,6 +975,22 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
+		case lib:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_LIB);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(ffrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
 		}
 		
 	}
@@ -1032,7 +1077,8 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == dff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == jkff 
-		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == tff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == seg7) {
+		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == tff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == seg7
+		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == lib) {
 		ff = 1;
 		pDC->SelectObject(&white3pen);
 		pDC->Rectangle(elffoldrect);
@@ -1228,7 +1274,7 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 		pDoc->ls.clock[nIDEvent].value = 1;
 	else
 		pDoc->ls.clock[nIDEvent].value = 0;
-	pDoc->ls.run(repeat, se);
+	pDoc->ls.run(repeat, se, &pDoc->library);
 		//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
 		Invalidate(1);
 	//}
@@ -1308,6 +1354,10 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 		break;
 	case lsclock:
 		SetTimer(pDoc->ls.pif[p1.x / 20][p1.y / 20].clock, hz / (pDoc->ls.pif[p1.x / 20][p1.y / 20].clock + 1), NULL);
+		break;
+	case lib:
+		pDoc->ls.calculate_lib(&pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib], &pDoc->library);
+		break;
 	}
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
@@ -1338,60 +1388,7 @@ void CPLS2View::Onrun()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pDoc->ls.run(repeat, se);
-	/*
-	int end, start;
-
-	for (int a = 0; a < repeat; a++) {
-		end = se[a] + 1;
-		start = se[a+1];
-		for (int i = start; i >= end; i--) {
-			switch (pDoc->ls.serial[i].gate) {
-			case input://
-				break;
-			case output://
-				break;
-			case ::and://
-				pDoc->ls.calculate_and(&pDoc->ls.and[pDoc->ls.serial[i].count]);
-				pDoc->ls.and[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case :: or ://
-				pDoc->ls.calculate_or(&pDoc->ls. or [pDoc->ls.serial[i].count]);
-				pDoc->ls. or [pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case ::xor:
-				pDoc->ls.calculate_xor(&pDoc->ls.xor[pDoc->ls.serial[i].count]);
-				pDoc->ls.xor[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case ::nand:
-				pDoc->ls.calculate_nand(&pDoc->ls.nand[pDoc->ls.serial[i].count]);
-				pDoc->ls.nand[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case ::nor:
-				pDoc->ls.calculate_nor(&pDoc->ls.nor[pDoc->ls.serial[i].count]);
-				pDoc->ls.nor[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case lsclock:
-				break;
-			case ::dff:
-				//pDoc->ls.calculate_dff(&pDoc->ls.dff[pDoc->ls.serial[i].count]);
-				//pDoc->ls.dff[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case ::jkff:
-				//pDoc->ls.calculate_jkff(&pDoc->ls.jkff[pDoc->ls.serial[i].count]);
-				//pDoc->ls.jkff[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			case ::tff:
-				pDoc->ls.calculate_tff(&pDoc->ls.tff[pDoc->ls.serial[i].count]);
-				pDoc->ls.tff[pDoc->ls.serial[i].count].serial = FALSE;
-				break;
-			}
-		}
-	}
-	for (int i = 0; i < repeat; i++) {
-		pDoc->ls.calculate_output(&pDoc->ls.out[i]);
-	}
-	*/
+	pDoc->ls.run(repeat, se, &pDoc->library);
 	Invalidate();
 }
 
@@ -1741,4 +1738,20 @@ void CPLS2View::On_TurnToBottom()
 		pDoc->ls.create_line(pDoc->ls.line[i].firstPt, pDoc->ls.line[i].secondPt, i);
 	}
 	Invalidate();
+}
+
+
+void CPLS2View::Onlibready()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.pif[0][0].serializegate = lib;
+}
+
+
+void CPLS2View::Oncreatelib()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = lib;
 }

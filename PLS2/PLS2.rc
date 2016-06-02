@@ -159,6 +159,8 @@ IDB_FF_JK_TOP           BITMAP                  "res\\bmp00003 - top.bmp"
 
 IDB_GATE_OR_BOTTOM      BITMAP                  "res\\bitmap2 - bottom.bmp"
 
+IDB_LIB                 BITMAP                  "res\\bitmap9.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -280,6 +282,11 @@ BEGIN
         MENUITEM "0.25초",                       ID_point25second
         MENUITEM "0.1초",                        ID_point1second
         MENUITEM "stop",                        ID_clockstop
+    END
+    POPUP "라이브러리"
+    BEGIN
+        MENUITEM "추가준비",                        ID_lib_ready
+        MENUITEM "생성",                          ID_create_lib
     END
 END
 

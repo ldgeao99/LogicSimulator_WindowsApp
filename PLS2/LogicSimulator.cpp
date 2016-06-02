@@ -223,6 +223,43 @@ void LogicSimulator::create_line(CPoint firstPt, CPoint secondPt, int index) {
 	}
 }
 
+void LogicSimulator::create_lib(Library * lib, CPoint clicked){
+	lib->clicked = clicked; // 마우스가 눌린 위치.
+	lib->min = { clicked.x - 3, clicked.y - 3 };
+	lib->max = { clicked.x + 3, clicked.y + 3 };
+	lib->input[0] = { clicked.x - 3, clicked.y - 3 };
+	lib->input[1] = { clicked.x - 3, clicked.y - 2 };
+	lib->input[2] = { clicked.x - 3, clicked.y - 1 };
+	lib->input[3] = { clicked.x - 3, clicked.y };
+	lib->input[4] = { clicked.x - 3, clicked.y + 1 };
+	lib->input[5] = { clicked.x - 3, clicked.y + 2 };
+	lib->input[6] = { clicked.x - 3, clicked.y + 3 };
+	lib->output[0] = { clicked.x + 3,clicked.y - 3 };
+	lib->output[1] = { clicked.x + 3, clicked.y - 2 };
+	lib->output[2] = { clicked.x + 3, clicked.y - 1 };
+	lib->output[3] = { clicked.x + 3, clicked.y };
+	lib->output[4] = { clicked.x + 3, clicked.y + 1 };
+	lib->output[5] = { clicked.x + 3, clicked.y + 2 };
+	lib->output[6] = { clicked.x + 3, clicked.y + 3 };
+	this->pif[clicked.x][clicked.y].serializegate = ::lib;
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[lib->min.x + i][lib->min.y + j].usingpoint = TRUE;
+			this->pif[lib->min.x + i][lib->min.y + j].gate = ::lib;
+			this->pif[lib->min.x + i][lib->min.y + j].lib = this->count_lib;
+		}
+
+	this->pif[lib->clicked.x][lib->clicked.y].lib = this->count_lib;
+	for (int i = 0; i < 7; i++) {
+		this->pif[lib->input[i].x][lib->input[i].y].lineok = TRUE;
+		this->pif[lib->input[i].x][lib->input[i].y].gatein = TRUE;
+		this->pif[lib->output[i].x][lib->output[i].y].lineok = TRUE;
+		this->pif[lib->output[i].x][lib->output[i].y].gateout = TRUE;
+		this->pif[lib->output[0].x][lib->output[i].y].value = &lib->value[i];
+	}
+
+}
+
 void LogicSimulator::calculate_output(Output * out)
 {
 	if ( pif[out->input.x][out->input.y].value != NULL)
@@ -231,8 +268,8 @@ void LogicSimulator::calculate_output(Output * out)
 
 void LogicSimulator::calculate_xor(XorGate * xor)
 {
-	if (this->pif[xor->input[0].x][xor->input[0].y].value == NULL || this->pif[xor->input[1].x][xor->input[1].y].value == NULL)
-		AfxMessageBox(_T("xor 선을 연결해주세요."));
+	if (this->pif[xor->input[0].x][xor->input[0].y].value == NULL || this->pif[xor->input[1].x][xor->input[1].y].value == NULL);
+		//AfxMessageBox(_T("xor 선을 연결해주세요."));
 	else
 		if (*(this->pif[xor->input[0].x][xor->input[0].y].value) == *(this->pif[xor->input[1].x][xor->input[1].y].value))
 			xor->value = 0;
@@ -242,8 +279,8 @@ void LogicSimulator::calculate_xor(XorGate * xor)
 
 void LogicSimulator::calculate_nor(NorGate * nor)
 {
-	if (this->pif[nor->input[0].x][nor->input[0].y].value == NULL || this->pif[nor->input[1].x][nor->input[1].y].value == NULL)
-		AfxMessageBox(_T("nor 선을 연결해주세요."));
+	if (this->pif[nor->input[0].x][nor->input[0].y].value == NULL || this->pif[nor->input[1].x][nor->input[1].y].value == NULL);
+		//AfxMessageBox(_T("nor 선을 연결해주세요."));
 	else
 		if (*(this->pif[nor->input[0].x][nor->input[0].y].value) == 0 && *(this->pif[nor->input[1].x][nor->input[1].y].value) == 0)
 			nor->value = 1;
@@ -253,8 +290,8 @@ void LogicSimulator::calculate_nor(NorGate * nor)
 
 void LogicSimulator::calculate_or(OrGate * or )
 {
-	if (this->pif[or->input[0].x][or->input[0].y].value == NULL || this->pif[or->input[1].x][or->input[1].y].value == NULL)
-		AfxMessageBox(_T("or 선을 연결해주세요."));
+	if (this->pif[or ->input[0].x][or ->input[0].y].value == NULL || this->pif[or ->input[1].x][or ->input[1].y].value == NULL);
+		//AfxMessageBox(_T("or 선을 연결해주세요."));
 	else
 		if (*(this->pif[or->input[0].x][or->input[0].y].value) == 0 && *(this->pif[or->input[1].x][or->input[1].y].value) == 0)
 			or->value = 0;
@@ -264,8 +301,8 @@ void LogicSimulator::calculate_or(OrGate * or )
 
 void LogicSimulator::calculate_not(NotGate * not)
 {
-	if (this->pif[not->input.x][not->input.y].value == NULL)
-		AfxMessageBox(_T("not 선을 연결해주세요."));
+	if (this->pif[not->input.x][not->input.y].value == NULL);
+		//AfxMessageBox(_T("not 선을 연결해주세요."));
 	else
 		if (*(this->pif[not->input.x][not->input.y].value) == 0)
 			not->value = 1;
@@ -276,10 +313,10 @@ void LogicSimulator::calculate_not(NotGate * not)
 void LogicSimulator::calculate_and(AndGate *and)
 {
 	if (this->pif[and->input[0].x][and->input[0].y].value == NULL || this->pif[and->input[1].x][and->input[1].y].value == NULL)
-		if(this->pif[and->input[0].x][and->input[0].y].value == NULL)
-			AfxMessageBox(_T("and 0 선을 연결해주세요."));
-		else
-			AfxMessageBox(_T("and 1 선을 연결해주세요."));
+		if (this->pif[and->input[0].x][and->input[0].y].value == NULL);
+			//AfxMessageBox(_T("and 0 선을 연결해주세요."));
+		else;
+			//AfxMessageBox(_T("and 1 선을 연결해주세요."));
 	else
 		if (*(this->pif[and->input[0].x][and->input[0].y].value) == 1 && *(this->pif[and->input[1].x][and->input[1].y].value) == 1)
 			and ->value = 1;
@@ -288,8 +325,8 @@ void LogicSimulator::calculate_and(AndGate *and)
 }
 
 void LogicSimulator::calculate_nand(NAndGate *nand) {
-	if (this->pif[nand->input[0].x][nand->input[0].y].value == NULL || this->pif[nand->input[1].x][nand->input[1].y].value == NULL)
-		AfxMessageBox(_T("nand 선을 연결해주세요."));
+	if (this->pif[nand->input[0].x][nand->input[0].y].value == NULL || this->pif[nand->input[1].x][nand->input[1].y].value == NULL);
+		//AfxMessageBox(_T("nand 선을 연결해주세요."));
 	else
 		if (*(this->pif[nand->input[0].x][nand->input[0].y].value) == 1 && *(this->pif[nand->input[1].x][nand->input[1].y].value) == 1)
 			nand ->value = 0;
@@ -419,8 +456,8 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 
 void LogicSimulator::calculate_tff(TFF * tff)
 {
-	if(this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL)
-		AfxMessageBox(_T("tff 선을 연결해주세요."));
+	if (this->pif[tff->input.x][tff->input.y].value == NULL || this->pif[tff->clock.x][tff->clock.y].value == NULL);
+		//AfxMessageBox(_T("tff 선을 연결해주세요."));
 	else {
 		tff->newclock = *(this->pif[tff->clock.x][tff->clock.y].value);
 		if (tff->trigger == TRUE) {
@@ -454,8 +491,9 @@ void LogicSimulator::calculate_tff(TFF * tff)
 }
 
 void LogicSimulator::calculate_jkff(JKFF * jkff) {
-	if (this->pif[jkff->input[0].x][jkff->input[0].y].value == NULL || this->pif[jkff->input[1].x][jkff->input[1].y].value == NULL || this->pif[jkff->clock.x][jkff->clock.y].value == NULL)
-		AfxMessageBox(_T("jkff 선을 연결해주세요."));
+	if (this->pif[jkff->input[0].x][jkff->input[0].y].value == NULL || this->pif[jkff->input[1].x][jkff->input[1].y].value == NULL
+		|| this->pif[jkff->clock.x][jkff->clock.y].value == NULL);
+		//AfxMessageBox(_T("jkff 선을 연결해주세요."));
 	else {
 		jkff->newclock = *(this->pif[jkff->clock.x][jkff->clock.y].value);
 		if (jkff->trigger == TRUE) {
@@ -513,8 +551,8 @@ void LogicSimulator::calculate_seg7(SEG7 * seg7) {
 	if (this->pif[seg7->input[0].x][seg7->input[0].y].value == NULL || this->pif[seg7->input[1].x][seg7->input[1].y].value == NULL
 		|| this->pif[seg7->input[2].x][seg7->input[2].y].value == NULL || this->pif[seg7->input[3].x][seg7->input[3].y].value == NULL
 		|| this->pif[seg7->input[4].x][seg7->input[4].y].value == NULL || this->pif[seg7->input[5].x][seg7->input[5].y].value == NULL
-		|| this->pif[seg7->input[6].x][seg7->input[6].y].value == NULL)
-		AfxMessageBox(_T("seg7 선을 연결해주세요."));
+		|| this->pif[seg7->input[6].x][seg7->input[6].y].value == NULL);
+		//AfxMessageBox(_T("seg7 선을 연결해주세요."));
 	else
 	{
 		if (*(this->pif[seg7->input[0].x][seg7->input[0].y].value) == 1)
@@ -556,8 +594,8 @@ void LogicSimulator::calculate_seg7(SEG7 * seg7) {
 
 void LogicSimulator::calculate_dff(DFF * dff)
 {
-	if (this->pif[dff->input.x][dff->input.y].value == NULL || this->pif[dff->clock.x][dff->clock.y].value == NULL)
-		AfxMessageBox(_T("dff 선을 연결해주세요."));
+	if (this->pif[dff->input.x][dff->input.y].value == NULL || this->pif[dff->clock.x][dff->clock.y].value == NULL);
+		//AfxMessageBox(_T("dff 선을 연결해주세요."));
 	else {
 		dff->newclock = *(this->pif[dff->clock.x][dff->clock.y].value);
 		if (dff->trigger == TRUE) {
@@ -579,6 +617,32 @@ void LogicSimulator::calculate_dff(DFF * dff)
 			}
 		}
 		dff->oldclock = dff->newclock;
+	}
+}
+
+void LogicSimulator::calculate_lib(Library * lib, LogicSimulator *ls)
+{
+	int repeat = 0;
+	int se[10];
+	se[0] = 0;
+	ls->count_serial = -1;
+	for (int i = 0; i <= ls->count_input; i++) {
+		if (this->pif[lib->input[i].x][lib->input[i].y].value != NULL)
+			ls->in[i].value = *(this->pif[lib->input[i].x][lib->input[i].y].value);
+	}
+	for (int i = 0; i <= ls->count_output; i++) {
+		ls->serialize_gate(ls->out[i].input.x, ls->out[i].input.y);
+		repeat++;
+		se[repeat] = ls->count_serial;
+	}
+	for (int i = 0; i <= ls->count_seg7; i++) {
+		ls->serialize_gate(ls->seg7[0].clicked.x, ls->seg7[0].clicked.y);
+		repeat++;
+		se[repeat] = ls->count_serial;
+	}
+	ls->run(repeat, se, NULL);
+	for (int i = 0; i <= ls->count_output; i++) {
+		lib->value[i] = ls->out[i].value;
 	}
 }
 
@@ -881,10 +945,26 @@ int LogicSimulator::serialize_gate(int x, int y) {
 			serialize_gate(seg7[pif[x][y].seg7].input[5].x, seg7[pif[x][y].seg7].input[5].y);
 			serialize_gate(seg7[pif[x][y].seg7].input[6].x, seg7[pif[x][y].seg7].input[6].y);
 			return 1;
+		case ::lib:
+			if (lib[pif[x][y].lib].serial == TRUE)
+				return 1;
+			else
+				lib[pif[x][y].lib].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].lib;
+			serial[count_serial].gate = ::lib;
+			serialize_gate(lib[pif[x][y].lib].input[0].x, lib[pif[x][y].lib].input[0].y);
+			serialize_gate(lib[pif[x][y].lib].input[1].x, lib[pif[x][y].lib].input[1].y);
+			serialize_gate(lib[pif[x][y].lib].input[2].x, lib[pif[x][y].lib].input[2].y);
+			serialize_gate(lib[pif[x][y].lib].input[3].x, lib[pif[x][y].lib].input[3].y);
+			serialize_gate(lib[pif[x][y].lib].input[4].x, lib[pif[x][y].lib].input[4].y);
+			serialize_gate(lib[pif[x][y].lib].input[5].x, lib[pif[x][y].lib].input[5].y);
+			serialize_gate(lib[pif[x][y].lib].input[6].x, lib[pif[x][y].lib].input[6].y);
+			return 1;
 		}
 }
 
-void LogicSimulator::run(int repeat, int se[10])
+void LogicSimulator::run(int repeat, int se[10], LogicSimulator *lib)
 {
 	int end, start;
 	int out = 0, se7 = 0;
@@ -937,6 +1017,10 @@ void LogicSimulator::run(int repeat, int se[10])
 				break;
 			case ::seg7:
 				se7++;
+				break;
+			case ::lib:
+				this->calculate_lib(&this->lib[this->serial[i].count], lib);
+				this->lib[this->serial[i].count].serial = FALSE;
 				break;
 			}
 		}
@@ -1022,10 +1106,10 @@ void LogicSimulator::rotate_output(Output *out, Direct dir) {
 
 	switch (dir) {
 	case LEFT:
-		out->input = { out->clicked.x-1, out->clicked.y};
+		out->input = { out->clicked.x + 1, out->clicked.y};
 		break;
 	case RIGHT:
-		out->input = { out->clicked.x + 1, out->clicked.y };
+		out->input = { out->clicked.x - 1, out->clicked.y };
 		break;
 	case TOP:
 		out->input = { out->clicked.x, out->clicked.y -1};
