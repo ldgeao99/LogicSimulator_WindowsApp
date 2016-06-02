@@ -61,7 +61,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 	int gate = -1;
 	int direct = 0;
 	CPoint pointofpif;
-	if (ar.IsStoring())
+	if (ar.IsStoring())//완성
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
 
