@@ -646,6 +646,138 @@ void LogicSimulator::calculate_lib(Library * lib, LogicSimulator *ls)
 	}
 }
 
+void LogicSimulator::calculate_dcd(Decoder * dcd)
+{
+	int number = 0;
+	if (   this->pif[dcd->input[0].x][dcd->input[0].y].value == NULL || this->pif[dcd->input[1].x][dcd->input[1].y].value == NULL
+		|| this->pif[dcd->input[2].x][dcd->input[2].y].value == NULL || this->pif[dcd->input[3].x][dcd->input[3].y].value == NULL);
+	else {
+		if (*(this->pif[dcd->input[0].x][dcd->input[0].y].value) == 0) {
+			number = number;
+		}
+		else {
+			number = number + 8;
+		}
+		if (*(this->pif[dcd->input[1].x][dcd->input[1].y].value) == 0) {
+			number = number;
+		}
+		else {
+			number = number + 4;
+		}
+		if (*(this->pif[dcd->input[2].x][dcd->input[2].y].value) == 0) {
+			number = number;
+		}
+		else {
+			number = number + 2;
+		}
+		if (*(this->pif[dcd->input[3].x][dcd->input[3].y].value) == 0) {
+			number = number;
+		}
+		else {
+			number = number + 1;
+		}
+	}
+	dcd->value[0] = 0;
+	dcd->value[1] = 0;
+	dcd->value[2] = 0;
+	dcd->value[3] = 0;
+	dcd->value[4] = 0;
+	dcd->value[5] = 0;
+	dcd->value[6] = 0;
+	switch(number) {
+		case 0:
+			dcd->value[0] = 1;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 1;
+			dcd->value[4] = 1;
+			dcd->value[5] = 1;
+			dcd->value[6] = 0;
+			break;
+		case 1:
+			dcd->value[0] = 0;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 0;
+			dcd->value[4] = 0;
+			dcd->value[5] = 0;
+			dcd->value[6] = 0;
+			break;
+		case 2:
+			dcd->value[0] = 1;
+			dcd->value[1] = 1;
+			dcd->value[2] = 0;
+			dcd->value[3] = 1;
+			dcd->value[4] = 1;
+			dcd->value[5] = 0;
+			dcd->value[6] = 1;
+			break;
+		case 3:
+			dcd->value[0] = 1;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 1;
+			dcd->value[4] = 0;
+			dcd->value[5] = 0;
+			dcd->value[6] = 1;
+			break;
+		case 4:
+			dcd->value[0] = 0;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 0;
+			dcd->value[4] = 0;
+			dcd->value[5] = 1;
+			dcd->value[6] = 1;
+			break;
+		case 5:
+			dcd->value[0] = 1;
+			dcd->value[1] = 0;
+			dcd->value[2] = 1;
+			dcd->value[3] = 1;
+			dcd->value[4] = 0;
+			dcd->value[5] = 1;
+			dcd->value[6] = 1;
+			break;
+		case 6:
+			dcd->value[0] = 1;
+			dcd->value[1] = 0;
+			dcd->value[2] = 1;
+			dcd->value[3] = 1;
+			dcd->value[4] = 1;
+			dcd->value[5] = 1;
+			dcd->value[6] = 1;
+			break;
+		case 7:
+			dcd->value[0] = 1;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 0;
+			dcd->value[4] = 0;
+			dcd->value[5] = 1;
+			dcd->value[6] = 0;
+			break;
+		case 8:
+			dcd->value[0] = 1;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 1;
+			dcd->value[4] = 1;
+			dcd->value[5] = 1;
+			dcd->value[6] = 1;
+			break;
+		case 9:
+			dcd->value[0] = 1;
+			dcd->value[1] = 1;
+			dcd->value[2] = 1;
+			dcd->value[3] = 0;
+			dcd->value[4] = 0;
+			dcd->value[5] = 1;
+			dcd->value[6] = 1;
+			break;
+	}
+}
+
 void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 {
 	tff->clicked = clicked; // 마우스가 눌린 위치.
@@ -783,6 +915,42 @@ void LogicSimulator::create_seg7(SEG7 * seg7, CPoint clicked)
 		}
 }
 
+void LogicSimulator::create_dcd(Decoder * dcd, CPoint clicked)
+{
+	dcd->clicked = clicked; // 마우스가 눌린 위치.
+	dcd->min = { clicked.x - 3, clicked.y - 3 };
+	dcd->max = { clicked.x + 3, clicked.y + 3 };
+	dcd->input[0] = { clicked.x - 3, clicked.y - 3 };
+	dcd->input[1] = { clicked.x - 3, clicked.y - 1 };
+	dcd->input[2] = { clicked.x - 3, clicked.y + 1 };
+	dcd->input[3] = { clicked.x - 3, clicked.y + 3};
+	dcd->output[0] = { clicked.x + 3,clicked.y - 3 };
+	dcd->output[1] = { clicked.x + 3, clicked.y - 2 };
+	dcd->output[2] = { clicked.x + 3, clicked.y - 1 };
+	dcd->output[3] = { clicked.x + 3, clicked.y };
+	dcd->output[4] = { clicked.x + 3, clicked.y + 1 };
+	dcd->output[5] = { clicked.x + 3, clicked.y + 2 };
+	dcd->output[6] = { clicked.x + 3, clicked.y + 3 };
+	this->pif[clicked.x][clicked.y].serializegate = ::dcd;
+	for (int i = 0; i<7; i++)
+		for (int j = 0; j < 7; j++) {
+			this->pif[dcd->min.x + i][dcd->min.y + j].usingpoint = TRUE;
+			this->pif[dcd->min.x + i][dcd->min.y + j].gate = ::dcd;
+			this->pif[dcd->min.x + i][dcd->min.y + j].dcd = this->count_dcd;
+		}
+
+	this->pif[dcd->clicked.x][dcd->clicked.y].dcd = this->count_dcd;
+	for (int i = 0; i < 4; i++) {
+		this->pif[dcd->input[i].x][dcd->input[i].y].lineok = TRUE;
+		this->pif[dcd->input[i].x][dcd->input[i].y].gatein = TRUE;
+	}
+	for (int i = 0; i < 7; i++) {
+		this->pif[dcd->output[i].x][dcd->output[i].y].lineok = TRUE;
+		this->pif[dcd->output[i].x][dcd->output[i].y].gateout = TRUE;
+		this->pif[dcd->output[0].x][dcd->output[i].y].value = &dcd->value[i];
+	}
+}
+
 int LogicSimulator::serialize_gate(int x, int y) {
 	int tempx, tempy;
 	int ou = 0;
@@ -791,6 +959,7 @@ int LogicSimulator::serialize_gate(int x, int y) {
 		count_serial++;
 		serial[count_serial].gate = output;
 		serial[count_serial].count = pif[x][y].output;
+		ou == 1;
 	}
 	if (pif[x][y].gate == ::seg7) {
 		count_serial++;
@@ -798,32 +967,26 @@ int LogicSimulator::serialize_gate(int x, int y) {
 		serial[count_serial].count = pif[x][y].seg7;
 		seg = 1;
 	}
-	if (seg == 0) {
-		if (pif[x][y].line < 0) {
-			//AfxMessageBox(_T("run() : 선을 잘 연결해주세요."));
-			return 0;
-		}
-		else {
-			if (seg == 0)
-				while (1) {
-					tempx = line.GetAt(pif[x][y].line).firstPt.x;
-					tempy = line.GetAt(pif[x][y].line).firstPt.y;
-					x = tempx / 20;
-					y = tempy / 20;
-					if (this->pif[x][y].gate != nothing)
-						break;
-					if (this->pif[x][y].line < 0)
-						return 0;
-				}
-		}
-	}
-	if (pif[x][y].value == NULL) {
-		if (ou == 1)
-			count_serial--;
-		else if (seg == 1)
-			count_serial--;
+
+	if (this->pif[x][y].value == NULL) {
+		count_serial--;
+		return 0;
 	}
 	else
+	{
+		while (1) {
+			tempx = line.GetAt(pif[x][y].line).firstPt.x;
+			tempy = line.GetAt(pif[x][y].line).firstPt.y;
+			x = tempx / 20;
+			y = tempy / 20;
+			if (this->pif[x][y].gate != nothing)
+				break;
+			if (this->pif[x][y].line < 0)
+				return 0;
+		}
+	}
+
+	
 		switch (pif[x][y].gate) {
 		case input:
 			return 1;
@@ -961,13 +1124,26 @@ int LogicSimulator::serialize_gate(int x, int y) {
 			serialize_gate(lib[pif[x][y].lib].input[5].x, lib[pif[x][y].lib].input[5].y);
 			serialize_gate(lib[pif[x][y].lib].input[6].x, lib[pif[x][y].lib].input[6].y);
 			return 1;
+		case ::dcd:
+			if (dcd[pif[x][y].dcd].serial == TRUE)
+				return 1;
+			else
+				dcd[pif[x][y].dcd].serial = TRUE;
+			count_serial++;
+			serial[count_serial].count = pif[x][y].dcd;
+			serial[count_serial].gate = ::dcd;
+			serialize_gate(dcd[pif[x][y].dcd].input[0].x, dcd[pif[x][y].dcd].input[0].y);
+			serialize_gate(dcd[pif[x][y].dcd].input[1].x, dcd[pif[x][y].dcd].input[1].y);
+			serialize_gate(dcd[pif[x][y].dcd].input[2].x, dcd[pif[x][y].dcd].input[2].y);
+			serialize_gate(dcd[pif[x][y].dcd].input[3].x, dcd[pif[x][y].dcd].input[3].y);
+			return 1;
 		}
 }
 
 void LogicSimulator::run(int repeat, int se[10], LogicSimulator *lib)
 {
 	int end, start;
-	int out = 0, se7 = 0;
+ 	int out = 0, se7 = 0;
 	for (int a = 0; a < repeat; a++) {
 		if (a == 0)
 			end = se[a];
@@ -1021,6 +1197,10 @@ void LogicSimulator::run(int repeat, int se[10], LogicSimulator *lib)
 			case ::lib:
 				this->calculate_lib(&this->lib[this->serial[i].count], lib);
 				this->lib[this->serial[i].count].serial = FALSE;
+				break;
+			case ::dcd:
+				this->calculate_dcd(&this->dcd[this->serial[i].count]);
+				this->dcd[this->serial[i].count].serial = FALSE;
 				break;
 			}
 		}
@@ -1099,6 +1279,7 @@ void LogicSimulator::rotate_input(Input *in, Direct dir) {
 	this->pif[in->output.x][in->output.y].gateout = TRUE;
 	this->pif[in->output.x][in->output.y].value = &in->value;
 }
+
 void LogicSimulator::rotate_output(Output *out, Direct dir) {
 	out->direct = dir;
 	this->pif[out->input.x][out->input.y].lineok = FALSE;
@@ -1237,6 +1418,7 @@ void LogicSimulator::rotate_nand(NAndGate * nand , Direct dir) {
 	this->pif[nand->output.x][nand->output.y].gateout = TRUE;
 	this->pif[nand->output.x][nand->output.y].value = &nand->value;
 }
+
 void LogicSimulator::rotate_nor(NorGate * nor , Direct dir) {
 	nor->direct = dir;
 	this->pif[nor->input[0].x][nor->input[0].y].lineok = FALSE;
@@ -1276,6 +1458,7 @@ void LogicSimulator::rotate_nor(NorGate * nor , Direct dir) {
 	this->pif[nor->output.x][nor->output.y].gateout = TRUE;
 	this->pif[nor->output.x][nor->output.y].value = &nor->value;
 }
+
 void LogicSimulator::rotate_xor(XorGate * xor , Direct dir) {
 	xor->direct = dir;
 	this->pif[xor->input[0].x][xor->input[0].y].lineok = FALSE;
@@ -1315,6 +1498,7 @@ void LogicSimulator::rotate_xor(XorGate * xor , Direct dir) {
 	this->pif[xor->output.x][xor->output.y].gateout = TRUE;
 	this->pif[xor->output.x][xor->output.y].value = &xor->value;
 }
+
 void LogicSimulator::rotate_dff(DFF *dff, Direct dir) {
 	dff->direct = dir;
 	this->pif[dff->input.x][dff->input.y].lineok = FALSE;
@@ -1502,6 +1686,7 @@ void LogicSimulator::rotate_clock(Clock *clock, Direct dir) {
 	this->pif[clock->clicked.x][clock->clicked.y].value = &(clock->value);
 	this->pif[clock->output.x][clock->output.y].value = this->pif[clock->clicked.x][clock->clicked.y].value;
 }
+
 void LogicSimulator::rotate_seg7(SEG7 *seg7, Direct dir) {
 	seg7->direct = dir;
 	for (int i = 0; i<7; i++)
@@ -1511,15 +1696,6 @@ void LogicSimulator::rotate_seg7(SEG7 *seg7, Direct dir) {
 		}
 	switch (dir) {
 	case LEFT:
-		seg7->input[0] = { seg7->clicked.x - 3, seg7->clicked.y - 3 };
-		seg7->input[1] = { seg7->clicked.x - 3, seg7->clicked.y - 2 };
-		seg7->input[2] = { seg7->clicked.x - 3, seg7->clicked.y - 1 };
-		seg7->input[3] = { seg7->clicked.x - 3, seg7->clicked.y };
-		seg7->input[4] = { seg7->clicked.x - 3, seg7->clicked.y + 1 };
-		seg7->input[5] = { seg7->clicked.x - 3, seg7->clicked.y + 2 };
-		seg7->input[6] = { seg7->clicked.x - 3, seg7->clicked.y + 3 };
-		break;
-	case RIGHT:
 		seg7->input[0] = { seg7->clicked.x + 3, seg7->clicked.y - 3 };
 		seg7->input[1] = { seg7->clicked.x + 3, seg7->clicked.y - 2 };
 		seg7->input[2] = { seg7->clicked.x + 3, seg7->clicked.y - 1 };
@@ -1527,6 +1703,15 @@ void LogicSimulator::rotate_seg7(SEG7 *seg7, Direct dir) {
 		seg7->input[4] = { seg7->clicked.x + 3, seg7->clicked.y + 1 };
 		seg7->input[5] = { seg7->clicked.x + 3, seg7->clicked.y + 2 };
 		seg7->input[6] = { seg7->clicked.x + 3, seg7->clicked.y + 3 };
+		break;
+	case RIGHT:
+		seg7->input[0] = { seg7->clicked.x - 3, seg7->clicked.y - 3 };
+		seg7->input[1] = { seg7->clicked.x - 3, seg7->clicked.y - 2 };
+		seg7->input[2] = { seg7->clicked.x - 3, seg7->clicked.y - 1 };
+		seg7->input[3] = { seg7->clicked.x - 3, seg7->clicked.y };
+		seg7->input[4] = { seg7->clicked.x - 3, seg7->clicked.y + 1 };
+		seg7->input[5] = { seg7->clicked.x - 3, seg7->clicked.y + 2 };
+		seg7->input[6] = { seg7->clicked.x - 3, seg7->clicked.y + 3 };
 		break;
 	case TOP:
 		seg7->input[0] = { seg7->clicked.x - 3, seg7->clicked.y - 3 };

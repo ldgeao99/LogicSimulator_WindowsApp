@@ -269,11 +269,14 @@ BEGIN
         MENUITEM "T-FF",                        ID_32781
         MENUITEM "7-segment",                   ID_7_Segment
         MENUITEM "클럭",                          ID_32798
+        MENUITEM "4*7디코더",                      ID_decoder
     END
     POPUP "실행"
     BEGIN
         MENUITEM "serialize",                   ID_serialize
         MENUITEM "run",                         ID_run
+        MENUITEM "autorun",                     ID_autorun
+        MENUITEM "stop",                        ID_runstop
     END
     POPUP "클럭 주기"
     BEGIN

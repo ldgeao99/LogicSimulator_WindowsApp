@@ -96,6 +96,9 @@ public:
 	afx_msg void On_TurnToBottom();
 	afx_msg void Onlibready();
 	afx_msg void Oncreatelib();
+	afx_msg void Ondecoder();
+	afx_msg void Onautorun();
+	afx_msg void Onrunstop();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

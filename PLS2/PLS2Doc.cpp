@@ -64,6 +64,8 @@ void CPLS2Doc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
+
+		
 		if (ls.pif[0][0].serializegate != lib) {
 			ar << 0;
 		}
@@ -78,10 +80,15 @@ void CPLS2Doc::Serialize(CArchive& ar)
 				}
 			ls.line.Serialize(ar);
 			ar << ls.count_line;
+			
 	}
 	else
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
+
+
+
+		
 		ar >> l;
 		if(l == 0){
 		for (int i = 0; i < INDEX; i++)
@@ -162,6 +169,12 @@ void CPLS2Doc::Serialize(CArchive& ar)
 					ls.count_seg7++;
 					ls.create_seg7(&ls.seg7[ls.count_seg7], pointofpif);
 					ls.rotate_seg7(&ls.seg7[ls.count_seg7], (Direct)direct);
+					break;
+				case dcd:
+					ls.count_dcd++;
+					ls.create_dcd(&ls.dcd[ls.count_dcd], pointofpif);
+					//ls.rotate_dcd(&ls.dcd[ls.count_dcd], (Direct)direct);
+					break;
 				}
 			}
 		ls.line.Serialize(ar);
@@ -232,9 +245,9 @@ void CPLS2Doc::Serialize(CArchive& ar)
 						library.rotate_tff(&library.tff[library.count_tff], (Direct)direct);
 						break;
 					case lsclock:
-						library.count_clock++;
-						library.create_clock(&library.clock[library.count_clock], pointofpif);
-						library.rotate_clock(&library.clock[library.count_clock], (Direct)direct);
+						library.count_input++;
+						library.create_input(&library.in[library.count_input], pointofpif);
+						library.rotate_input(&library.in[library.count_input], (Direct)direct);
 						break;
 					case dff:
 						library.count_dff++;
@@ -246,10 +259,11 @@ void CPLS2Doc::Serialize(CArchive& ar)
 						library.create_jkff(&library.jkff[library.count_jkff], pointofpif);
 						library.rotate_jkff(&library.jkff[library.count_jkff], (Direct)direct);
 						break;
-					case seg7:
-						library.count_seg7++;
-						library.create_seg7(&library.seg7[library.count_seg7], pointofpif);
-						library.rotate_seg7(&library.seg7[library.count_seg7], (Direct)direct);
+					case dcd:
+						library.count_dcd++;
+						library.create_dcd(&library.dcd[library.count_dcd], pointofpif);
+						//library.rotate_dcd(&library.dcd[library.count_dcd], (Direct)direct);
+						break;
 					}
 				}
 			library.line.Serialize(ar);

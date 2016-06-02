@@ -61,6 +61,9 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_32813, &CPLS2View::On_TurnToBottom)
 	ON_COMMAND(ID_lib_ready, &CPLS2View::Onlibready)
 	ON_COMMAND(ID_create_lib, &CPLS2View::Oncreatelib)
+	ON_COMMAND(ID_decoder, &CPLS2View::Ondecoder)
+	ON_COMMAND(ID_autorun, &CPLS2View::Onautorun)
+	ON_COMMAND(ID_runstop, &CPLS2View::Onrunstop)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -526,6 +529,28 @@ void CPLS2View::OnDraw(CDC* pDC)
 			pDC->SetBkMode(OPAQUE);
 		}
 	}
+
+	for (i = 0; i <= pDoc->ls.count_dcd; i++) {
+		if (pDoc->ls.dcd[i].clicked.x != 0 && pDoc->ls.dcd[i].clicked.y != 0)
+		{
+			CBitmap bitmap;
+			bitmap.LoadBitmapW(IDB_LIB);
+			BITMAP bmpinfo;
+			bitmap.GetBitmap(&bmpinfo);
+			CDC dcmem;
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+			pDC->SelectObject(&black3pen);
+			pDC->StretchBlt(pDoc->ls.dcd[i].min.x * 20, pDoc->ls.dcd[i].min.y * 20, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			pDC->SetBkMode(TRANSPARENT);
+			str.Format(_T("%s"), pDoc->ls.dcd[i].name);
+			pDC->TextOutW(pDoc->ls.dcd[i].min.x * 20 + 5, pDoc->ls.dcd[i].min.y * 20 + 20, str);
+			str.Format(_T("%d %d %d %d %d %d %d"), pDoc->ls.dcd[i].value[0], pDoc->ls.dcd[i].value[1], pDoc->ls.dcd[i].value[2], pDoc->ls.dcd[i].value[3]
+				, pDoc->ls.dcd[i].value[4], pDoc->ls.dcd[i].value[5], pDoc->ls.dcd[i].value[6]);
+			pDC->TextOutW(pDoc->ls.dcd[i].min.x * 20 + 5, pDoc->ls.dcd[i].min.y * 20 + 40, str);
+			pDC->SetBkMode(OPAQUE);
+		}
+	}
 	CString s;
 
 	for (int i = 0; i < 100; i++) {
@@ -682,6 +707,12 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 		case lib:
 			pDoc->ls.count_lib++;
 			pDoc->ls.create_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case ::dcd:
+			pDoc->ls.count_dcd++;
+			pDoc->ls.create_dcd(&pDoc->ls.dcd[pDoc->ls.count_dcd], pointofpif);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -991,6 +1022,22 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 			pDC->SelectObject(&blackpen);
 			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
 			break;
+		case ::dcd:
+			if (oldpoint != p1) {
+				Invalidate(0);
+			}
+			bitmap.LoadBitmapW(IDB_LIB);
+			bitmap.GetBitmap(&bmpinfo);
+
+			dcmem.CreateCompatibleDC(pDC);
+			dcmem.SelectObject(&bitmap);
+
+			pDC->SelectObject(&whitepen);
+			pDC->SelectObject(&whitebrush);
+			pDC->Rectangle(ffrect);
+			pDC->SelectObject(&blackpen);
+			pDC->StretchBlt(p1.x - 60, p1.y - 60, 120, 120, &dcmem, 0, 0, bmpinfo.bmWidth, bmpinfo.bmHeight, SRCCOPY);
+			break;
 		}
 		
 	}
@@ -1270,13 +1317,21 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 	CPLS2Doc* pDoc = GetDocument();
 	//for (int i = 0; i < pDoc->ls.count_clock; i++) {
 	//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
-	if (pDoc->ls.clock[nIDEvent].value == 0)
+	switch(nIDEvent) {
+	case 999:
+		pDoc->ls.run(repeat, se, &pDoc->library);
+		break;
+	}
+	if (pDoc->ls.clock[nIDEvent].value == 0) {
 		pDoc->ls.clock[nIDEvent].value = 1;
-	else
-		pDoc->ls.clock[nIDEvent].value = 0;
-	pDoc->ls.run(repeat, se, &pDoc->library);
-		//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
 		Invalidate(1);
+	}
+	else {
+		pDoc->ls.clock[nIDEvent].value = 0;
+		Invalidate(1);
+	}
+		
+		//pDoc->ls.calculate_tff(&pDoc->ls.tff[nIDEvent]);
 	//}
 	CView::OnTimer(nIDEvent);
 }
@@ -1358,6 +1413,9 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 	case lib:
 		pDoc->ls.calculate_lib(&pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib], &pDoc->library);
 		break;
+	case dcd:
+		pDoc->ls.calculate_dcd(&pDoc->ls.dcd[pDoc->ls.pif[p1.x / 20][p1.y / 20].dcd]);
+		break;
 	}
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
@@ -1377,7 +1435,7 @@ void CPLS2View::OnSerialize()
 		se[repeat] = pDoc->ls.count_serial;
 	}
 	for (int i = 0; i <= pDoc->ls.count_seg7; i++) {
-		pDoc->ls.serialize_gate(pDoc->ls.seg7[0].clicked.x, pDoc->ls.seg7[0].clicked.y);
+		pDoc->ls.serialize_gate(pDoc->ls.seg7[i].input[0].x, pDoc->ls.seg7[i].input[0].y);
 		repeat++;
 		se[repeat] = pDoc->ls.count_serial;
 	}
@@ -1754,4 +1812,26 @@ void CPLS2View::Oncreatelib()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pDoc->ls.whatgate = lib;
+}
+
+
+void CPLS2View::Ondecoder()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.whatgate = dcd;
+}
+
+
+void CPLS2View::Onautorun()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	SetTimer(999, 90, NULL);
+}
+
+
+void CPLS2View::Onrunstop()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	KillTimer(999);
 }
