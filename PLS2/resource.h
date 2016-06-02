@@ -57,6 +57,7 @@
 #define IDB_GATE_OR_TOP                 356
 #define IDB_BITMAP9                     357
 #define IDB_LIB                         357
+#define IDR_WAVE                        359
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -113,13 +114,35 @@
 #define ID_32824                        32824
 #define ID_32825                        32825
 #define ID_32826                        32826
+#define ID_32827                        32827
+#define ID_32828                        32828
+#define ID_32829                        32829
+#define ID_32830                        32830
+#define ID_32831                        32831
+#define ID_32832                        32832
+#define ID_32833                        32833
+#define ID_32834                        32834
+#define ID_32835                        32835
+#define ID_32836                        32836
+#define ID_32837                        32837
+#define ID_wave_serial                  32838
+#define ID_wave_running                 32839
+#define ID_wavehz1                      32840
+#define ID_wavehz2                      32841
+#define ID_wavehz3                      32842
+#define ID_wavehz4                      32843
+#define ID_wavehzstop                   32844
+#define ID_ready                        32845
+#define ID_start                        32846
+#define ID_pause                        32847
+#define ID_delete                       32848
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        358
-#define _APS_NEXT_COMMAND_VALUE         32827
+#define _APS_NEXT_RESOURCE_VALUE        360
+#define _APS_NEXT_COMMAND_VALUE         32849
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

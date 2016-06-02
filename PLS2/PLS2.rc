@@ -73,6 +73,8 @@ IDR_MAINFRAME           ICON                    "res\\PLS2.ico"
 
 IDR_PLS2TYPE            ICON                    "res\\PLS2Doc.ico"
 
+IDR_WAVE                ICON                    "res\\icon1.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -309,6 +311,30 @@ BEGIN
     END
 END
 
+IDR_WAVE MENU
+BEGIN
+    POPUP "실행"
+    BEGIN
+        MENUITEM "serialize",                   ID_wave_serial
+        MENUITEM "autorun",                     ID_wave_running
+    END
+    POPUP "클럭주기"
+    BEGIN
+        MENUITEM "0.5hz",                       32840
+        MENUITEM "1hz",                         ID_wavehz2
+        MENUITEM "2hz",                         ID_wavehz3
+        MENUITEM "5hz",                         ID_wavehz4
+        MENUITEM "stop",                        ID_wavehzstop
+    END
+    POPUP "파형그리기"
+    BEGIN
+        MENUITEM "준비",                          ID_ready
+        MENUITEM "시작",                          ID_start
+        MENUITEM "중단",                          ID_pause
+        MENUITEM "삭제",                          ID_delete
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -534,6 +560,11 @@ END
 STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "인쇄 미리 보기 모드를 닫습니다.\n미리 보기 취소"
+END
+
+STRINGTABLE
+BEGIN
+    IDR_WAVE                "WAVE\nWAVE\nWAVE Files (*.wave)\n.wave\nWAVE.Document\nWAVE.Document"
 END
 
 #endif    // 한국어(대한민국) resources
