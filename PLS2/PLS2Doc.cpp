@@ -82,7 +82,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 			ar << ls.count_line;
 			
 	}
-	else
+	else//완성
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
 
