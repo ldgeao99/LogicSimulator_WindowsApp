@@ -314,10 +314,9 @@ BEGIN
         MENUITEM "위(TOP)",                      ID_32812
         MENUITEM "아래(BOTTOM)",                  ID_32813
         MENUITEM "삭제",                          ID_32849
-        MENUITEM "잘라내기",                        ID_32850
-        MENUITEM "복사",                          ID_32851
-        MENUITEM "붙여넣기",                        ID_32852
-        MENUITEM "텍스트 라벨",                      ID_TextLabel
+        MENUITEM "잘라내기",                        ID_Cut
+        MENUITEM "복사",                          ID_Copy
+        MENUITEM "텍스트 라벨",                      ID_32850
     END
 END
 
@@ -342,6 +341,14 @@ BEGIN
         MENUITEM "시작",                          ID_start
         MENUITEM "중단",                          ID_pause
         MENUITEM "삭제",                          ID_delete
+    END
+END
+
+IDR_MENU2 MENU
+BEGIN
+    POPUP "붙여넣기"
+    BEGIN
+        MENUITEM "붙여넣기",                        ID_Paste
     END
 END
 

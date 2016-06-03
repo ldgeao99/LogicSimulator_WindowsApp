@@ -59,6 +59,7 @@
 #define IDB_LIB                         357
 #define IDR_WAVE                        359
 #define IDD_DIALOG1                     360
+#define IDR_MENU2                       362
 #define IDC_EDIT1                       1000
 #define ID_32771                        32771
 #define ID_32772                        32772
@@ -140,21 +141,23 @@
 #define ID_delete                       32848
 #define ID_32849                        32849
 #define ID_32850                        32850
+#define ID_TextLabel                    32850
 #define ID_32851                        32851
 #define ID_32852                        32852
 #define ID_DO_UNDO                      32853
 #define ID_DO_REDO                      32854
-#define ID_32849                        32849
-#define ID_TextLabel                    32850
+#define ID_Cut                          32857
+#define ID_Copy                         32858
+#define ID_Paste                        32859
+#define ID_32860                        32860
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        362
-#define _APS_NEXT_COMMAND_VALUE         32857
+#define _APS_NEXT_RESOURCE_VALUE        363
+#define _APS_NEXT_COMMAND_VALUE         32861
 #define _APS_NEXT_CONTROL_VALUE         1000
-
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

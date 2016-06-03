@@ -1843,3 +1843,8 @@ void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
 			this->pif[lib->output[i].x][lib->output[0].y].value = &lib->value[i];
 	}
 }
+
+void LogicSimulator::copy(WhatGate wg)
+{
+
+}

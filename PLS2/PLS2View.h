@@ -104,6 +104,8 @@ public:
 //	afx_msg void OnRButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTextlabel();
+	afx_msg void OnCopy();
+	afx_msg void OnPaste();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전
