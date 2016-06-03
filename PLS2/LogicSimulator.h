@@ -307,6 +307,8 @@ public:
 	serialize serial[300];
 	int count_serial = -1;
 
+	int existlibrary = 0;
+	int readylibaray = 0;
 //함수입니다.
 public:
 	LogicSimulator::LogicSimulator();

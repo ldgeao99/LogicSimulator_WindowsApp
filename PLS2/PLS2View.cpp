@@ -1805,7 +1805,7 @@ void CPLS2View::Onlibready()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pDoc->ls.pif[0][0].serializegate = lib;
+	pDoc->ls.readylibaray = 1;
 }
 
 
