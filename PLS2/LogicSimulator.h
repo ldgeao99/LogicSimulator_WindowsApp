@@ -7,6 +7,7 @@
 enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff, seg7, lib, dcd};
 enum WhereFixed { DEFAULT, SERO, GARO }; // 그림그릴 때 가로가 고정되었나 세로가 고정되었나?
 enum Direct { RIGHT, LEFT, BOTTOM, TOP };
+enum Work { create, del, copy, cut, paste };
 
 class LogicSimulator
 {
@@ -256,6 +257,12 @@ public:
 		Direct direct = ::RIGHT;
 	};
 
+	struct TempLogic {
+		CString name;
+		Direct direct;
+		WhatGate gate;
+	};
+
 	//변수입니다.
 public:
 	PointInfo pif[INDEX][INDEX];
@@ -275,6 +282,7 @@ public:
 	SEG7 seg7[INDEX];
 	Library lib[INDEX];
 	Decoder dcd[INDEX];
+	TempLogic temp_logic;
 
 	CPoint downPoint;
 	CPoint upPoint;
@@ -362,4 +370,6 @@ public:
 	void rotate_seg7(SEG7 *seg7, Direct dir);
 	void rotate_lib(Library *lib, Direct dir);
 	void lsdelete(CPoint p1);
+	void copy(WhatGate wg);
+	void paste(WhatGate wg);
 };

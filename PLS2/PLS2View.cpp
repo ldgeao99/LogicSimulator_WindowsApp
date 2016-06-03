@@ -72,6 +72,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_TextLabel, &CPLS2View::OnTextlabel)
 	ON_COMMAND(ID_delete, &CPLS2View::Ondelete)
 	ON_COMMAND(ID_del, &CPLS2View::Ondel)
+	ON_COMMAND(ID_Copy, &CPLS2View::OnCopy)
+	ON_COMMAND(ID_Paste, &CPLS2View::OnPaste)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -1511,11 +1513,12 @@ void CPLS2View::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-	CMenu menu;
+	CMenu menu, menu2;
 	menu.LoadMenuW(IDR_MENU1);
+	menu2.LoadMenuW(IDR_MENU2);
 	CMenu* pMenu = menu.GetSubMenu(0);
-	//if (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate != ::nothing)
-		pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd());
+	CMenu* pMenu2 = menu2.GetSubMenu(0);
+	pMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, AfxGetMainWnd());
 }
 
 
@@ -1975,4 +1978,35 @@ void CPLS2View::Ondel()
 	
 	pDoc->ls.lsdelete(p1);
 	Invalidate(1);
+}
+
+
+void CPLS2View::OnCopy()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	 
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	{
+	case input:
+		pDoc->ls.temp_logic.direct = pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].name;
+		break;
+	case and:
+		pDoc->ls.temp_logic.direct = pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].name;
+		break;
+	}
+}
+
+
+void CPLS2View::OnPaste()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+
+	if (pDoc->ls.pif[p1.x / 20][p1.y / 20].usingpoint == false)
+	{
+
+	}
 }

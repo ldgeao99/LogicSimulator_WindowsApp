@@ -59,6 +59,7 @@
 #define IDB_LIB                         357
 #define IDR_WAVE                        359
 #define IDD_DIALOG1                     360
+#define IDR_MENU2                       362
 #define IDC_EDIT1                       1000
 #define ID_32771                        32771
 #define ID_32772                        32772
@@ -146,8 +147,8 @@
 #define ID_DO_UNDO                      32853
 #define ID_DO_REDO                      32854
 #define ID_cut                          32857
-#define ID_copy                         32858
-#define ID_paste                        32859
+#define ID_Copy                         32858
+#define ID_Paste                        32859
 #define ID_del                          32860
 
 // Next default values for new objects
