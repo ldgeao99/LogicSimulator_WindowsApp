@@ -1923,6 +1923,24 @@ void CPLS2View::OnTextlabel()
 		case output:
 			pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].name = m_str;
 			break;
+		case and:
+			pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].name = m_str;
+			break;
+		case or:
+			pDoc->ls.or[pDoc->ls.pif[p1.x / 20][p1.y / 20].or].name = m_str;
+			break;
+		case not:
+			pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].name = m_str;
+			break;
+		case nand:
+			pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].name = m_str;
+			break;
+		case nor:
+			pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].name = m_str;
+			break;
+		case xor:
+			pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].name = m_str;
+			break;
 		}
 		Invalidate(1);
 	}
