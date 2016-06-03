@@ -1991,10 +1991,77 @@ void CPLS2View::OnCopy()
 	case input:
 		pDoc->ls.temp_logic.direct = pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct;
 		pDoc->ls.temp_logic.name = pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].name;
+		pDoc->ls.temp_logic.gate = input;
+		break;
+	case output:
+		pDoc->ls.temp_logic.direct = pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].name;
+		pDoc->ls.temp_logic.gate = output;
 		break;
 	case and:
 		pDoc->ls.temp_logic.direct = pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].direct;
 		pDoc->ls.temp_logic.name = pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and].name;
+		pDoc->ls.temp_logic.gate = and;
+		break;
+	case or:
+		pDoc->ls.temp_logic.direct = pDoc->ls.or[pDoc->ls.pif[p1.x / 20][p1.y / 20].or].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.or[pDoc->ls.pif[p1.x / 20][p1.y / 20].or].name;
+		pDoc->ls.temp_logic.gate = or;
+		break;
+	case not:
+		pDoc->ls.temp_logic.direct = pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.not[pDoc->ls.pif[p1.x / 20][p1.y / 20].not].name;
+		pDoc->ls.temp_logic.gate = not;
+		break;
+	case nand:
+		pDoc->ls.temp_logic.direct = pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.nand[pDoc->ls.pif[p1.x / 20][p1.y / 20].nand].name;
+		pDoc->ls.temp_logic.gate = nand;
+		break;
+	case nor:
+		pDoc->ls.temp_logic.direct = pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.nor[pDoc->ls.pif[p1.x / 20][p1.y / 20].nor].name;
+		pDoc->ls.temp_logic.gate = nor;
+		break;
+	case xor:
+		pDoc->ls.temp_logic.direct = pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].name;
+		pDoc->ls.temp_logic.gate = xor;
+		break;
+	case dff:
+		pDoc->ls.temp_logic.direct = pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].name;
+		pDoc->ls.temp_logic.gate = dff;
+		break;
+	case jkff:
+		pDoc->ls.temp_logic.direct = pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].name;
+		pDoc->ls.temp_logic.gate = jkff;
+		break;
+	case tff:
+		pDoc->ls.temp_logic.direct = pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].name;
+		pDoc->ls.temp_logic.gate = tff;
+		break;
+	case seg7:
+		pDoc->ls.temp_logic.direct = pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].name;
+		pDoc->ls.temp_logic.gate = seg7;
+		break;
+	case lib:
+		pDoc->ls.temp_logic.direct = pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].name;
+		pDoc->ls.temp_logic.gate = lib;
+		break;
+	case dcd:
+		pDoc->ls.temp_logic.direct = pDoc->ls.dcd[pDoc->ls.pif[p1.x / 20][p1.y / 20].dcd].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.dcd[pDoc->ls.pif[p1.x / 20][p1.y / 20].dcd].name;
+		pDoc->ls.temp_logic.gate = dcd;
+		break;
+	case lsclock:
+		pDoc->ls.temp_logic.direct = pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock].direct;
+		pDoc->ls.temp_logic.name = pDoc->ls.clock[pDoc->ls.pif[p1.x / 20][p1.y / 20].clock].name;
+		pDoc->ls.temp_logic.gate = lsclock;
 		break;
 	}
 }
@@ -2004,9 +2071,142 @@ void CPLS2View::OnPaste()
 {
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
-
-	if (pDoc->ls.pif[p1.x / 20][p1.y / 20].usingpoint == false)
+	pDoc->ls.pif[p1.x / 20][p1.y / 20].gate = pDoc->ls.temp_logic.gate;
+	CPoint pointofpif{ p1.x / 20, p1.y / 20 };
+	
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
 	{
-
-	}
+		case input:
+			pDoc->ls.count_input++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].input = pDoc->ls.count_input;
+			pDoc->ls.in[pDoc->ls.count_input].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.in[pDoc->ls.count_input].direct = pDoc->ls.temp_logic.direct;
+			//pDoc->ls.rotate_input(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], pDoc->ls.temp_logic.direct);
+			pDoc->ls.create_input(&(pDoc->ls.in[pDoc->ls.count_input]), pointofpif);
+			pDoc->ls.whatgate = nothing; // 마우스를 누르는 순간 그 위치에 그려지게 되므로 초기값으로 돌려줌.
+			Invalidate(1);
+			break;
+		case output:
+			pDoc->ls.count_output++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].input = pDoc->ls.count_output;
+			pDoc->ls.out[pDoc->ls.count_output].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.out[pDoc->ls.count_output].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value;
+			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case and:
+			pDoc->ls.count_and++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].and = pDoc->ls.count_and;
+			pDoc->ls.and[pDoc->ls.count_and].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.and[pDoc->ls.count_and].direct = pDoc->ls.temp_logic.direct;
+			//pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.pif[p1.x / 20][p1.y / 20].and], pDoc->ls.temp_logic.direct);
+			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case xor:
+			pDoc->ls.count_xor++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].xor = pDoc->ls.count_xor;
+			pDoc->ls.xor[pDoc->ls.count_xor].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.xor[pDoc->ls.count_xor].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case nor:
+			pDoc->ls.count_nor++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].nor = pDoc->ls.count_nor;
+			pDoc->ls.nor[pDoc->ls.count_nor].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.nor[pDoc->ls.count_nor].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case nand:
+			pDoc->ls.count_nand++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].nand = pDoc->ls.count_nand;
+			pDoc->ls.nand[pDoc->ls.count_nand].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.nand[pDoc->ls.count_nand].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case or :
+			pDoc->ls.count_or++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20]. or = pDoc->ls.count_or;
+			pDoc->ls.or[pDoc->ls.count_or].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.or[pDoc->ls.count_or].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case not:
+			pDoc->ls.count_not++;
+			pDoc->ls.pif[p1.x / 20][p1.y / 20].not = pDoc->ls.count_not;
+			pDoc->ls.not[pDoc->ls.count_not].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.not[pDoc->ls.count_not].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case tff:
+			pDoc->ls.count_tff++;
+			pDoc->ls.tff[pDoc->ls.count_tff].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.tff[pDoc->ls.count_tff].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_tff(&pDoc->ls.tff[pDoc->ls.count_tff], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case lsclock:
+			pDoc->ls.count_clock++;
+			pDoc->ls.clock[pDoc->ls.count_clock].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.clock[pDoc->ls.count_clock].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case dff:
+			pDoc->ls.count_dff++;
+			pDoc->ls.dff[pDoc->ls.count_dff].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.dff[pDoc->ls.count_dff].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_dff(&pDoc->ls.dff[pDoc->ls.count_dff], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case jkff:
+			pDoc->ls.count_jkff++;
+			pDoc->ls.jkff[pDoc->ls.count_jkff].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.jkff[pDoc->ls.count_jkff].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_jkff(&pDoc->ls.jkff[pDoc->ls.count_jkff], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case seg7:
+			pDoc->ls.count_seg7++;
+			pDoc->ls.seg7[pDoc->ls.count_seg7].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.seg7[pDoc->ls.count_seg7].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case lib:
+			pDoc->ls.count_lib++;
+			pDoc->ls.lib[pDoc->ls.count_lib].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.lib[pDoc->ls.count_lib].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		case ::dcd:
+			pDoc->ls.count_dcd++;
+			pDoc->ls.dcd[pDoc->ls.count_dcd].name = pDoc->ls.temp_logic.name;
+			pDoc->ls.dcd[pDoc->ls.count_dcd].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.create_dcd(&pDoc->ls.dcd[pDoc->ls.count_dcd], pointofpif);
+			pDoc->ls.whatgate = nothing;
+			Invalidate(1);
+			break;
+		}
 }
+
