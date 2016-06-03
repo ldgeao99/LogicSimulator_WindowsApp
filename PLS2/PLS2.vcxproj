@@ -194,6 +194,8 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="WaveDoc.h" />
+    <ClInclude Include="WaveView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
@@ -208,6 +210,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="WaveDoc.cpp" />
+    <ClCompile Include="WaveView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PLS2.reg" />

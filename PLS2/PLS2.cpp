@@ -12,6 +12,9 @@
 #include "PLS2Doc.h"
 #include "PLS2View.h"
 
+#include "WaveDoc.h"
+#include "WaveView.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -76,6 +79,15 @@ BOOL CPLS2App::InitInstance()
 		RUNTIME_CLASS(CPLS2Doc),
 		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CPLS2View));
+	if (!pDocTemplate)
+		return FALSE;
+	AddDocTemplate(pDocTemplate);
+
+	//새로운 도큐먼트 객체 추가
+	pDocTemplate = new CMultiDocTemplate(IDR_WAVE,
+		RUNTIME_CLASS(CWaveDoc),
+		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
+		RUNTIME_CLASS(CWaveView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);

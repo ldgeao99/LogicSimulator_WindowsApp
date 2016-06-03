@@ -443,7 +443,7 @@ END
 STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "PLS2"
-    IDR_PLS2TYPE            "\nPLS2\nPLS2\nPLS2 Files (*.mdi)\n.mdi\nPLS2.Document\nPLS2.Document"
+    IDR_PLS2TYPE            "\nLogicSimulator\nLogicSimulator\nLogicSimulator Files (*.mdi)\n.mdi\nLogicSimulator.Document\nLogicSimulator.Document"
 END
 
 STRINGTABLE
@@ -564,7 +564,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_WAVE                "WAVE\nWAVE\nWAVE Files (*.wave)\n.wave\nWAVE.Document\nWAVE.Document"
+    IDR_WAVE                "\nWAVE\nWAVE\nWAVE Files (*.wave)\n.wave\nWAVE.Document\nWAVE.Document"
 END
 
 #endif    // 한국어(대한민국) resources
