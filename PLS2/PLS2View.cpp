@@ -70,6 +70,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 //	ON_WM_RBUTTONDBLCLK()
 	ON_WM_MBUTTONDOWN()
 	ON_COMMAND(ID_TextLabel, &CPLS2View::OnTextlabel)
+	ON_COMMAND(ID_delete, &CPLS2View::Ondelete)
+	ON_COMMAND(ID_del, &CPLS2View::Ondel)
 	ON_COMMAND(ID_Copy, &CPLS2View::OnCopy)
 	ON_COMMAND(ID_Paste, &CPLS2View::OnPaste)
 END_MESSAGE_MAP()
@@ -1962,6 +1964,96 @@ void CPLS2View::OnTextlabel()
 		}
 		Invalidate(1);
 	}
+}
+
+
+void CPLS2View::Ondelete()
+{
+	
+}
+
+
+void CPLS2View::Ondel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	int x = p1.x / 20;
+	int y = p1.y / 20;
+	int num = 0;
+	WhatGate gate;
+	switch (pDoc->ls.pif[x][y].gate) {
+	case ::input: //입력
+		num = pDoc->ls.pif[x][y].input;
+		gate = input;
+		break;
+	case ::output://출력
+		num = pDoc->ls.pif[x][y].output;
+		gate = output;
+		break;
+	case ::lsclock:
+		num = pDoc->ls.pif[x][y].clock;
+		gate = lsclock;
+		break;
+	case ::and:
+		num = pDoc->ls.pif[x][y].and;
+		gate = ::and;
+		break;
+	case :: or :
+		num = pDoc->ls.pif[x][y]. or ;
+		gate = :: or ;
+		break;
+	case ::xor:
+		num = pDoc->ls.pif[x][y].xor;
+		gate = ::xor;
+		break;
+	case ::not:
+		num = pDoc->ls.pif[x][y].not;
+		gate = ::not;
+		break;
+	case ::nand:
+		num = pDoc->ls.pif[x][y].nand;
+		gate = nand;
+		break;
+	case ::nor:
+		num = pDoc->ls.pif[x][y].nor;
+		gate = nor;
+		break;
+	case ::dff:
+		num = pDoc->ls.pif[x][y].dff;
+		gate = dff;
+		break;
+	case ::jkff:
+		num = pDoc->ls.pif[x][y].jkff;
+		gate = jkff;
+		break;
+	case ::tff:
+		num = pDoc->ls.pif[x][y].tff;
+		gate = tff;
+		break;
+
+	case ::seg7:
+		num = pDoc->ls.pif[x][y].seg7;
+		gate = seg7;
+		break;
+	case ::lib:
+		num = pDoc->ls.pif[x][y].lib;
+		gate = lib;
+		break;
+	case ::dcd:
+		num = pDoc->ls.pif[x][y].dcd;
+		gate = dcd;
+		break;
+	default:
+		if (pDoc->ls.pif[x][y].line >= 0) {
+			num = pDoc->ls.pif[x][y].line;
+			gate = ::line;
+		}
+		break;
+	}
+
+	pDoc->ls.lsdelete(gate, CPoint(x, y), num);
+	Invalidate(1);
 }
 
 

@@ -146,16 +146,16 @@
 #define ID_32852                        32852
 #define ID_DO_UNDO                      32853
 #define ID_DO_REDO                      32854
-#define ID_Cut                          32857
-#define ID_Copy                         32858
-#define ID_Paste                        32859
-#define ID_32860                        32860
+#define ID_cut                          32857
+#define ID_copy                         32858
+#define ID_paste                        32859
+#define ID_del                          32860
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        363
+#define _APS_NEXT_RESOURCE_VALUE        362
 #define _APS_NEXT_COMMAND_VALUE         32861
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

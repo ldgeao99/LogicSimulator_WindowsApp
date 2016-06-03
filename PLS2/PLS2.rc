@@ -313,9 +313,10 @@ BEGIN
         MENUITEM "왼쪽(LEFT)",                    ID_32811
         MENUITEM "위(TOP)",                      ID_32812
         MENUITEM "아래(BOTTOM)",                  ID_32813
-        MENUITEM "삭제",                          ID_32849
-        MENUITEM "잘라내기",                        ID_Cut
-        MENUITEM "복사",                          ID_Copy
+        MENUITEM "삭제",                          ID_del
+        MENUITEM "잘라내기",                        ID_cut
+        MENUITEM "복사",                          ID_copy
+        MENUITEM "붙여넣기",                        ID_paste
         MENUITEM "텍스트 라벨",                      ID_32850
     END
 END

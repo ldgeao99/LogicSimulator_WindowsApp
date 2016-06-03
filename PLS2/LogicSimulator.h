@@ -320,7 +320,7 @@ public:
 //함수입니다.
 public:
 	LogicSimulator::LogicSimulator();
-	void OnePointClear(PointInfo pif);
+	void OnePointClear(PointInfo *pif);
 	void AllPointClear();
 	void print(LogicSimulator ls);
 	void create_input(Input* in, CPoint clicked);
@@ -369,6 +369,7 @@ public:
 	void rotate_clock(Clock *clock, Direct dir);
 	void rotate_seg7(SEG7 *seg7, Direct dir);
 	void rotate_lib(Library *lib, Direct dir);
+	void lsdelete(WhatGate gate, CPoint clicked, int num);
 	void copy(WhatGate wg);
 	void paste(WhatGate wg);
 };

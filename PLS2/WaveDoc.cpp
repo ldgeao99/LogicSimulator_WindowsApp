@@ -57,34 +57,54 @@ void CWaveDoc::Serialize(CArchive& ar)
 	int direct = 0;
 	CPoint wave(5, 3);
 	CPoint pointofpif;
-	if (ar.IsStoring())
+	if (ar.IsStoring())//완성
 	{
 		// TODO: 여기에 저장 코드를 추가합니다.
-		// TODO: 여기에 저장 코드를 추가합니다.
 
-
-		if (ls.pif[0][0].serializegate != lib) {
-			ar << 0;
+		if (ls.readylibaray == 0) {
+			ar << 1;
+			for (int i = 0; i < INDEX; i++)
+				for (int j = 0; j < INDEX; j++) {
+					gate = ls.pif[i][j].serializegate;
+					ar << gate;
+					ar << ls.pif[i][j].direct;
+				}
+			ls.line.Serialize(ar);
+			ar << ls.count_line;
+			if (ls.existlibrary == 0) {
+				ar << 0;
+			}
+			else {
+				ar << 1;
+				for (int i = 0; i < INDEX; i++)
+					for (int j = 0; j < INDEX; j++) {
+						gate = library.pif[i][j].serializegate;
+						ar << gate;
+						ar << library.pif[i][j].direct;
+					}
+				library.line.Serialize(ar);
+				ar << library.count_line;
+			}
 		}
 		else {
+			ar << 0;
 			ar << 1;
+			for (int i = 0; i < INDEX; i++)
+				for (int j = 0; j < INDEX; j++) {
+					gate = ls.pif[i][j].serializegate;
+					ar << gate;
+					ar << ls.pif[i][j].direct;
+				}
+			ls.line.Serialize(ar);
+			ar << ls.count_line;
 		}
-		for (int i = 0; i < INDEX; i++)
-			for (int j = 0; j < INDEX; j++) {
-				gate = ls.pif[i][j].serializegate;
-				ar << gate;
-				ar << ls.pif[i][j].direct;
-			}
-		ls.line.Serialize(ar);
-		ar << ls.count_line;
+
 	}
-	else
+	else//완성
 	{
 		// TODO: 여기에 로딩 코드를 추가합니다.
-
-
 		ar >> l;
-		if (l == 0) {
+		if (l == 1) {
 			for (int i = 0; i < INDEX; i++)
 				for (int j = 0; j < INDEX; j++) {
 					ar >> gate;
@@ -178,6 +198,11 @@ void CWaveDoc::Serialize(CArchive& ar)
 						ls.create_dcd(&ls.dcd[ls.count_dcd], pointofpif);
 						//ls.rotate_dcd(&ls.dcd[ls.count_dcd], (Direct)direct);
 						break;
+					case lib:
+						ls.count_lib++;
+						ls.create_lib(&ls.lib[ls.count_lib], pointofpif);
+						ls.rotate_lib(&ls.lib[ls.count_lib], (Direct)direct);
+						break;
 					}
 				}
 			ls.line.Serialize(ar);
@@ -187,7 +212,9 @@ void CWaveDoc::Serialize(CArchive& ar)
 				ls.create_line(ls.line[i].firstPt, ls.line[i].secondPt, i);
 			}
 		}
-		else {
+		ar >> l;
+		if (l == 1) {
+			ls.existlibrary = 1;
 			for (int i = 0; i < INDEX; i++)
 				for (int j = 0; j < INDEX; j++) {
 					ar >> gate;

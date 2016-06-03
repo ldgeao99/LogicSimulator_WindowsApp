@@ -9,44 +9,44 @@ LogicSimulator::LogicSimulator()
 
 }
 
-void LogicSimulator::OnePointClear(PointInfo pif)
+void LogicSimulator::OnePointClear(PointInfo *pif)
 {
-	pif.input = -1; //입력
-	pif.output = -1; //출력
-	pif.and = -1;
-	pif. or = -1;
-	pif.xor = -1;
-	pif.not = -1;
-	pif.line = -1;
-	pif.nand = -1;
-	pif.nor = -1;
-	pif.dff = -1;
-	pif.jkff = -1;
-	pif.tff = -1;
-	pif.seg7 = -1;
-	pif.lib = -1;
-	pif.clock = -1;
-	pif.dcd = -1;
+	pif->input = -1; //입력
+	pif->output = -1; //출력
+	pif->and = -1;
+	pif-> or = -1;
+	pif->xor = -1;
+	pif->not = -1;
+	pif->line = -1;
+	pif->nand = -1;
+	pif->nor = -1;
+	pif->dff = -1;
+	pif->jkff = -1;
+	pif->tff = -1;
+	pif->seg7 = -1;
+	pif->lib = -1;
+	pif->clock = -1;
+	pif->dcd = -1;
 
 
-	pif.gatein = FALSE; //게이트의 입력값으로 사용되는가
-	pif.gateout = FALSE; //게이트의 출력값으로 사용되는가
+	pif->gatein = FALSE; //게이트의 입력값으로 사용되는가
+	pif->gateout = FALSE; //게이트의 출력값으로 사용되는가
 
-	pif.lineok = FALSE;
-	pif.gate = nothing;
-	pif.serializegate = nothing;
-	pif.usingpoint = FALSE;
+	pif->lineok = FALSE;
+	pif->gate = nothing;
+	pif->serializegate = nothing;
+	pif->usingpoint = FALSE;
 
-	pif.direct = 0;
+	pif->direct = 0;
 
-	pif.value = NULL;
+	pif->value = NULL;
 }
 
 void LogicSimulator::AllPointClear()
 {
 	for (int i = 0; i < INDEX; i++)
 		for (int j = 0; j < INDEX; j++)
-			OnePointClear(pif[i][j]);
+			OnePointClear(&pif[i][j]);
 }
 
 void LogicSimulator::print(LogicSimulator ls)
@@ -1844,7 +1844,188 @@ void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
 	}
 }
 
-void LogicSimulator::copy(WhatGate wg)
+void LogicSimulator::lsdelete(WhatGate gate, CPoint clicked, int num)
 {
+	switch (gate) {
+	case ::input: //입력
+		for (int i =  -1; i < 2; i++) {
+			for (int j =  - 1; j < 2; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->in[num].clicked.x = 0;
+		this->in[num].clicked.y = 0;
+		break;
+	case ::output://출력
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->out[num].clicked.x = 0;
+		this->out[num].clicked.y = 0;
+		break;
+	case ::lsclock:
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->clock[num].clicked.x = 0;
+		this->clock[num].clicked.y = 0;
+		break;
+	case ::and:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->and[num].clicked.x = 0;
+		this->and[num].clicked.y = 0;
+		break;
+	case ::or:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this-> or [num].clicked.x = 0;
+		this-> or [num].clicked.y = 0;
+		break;
+	case ::xor:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->xor[num].clicked.x = 0;
+		this->xor[num].clicked.y = 0;
+		break;
+	case ::not:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->not[num].clicked.x = 0;
+		this->not[num].clicked.y = 0;
+		break;
+	case ::nand:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->nand[num].clicked.x = 0;
+		this->nand[num].clicked.y = 0;
+		break;
+	case ::nor:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->nor[num].clicked.x = 0;
+		this->nor[num].clicked.y = 0;
+		break;
+	case ::dff:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->dff[num].clicked.x = 0;
+		this->dff[num].clicked.y = 0;
+		break;
+	case ::jkff:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->jkff[num].clicked.x = 0;
+		this->jkff[num].clicked.y = 0;
+		break;
+	case ::tff:
+		for (int i = -2; i < 3; i++) {
+			for (int j = -2; j < 3; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->tff[num].clicked.x = 0;
+		this->tff[num].clicked.y = 0;
+		break;
 
+	case ::seg7:
+		for (int i = -3; i < 4; i++) {
+			for (int j = -3; j < 4; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->seg7[num].clicked.x = 0;
+		this->seg7[num].clicked.y = 0;
+		break;
+	case ::lib: 
+		for (int i = -3; i < 4; i++) {
+			for (int j = -3; j < 4; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->lib[num].clicked.x = 0;
+		this->lib[num].clicked.y = 0;
+		break;
+	case ::dcd :
+		for (int i = -3; i < 4; i++) {
+			for (int j = -3; j < 4; j++) {
+				this->OnePointClear(&this->pif[clicked.x + i][clicked.y + j]);
+			}
+		}
+		this->dcd[num].clicked.x = 0;
+		this->dcd[num].clicked.y = 0;
+		break;
+	case ::line:
+		CPoint s, e;
+		s = this->line[num].firstPt;
+		e = this->line[num].secondPt;
+		int i, j;
+		if (s.x == e.x) {
+			if (s.y > e.y) {
+				i = (s.y - e.y) / 20;
+				for (j = 1; j < i; j++) {
+					this->OnePointClear(&this->pif[s.x / 20][s.y / 20 - j]);
+				}
+				this->pif[s.x / 20][s.y / 20 - j].gateout = FALSE;
+			}
+			else {
+				i = (e.y - s.y) / 20;
+				for (j = 1; j < i; j++) {
+					this->OnePointClear(&this->pif[s.x / 20][s.y / 20 + j]);
+				}
+				this->pif[s.x / 20][s.y / 20 + j].gateout = FALSE;
+			}
+
+		}
+		else {
+			if (s.x > e.x) {
+				i = (s.x - e.x) / 20;
+				for (j = 1; j < i; j++) {
+					this->OnePointClear(&this->pif[s.x / 20 - j][s.y / 20]);
+				}
+				this->pif[s.x / 20 - j][s.y / 20].gateout = FALSE;
+			}
+			else {
+				i = (e.x - s.x) / 20;
+				for (j = 1; j < i; j++) {
+					this->OnePointClear(&this->pif[s.x / 20 + j][s.y / 20]);
+				}
+				this->pif[s.x / 20 + j][s.y / 20].gateout = FALSE;
+			}
+		}
+
+		this->line[num].firstPt.x = 0;
+		this->line[num].firstPt.y = 0;
+		this->line[num].secondPt.x = 0;
+		this->line[num].secondPt.y = 0;
+		break;
+	}
 }
