@@ -191,6 +191,9 @@ void CWaveDoc::Serialize(CArchive& ar)
 						ls.create_clock(&ls.clock[ls.count_clock], pointofpif);
 						ls.rotate_clock(&ls.clock[ls.count_clock], (Direct)direct);
 						ls.clock[ls.count_clock].name = name;
+						ls2.count_clock++;
+						ls2.create_clock(&(ls2.clock[ls2.count_clock]), wave);
+						wave.y = wave.y + 3;
 						break;
 					case dff:
 						ls.count_dff++;
@@ -310,9 +313,6 @@ void CWaveDoc::Serialize(CArchive& ar)
 						ls.create_input(&(ls.in[ls.count_input]), pointofpif);
 						ls.rotate_input(&(ls.in[ls.count_input]), (Direct)direct);
 						ls.in[ls.count_input].name = name;
-						ls2.count_clock++;
-						ls2.create_clock(&(ls2.clock[ls2.count_clock]), wave);
-						wave.y = wave.y + 3;
 						break;
 					case dff:
 						ls.count_dff++;

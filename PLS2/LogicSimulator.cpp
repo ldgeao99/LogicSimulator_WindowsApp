@@ -2211,6 +2211,7 @@ void LogicSimulator::undo()
 		switch (tempmem.gate) {
 		case ::input:
 			this->count_input++;
+			this->pif[tempmem.clicked.x][tempmem.clicked.y].serializegate = ::input;
 			this->create_input(&(this->in[this->count_input]), tempmem.clicked);
 			this->in[this->count_input].name = this->tempmem.name;
 			this->in[this->count_input].direct = this->tempmem.direct;
