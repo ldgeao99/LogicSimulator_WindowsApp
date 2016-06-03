@@ -27,7 +27,7 @@ public:
 	int se[10];
 	int repeat = 0;
 	int hz = 1000;
-
+	CString m_str;
 //로직 시뮬레이터 함수입니다.
 	CPoint DividedByTwenty(CPoint point);
 
@@ -101,6 +101,7 @@ public:
 	afx_msg void Onrunstop();
 	afx_msg void On32825();
 	afx_msg void On32826();
+	afx_msg void OnTextlabel();
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

@@ -308,6 +308,7 @@ BEGIN
         MENUITEM "왼쪽(LEFT)",                    ID_32811
         MENUITEM "위(TOP)",                      ID_32812
         MENUITEM "아래(BOTTOM)",                  ID_32813
+        MENUITEM "텍스트 라벨",                      ID_TextLabel
     END
 END
 
@@ -376,6 +377,16 @@ BEGIN
     DEFPUSHBUTTON   "확인",IDOK,113,41,50,14,WS_GROUP
 END
 
+IDD_DIALOG1 DIALOGEX 0, 0, 165, 29
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Text Label"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,92,7,33,14
+    EDITTEXT        IDC_EDIT1,7,7,86,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "취소",IDCANCEL,124,7,33,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -431,8 +442,27 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 55
     END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 158
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 22
+    END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 
 /////////////////////////////////////////////////////////////////////////////

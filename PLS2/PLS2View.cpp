@@ -11,6 +11,7 @@
 
 #include "PLS2Doc.h"
 #include "PLS2View.h"
+#include "TextLabel.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,6 +67,7 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_runstop, &CPLS2View::Onrunstop)
 	ON_COMMAND(ID_32825, &CPLS2View::On32825)
 	ON_COMMAND(ID_32826, &CPLS2View::On32826)
+	ON_COMMAND(ID_TextLabel, &CPLS2View::OnTextlabel)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -73,7 +75,7 @@ END_MESSAGE_MAP()
 CPLS2View::CPLS2View()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
+	m_str = _T("");
 }
 
 CPLS2View::~CPLS2View()
@@ -1875,5 +1877,28 @@ void CPLS2View::On32826()
 		pDoc->ls.dff[i].trigger = FALSE;
 		pDoc->ls.jkff[i].trigger = FALSE;
 		pDoc->ls.tff[i].trigger = FALSE;
+	}
+}
+
+
+void CPLS2View::OnTextlabel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	TextLabel dlg;
+	dlg.m_str = m_str;
+	//str.Format(_T("%s(%d)"), pDoc->ls.and[i].name, pDoc->ls.and[i].value);
+	int result = dlg.DoModal();
+	if (result == IDOK)
+	{
+		m_str = dlg.m_str; // edit 편집장에서 입력한 값을 뷰 객체 변수로 전달
+		switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+		{
+		case input:
+			pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].name = m_str;
+			break;
+		}
+		Invalidate(1);
 	}
 }
