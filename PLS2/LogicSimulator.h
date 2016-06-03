@@ -358,4 +358,5 @@ public:
 	void rotate_tff(TFF *tff, Direct dir);
 	void rotate_clock(Clock *clock, Direct dir);
 	void rotate_seg7(SEG7 *seg7, Direct dir);
+	void rotate_lib(Library *lib, Direct dir);
 };

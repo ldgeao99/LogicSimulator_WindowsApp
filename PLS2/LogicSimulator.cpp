@@ -255,7 +255,10 @@ void LogicSimulator::create_lib(Library * lib, CPoint clicked){
 		this->pif[lib->input[i].x][lib->input[i].y].gatein = TRUE;
 		this->pif[lib->output[i].x][lib->output[i].y].lineok = TRUE;
 		this->pif[lib->output[i].x][lib->output[i].y].gateout = TRUE;
-		this->pif[lib->output[0].x][lib->output[i].y].value = &lib->value[i];
+		if(lib->direct == RIGHT || lib->direct == LEFT)
+			this->pif[lib->output[0].x][lib->output[i].y].value = &lib->value[i];
+		else
+			this->pif[lib->output[i].x][lib->output[0].y].value = &lib->value[i];
 	}
 
 }
@@ -1740,4 +1743,91 @@ void LogicSimulator::rotate_seg7(SEG7 *seg7, Direct dir) {
 			this->pif[seg7->input[i].x][seg7->input[i].y].lineok = TRUE;
 			this->pif[seg7->input[i].x][seg7->input[i].y].gatein = TRUE;
 		}
+}
+
+void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
+	for (int i = 0; i < 7; i++) {
+		this->pif[lib->input[i].x][lib->input[i].y].lineok = FALSE;
+		this->pif[lib->input[i].x][lib->input[i].y].gatein = FALSE;
+		this->pif[lib->output[i].x][lib->output[i].y].lineok = FALSE;
+		this->pif[lib->output[i].x][lib->output[i].y].gateout = FALSE;
+		this->pif[lib->output[0].x][lib->output[i].y].value = NULL;
+	}
+	switch (dir) {
+	case LEFT:
+		lib->input[0] = { lib->clicked.x + 3, lib->clicked.y - 3 };
+		lib->input[1] = { lib->clicked.x + 3, lib->clicked.y - 2 };
+		lib->input[2] = { lib->clicked.x + 3, lib->clicked.y - 1 };
+		lib->input[3] = { lib->clicked.x + 3, lib->clicked.y };
+		lib->input[4] = { lib->clicked.x + 3, lib->clicked.y + 1 };
+		lib->input[5] = { lib->clicked.x + 3, lib->clicked.y + 2 };
+		lib->input[6] = { lib->clicked.x + 3, lib->clicked.y + 3 };
+		lib->output[0] = { lib->clicked.x - 3, lib->clicked.y - 3 };
+		lib->output[1] = { lib->clicked.x - 3, lib->clicked.y - 2 };
+		lib->output[2] = { lib->clicked.x - 3, lib->clicked.y - 1 };
+		lib->output[3] = { lib->clicked.x - 3, lib->clicked.y };
+		lib->output[4] = { lib->clicked.x - 3, lib->clicked.y + 1 };
+		lib->output[5] = { lib->clicked.x - 3, lib->clicked.y + 2 };
+		lib->output[6] = { lib->clicked.x - 3, lib->clicked.y + 3 };
+		break;
+	case RIGHT:
+		lib->input[0] = { lib->clicked.x - 3, lib->clicked.y - 3 };
+		lib->input[1] = { lib->clicked.x - 3, lib->clicked.y - 2 };
+		lib->input[2] = { lib->clicked.x - 3, lib->clicked.y - 1 };
+		lib->input[3] = { lib->clicked.x - 3, lib->clicked.y };
+		lib->input[4] = { lib->clicked.x - 3, lib->clicked.y + 1 };
+		lib->input[5] = { lib->clicked.x - 3, lib->clicked.y + 2 };
+		lib->input[6] = { lib->clicked.x - 3, lib->clicked.y + 3 };
+		lib->output[0] = { lib->clicked.x + 3, lib->clicked.y - 3 };
+		lib->output[1] = { lib->clicked.x + 3, lib->clicked.y - 2 };
+		lib->output[2] = { lib->clicked.x + 3, lib->clicked.y - 1 };
+		lib->output[3] = { lib->clicked.x + 3, lib->clicked.y };
+		lib->output[4] = { lib->clicked.x + 3, lib->clicked.y + 1 };
+		lib->output[5] = { lib->clicked.x + 3, lib->clicked.y + 2 };
+		lib->output[6] = { lib->clicked.x + 3, lib->clicked.y + 3 };
+		break;
+	case TOP:
+		lib->input[0] = { lib->clicked.x - 3, lib->clicked.y + 3 };
+		lib->input[1] = { lib->clicked.x - 2, lib->clicked.y + 3 };
+		lib->input[2] = { lib->clicked.x - 1, lib->clicked.y + 3 };
+		lib->input[3] = { lib->clicked.x, lib->clicked.y + 3 };
+		lib->input[4] = { lib->clicked.x + 1, lib->clicked.y + 3 };
+		lib->input[5] = { lib->clicked.x + 2, lib->clicked.y + 3 };
+		lib->input[6] = { lib->clicked.x + 3, lib->clicked.y + 3 };
+		lib->output[0] = { lib->clicked.x - 3, lib->clicked.y - 3 };
+		lib->output[1] = { lib->clicked.x - 2, lib->clicked.y - 3 };
+		lib->output[2] = { lib->clicked.x - 1, lib->clicked.y - 3 };
+		lib->output[3] = { lib->clicked.x , lib->clicked.y - 3 };
+		lib->output[4] = { lib->clicked.x + 1, lib->clicked.y - 3 };
+		lib->output[5] = { lib->clicked.x + 2, lib->clicked.y - 3 };
+		lib->output[6] = { lib->clicked.x + 3, lib->clicked.y - 3 };
+		break;
+	case BOTTOM:
+		lib->input[0] = { lib->clicked.x - 3, lib->clicked.y - 3 };
+		lib->input[1] = { lib->clicked.x - 2, lib->clicked.y - 3 };
+		lib->input[2] = { lib->clicked.x - 1, lib->clicked.y - 3 };
+		lib->input[3] = { lib->clicked.x, lib->clicked.y - 3 };
+		lib->input[4] = { lib->clicked.x + 1, lib->clicked.y - 3 };
+		lib->input[5] = { lib->clicked.x + 2, lib->clicked.y - 3 };
+		lib->input[6] = { lib->clicked.x + 3, lib->clicked.y - 3 };
+		lib->output[0] = { lib->clicked.x - 3, lib->clicked.y + 3 };
+		lib->output[1] = { lib->clicked.x - 2, lib->clicked.y + 3 };
+		lib->output[2] = { lib->clicked.x - 1, lib->clicked.y + 3 };
+		lib->output[3] = { lib->clicked.x , lib->clicked.y + 3 };
+		lib->output[4] = { lib->clicked.x + 1, lib->clicked.y + 3 };
+		lib->output[5] = { lib->clicked.x + 2, lib->clicked.y + 3 };
+		lib->output[6] = { lib->clicked.x + 3, lib->clicked.y + 3 };
+		break;
+	}
+	for (int i = 0; i < 7; i++) {
+		this->pif[lib->input[i].x][lib->input[i].y].lineok = TRUE;
+		this->pif[lib->input[i].x][lib->input[i].y].gatein = TRUE;
+		this->pif[lib->output[i].x][lib->output[i].y].lineok = TRUE;
+		this->pif[lib->output[i].x][lib->output[i].y].gateout = TRUE;
+
+		if (lib->direct == RIGHT || lib->direct == LEFT)
+			this->pif[lib->output[0].x][lib->output[i].y].value = &lib->value[i];
+		else
+			this->pif[lib->output[i].x][lib->output[0].y].value = &lib->value[i];
+	}
 }

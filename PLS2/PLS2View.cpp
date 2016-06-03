@@ -1580,6 +1580,10 @@ void CPLS2View::On_TurnToRight()
 		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = RIGHT;
 		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], RIGHT);
 		break;
+	case lib:
+		pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].direct = RIGHT;
+		pDoc->ls.rotate_lib(&pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib], RIGHT);
+		break;
 	}
 	int max = pDoc->ls.count_line;
 	pDoc->ls.count_line = -1;
@@ -1649,6 +1653,10 @@ void CPLS2View::On_TurnToLeft()
 	case seg7:
 		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = LEFT;
 		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], LEFT);
+		break;
+	case lib:
+		pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].direct = LEFT;
+		pDoc->ls.rotate_lib(&pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib], LEFT);
 		break;
 	}
 	int max = pDoc->ls.count_line;
@@ -1720,6 +1728,10 @@ void CPLS2View::On_TurnToTop()
 		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = TOP;
 		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], TOP);
 		break;
+	case lib:
+		pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].direct = TOP;
+		pDoc->ls.rotate_lib(&pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib], TOP);
+		break;
 	}
 	int max = pDoc->ls.count_line;
 	pDoc->ls.count_line = -1;
@@ -1789,6 +1801,10 @@ void CPLS2View::On_TurnToBottom()
 	case seg7:
 		pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7].direct = BOTTOM;
 		pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.pif[p1.x / 20][p1.y / 20].seg7], BOTTOM);
+		break;
+	case lib:
+		pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].direct = BOTTOM;
+		pDoc->ls.rotate_lib(&pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib], BOTTOM);
 		break;
 	}
 	int max = pDoc->ls.count_line;
