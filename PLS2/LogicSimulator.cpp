@@ -267,7 +267,7 @@ void LogicSimulator::create_lib(Library * lib, CPoint clicked){
 		this->pif[lib->input[i].x][lib->input[i].y].gatein = TRUE;
 		this->pif[lib->output[i].x][lib->output[i].y].lineok = TRUE;
 		this->pif[lib->output[i].x][lib->output[i].y].gateout = TRUE;
-		if(lib->direct == RIGHT || lib->direct == LEFT)
+		if (lib->direct == RIGHT || lib->direct == LEFT)
 			this->pif[lib->output[0].x][lib->output[i].y].value = &lib->value[i];
 		else
 			this->pif[lib->output[i].x][lib->output[0].y].value = &lib->value[i];
@@ -1763,8 +1763,13 @@ void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
 		this->pif[lib->input[i].x][lib->input[i].y].gatein = FALSE;
 		this->pif[lib->output[i].x][lib->output[i].y].lineok = FALSE;
 		this->pif[lib->output[i].x][lib->output[i].y].gateout = FALSE;
-		this->pif[lib->output[0].x][lib->output[i].y].value = NULL;
+		if (lib->direct == RIGHT || lib->direct == LEFT)
+			this->pif[lib->output[0].x][lib->output[i].y].value = NULL;
+		else
+			this->pif[lib->output[i].x][lib->output[0].y].value = NULL;
 	}
+	lib->direct = dir;//여기있어야함. 옮기지 말것.
+
 	switch (dir) {
 	case LEFT:
 		lib->input[0] = { lib->clicked.x + 3, lib->clicked.y - 3 };
