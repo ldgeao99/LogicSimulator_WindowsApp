@@ -1950,6 +1950,9 @@ void CPLS2View::OnTextlabel()
 		case tff:
 			pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].name = m_str;
 			break;
+		case lib:
+			pDoc->ls.lib[pDoc->ls.pif[p1.x / 20][p1.y / 20].lib].name = m_str;
+			break;
 		}
 		Invalidate(1);
 	}
