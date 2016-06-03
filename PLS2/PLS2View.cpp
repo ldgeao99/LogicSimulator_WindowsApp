@@ -66,6 +66,8 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_runstop, &CPLS2View::Onrunstop)
 	ON_COMMAND(ID_32825, &CPLS2View::On32825)
 	ON_COMMAND(ID_32826, &CPLS2View::On32826)
+//	ON_WM_RBUTTONDBLCLK()
+	ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -1876,4 +1878,24 @@ void CPLS2View::On32826()
 		pDoc->ls.jkff[i].trigger = FALSE;
 		pDoc->ls.tff[i].trigger = FALSE;
 	}
+}
+
+
+void CPLS2View::OnMButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(point);
+	CPoint pointofpif{ p1.x / 20, p1.y / 20 };
+	CClientDC dc(this);
+	CString str;
+	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].value != NULL) {
+		str.Format(_T("%d"), *(pDoc->ls.pif[pointofpif.x][pointofpif.y].value));
+		MessageBox(str, str, MB_OK);
+	}
+	else {
+		str = _T("NULL");
+		MessageBox(str, str, MB_OK);
+	}
+	CView::OnMButtonDown(nFlags, point);
 }

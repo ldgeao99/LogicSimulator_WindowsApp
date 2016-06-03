@@ -196,7 +196,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 				case lib:
 					ls.count_lib++;
 					ls.create_lib(&ls.lib[ls.count_lib], pointofpif);
-					//ls.rotate_lib(&ls.dcd[ls.count_lib], (Direct)direct);
+					ls.rotate_lib(&ls.lib[ls.count_lib], (Direct)direct);
 					break;
 				}
 			}
