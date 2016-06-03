@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_del, &CPLS2View::Ondel)
 	ON_COMMAND(ID_Copy, &CPLS2View::OnCopy)
 	ON_COMMAND(ID_Paste, &CPLS2View::OnPaste)
+	ON_COMMAND(ID_cut, &CPLS2View::Oncut)
 END_MESSAGE_MAP()
 
 // CPLS2View »ı¼º/¼Ò¸ê
@@ -2210,3 +2211,11 @@ void CPLS2View::OnPaste()
 		}
 }
 
+
+
+void CPLS2View::Oncut()
+{
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pDoc->ls.lsdelete(p1);
+}
