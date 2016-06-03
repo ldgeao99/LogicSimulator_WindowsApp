@@ -101,6 +101,8 @@ public:
 	afx_msg void Onrunstop();
 	afx_msg void On32825();
 	afx_msg void On32826();
+//	afx_msg void OnRButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnTextlabel();
 };
 
