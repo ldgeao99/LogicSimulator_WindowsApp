@@ -1941,6 +1941,15 @@ void CPLS2View::OnTextlabel()
 		case xor:
 			pDoc->ls.xor[pDoc->ls.pif[p1.x / 20][p1.y / 20].xor].name = m_str;
 			break;
+		case dff:
+			pDoc->ls.dff[pDoc->ls.pif[p1.x / 20][p1.y / 20].dff].name = m_str;
+			break;
+		case jkff:
+			pDoc->ls.jkff[pDoc->ls.pif[p1.x / 20][p1.y / 20].jkff].name = m_str;
+			break;
+		case tff:
+			pDoc->ls.tff[pDoc->ls.pif[p1.x / 20][p1.y / 20].tff].name = m_str;
+			break;
 		}
 		Invalidate(1);
 	}
