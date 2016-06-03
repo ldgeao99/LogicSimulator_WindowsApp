@@ -109,6 +109,18 @@ public:
 	afx_msg void OnCopy();
 	afx_msg void OnPaste();
 	afx_msg void Oncut();
+	afx_msg void OnDoUndo();
+	afx_msg void OnDoRedo();
+	afx_msg void OnUpdateDoUndo(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateDoRedo(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate1second(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatepoint5second(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatepoint25second(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatepoint1second(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32825(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32826(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatelibready(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatecreatelib(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

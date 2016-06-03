@@ -7,7 +7,7 @@
 enum WhatGate { nothing, input, output, line, and, or, xor, nand, nor, nxor, not ,lsclock, dff, jkff, tff, seg7, lib, dcd};
 enum WhereFixed { DEFAULT, SERO, GARO }; // 그림그릴 때 가로가 고정되었나 세로가 고정되었나?
 enum Direct { RIGHT, LEFT, BOTTOM, TOP };
-enum Work { create, del, copy, cut, paste };
+enum Work { create, del, cut, paste, no};
 
 class LogicSimulator
 {
@@ -266,14 +266,15 @@ public:
 
 	struct TempMem {
 
-		CString name;
-		Direct direct;
-		WhatGate gate;
-		CPoint clicked;
+		CString name = _T("");
+		Direct direct = RIGHT;
+		WhatGate gate = nothing;
+		CPoint clicked = { -1, -1 };
 
-		int linex;
-		int liney;
-		Work work;
+		CPoint start = { -1, -1 };
+		CPoint end = { -1, -1 };
+
+		Work work = ::no;
 	};
 	//변수입니다.
 public:
@@ -295,6 +296,7 @@ public:
 	Library lib[INDEX];
 	Decoder dcd[INDEX];
 	TempLogic temp_logic;
+
 
 	CPoint downPoint;
 	CPoint upPoint;
@@ -329,6 +331,12 @@ public:
 
 	int existlibrary = 0;
 	int readylibaray = 0;
+
+	CArray <TempMem, TempMem&> mem;
+	TempMem tempmem;
+	int memindex = -1;
+	int maxmemindex = -1;
+	
 //함수입니다.
 public:
 	LogicSimulator::LogicSimulator();
@@ -381,5 +389,9 @@ public:
 	void rotate_clock(Clock *clock, Direct dir);
 	void rotate_seg7(SEG7 *seg7, Direct dir);
 	void rotate_lib(Library *lib, Direct dir);
-	void lsdelete(CPoint p1);
+	void lsdelete(CPoint p1, int dodo);
+	void savetomem(CPoint clicked, WhatGate gate, int index, Work work, CString name, Direct direct);
+	void tempmemclear();
+	void undo();
+	void redo();
 };

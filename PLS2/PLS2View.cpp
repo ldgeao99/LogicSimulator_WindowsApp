@@ -75,6 +75,18 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_COMMAND(ID_Copy, &CPLS2View::OnCopy)
 	ON_COMMAND(ID_Paste, &CPLS2View::OnPaste)
 	ON_COMMAND(ID_cut, &CPLS2View::Oncut)
+	ON_COMMAND(ID_DO_UNDO, &CPLS2View::OnDoUndo)
+	ON_COMMAND(ID_DO_REDO, &CPLS2View::OnDoRedo)
+	ON_UPDATE_COMMAND_UI(ID_DO_UNDO, &CPLS2View::OnUpdateDoUndo)
+	ON_UPDATE_COMMAND_UI(ID_DO_REDO, &CPLS2View::OnUpdateDoRedo)
+	ON_UPDATE_COMMAND_UI(ID_1second, &CPLS2View::OnUpdate1second)
+	ON_UPDATE_COMMAND_UI(ID_point5second, &CPLS2View::OnUpdatepoint5second)
+	ON_UPDATE_COMMAND_UI(ID_point25second, &CPLS2View::OnUpdatepoint25second)
+	ON_UPDATE_COMMAND_UI(ID_point1second, &CPLS2View::OnUpdatepoint1second)
+	ON_UPDATE_COMMAND_UI(ID_32825, &CPLS2View::OnUpdate32825)
+	ON_UPDATE_COMMAND_UI(ID_32826, &CPLS2View::OnUpdate32826)
+	ON_UPDATE_COMMAND_UI(ID_lib_ready, &CPLS2View::OnUpdatelibready)
+	ON_UPDATE_COMMAND_UI(ID_create_lib, &CPLS2View::OnUpdatecreatelib)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -634,6 +646,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_input++;
 			pDoc->ls.create_input(&(pDoc->ls.in[pDoc->ls.count_input]), pointofpif);
 			pDoc->ls.whatgate = nothing; // 마우스를 누르는 순간 그 위치에 그려지게 되므로 초기값으로 돌려줌.
+			pDoc->ls.savetomem(pointofpif, input, pDoc->ls.count_input, create, pDoc->ls.in[pDoc->ls.count_input].name, pDoc->ls.in[pDoc->ls.count_input].direct);
 			Invalidate(1);
 			break;
 		case output:
@@ -641,12 +654,14 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value;
 			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
 			pDoc->ls.whatgate = nothing;
+			pDoc->ls.savetomem(pointofpif, output, pDoc->ls.count_output, create, pDoc->ls.out[pDoc->ls.count_output].name, pDoc->ls.out[pDoc->ls.count_output].direct);
 			Invalidate(1);
 			break;
 		case and:
 			pDoc->ls.count_and++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].and = pDoc->ls.count_and;
 			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.savetomem(pointofpif, and, pDoc->ls.count_and, create, pDoc->ls.and[pDoc->ls.count_and].name, pDoc->ls.and[pDoc->ls.count_and].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -654,6 +669,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_xor++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].xor = pDoc->ls.count_xor;
 			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.savetomem(pointofpif, xor, pDoc->ls.count_xor, create, pDoc->ls.xor[pDoc->ls.count_xor].name, pDoc->ls.xor[pDoc->ls.count_xor].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -661,6 +677,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_nor++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].nor = pDoc->ls.count_nor;
 			pDoc->ls.create_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.savetomem(pointofpif, nor, pDoc->ls.count_nor, create, pDoc->ls.nor[pDoc->ls.count_nor].name, pDoc->ls.nor[pDoc->ls.count_nor].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -668,6 +685,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_nand++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].nand = pDoc->ls.count_nand;
 			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
+			pDoc->ls.savetomem(pointofpif, nand, pDoc->ls.count_nand, create, pDoc->ls.nand[pDoc->ls.count_nand].name, pDoc->ls.nand[pDoc->ls.count_nand].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -675,6 +693,7 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_or++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].or = pDoc->ls.count_or;
 			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
+			pDoc->ls.savetomem(pointofpif, or , pDoc->ls.count_or, create, pDoc->ls. or [pDoc->ls.count_or].name, pDoc->ls. or [pDoc->ls.count_or].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -682,48 +701,56 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
 			pDoc->ls.count_not++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].not = pDoc->ls.count_not;
 			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
+			pDoc->ls.savetomem(pointofpif, not, pDoc->ls.count_not, create, pDoc->ls.not[pDoc->ls.count_not].name, pDoc->ls.not[pDoc->ls.count_not].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case tff:
 			pDoc->ls.count_tff++;
 			pDoc->ls.create_tff(&pDoc->ls. tff [pDoc->ls.count_tff], pointofpif);
+			pDoc->ls.savetomem(pointofpif, tff, pDoc->ls.count_tff, create, pDoc->ls.tff[pDoc->ls.count_tff].name, pDoc->ls.tff[pDoc->ls.count_tff].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case lsclock:
 			pDoc->ls.count_clock++;
 			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
+			pDoc->ls.savetomem(pointofpif, lsclock, pDoc->ls.count_clock, create, pDoc->ls.clock[pDoc->ls.count_clock].name, pDoc->ls.clock[pDoc->ls.count_clock].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case dff:
 			pDoc->ls.count_dff++;
 			pDoc->ls.create_dff(&pDoc->ls.dff[pDoc->ls.count_dff], pointofpif);
+			pDoc->ls.savetomem(pointofpif, dff, pDoc->ls.count_dff, create, pDoc->ls.dff[pDoc->ls.count_dff].name, pDoc->ls.dff[pDoc->ls.count_dff].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case jkff:
 			pDoc->ls.count_jkff++;
 			pDoc->ls.create_jkff(&pDoc->ls.jkff[pDoc->ls.count_jkff], pointofpif);
+			pDoc->ls.savetomem(pointofpif, jkff, pDoc->ls.count_jkff, create, pDoc->ls.jkff[pDoc->ls.count_jkff].name, pDoc->ls.jkff[pDoc->ls.count_jkff].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case seg7:
 			pDoc->ls.count_seg7++;
 			pDoc->ls.create_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pointofpif);
+			pDoc->ls.savetomem(pointofpif, seg7, pDoc->ls.count_seg7, create, pDoc->ls.seg7[pDoc->ls.count_seg7].name, pDoc->ls.seg7[pDoc->ls.count_seg7].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case lib:
 			pDoc->ls.count_lib++;
 			pDoc->ls.create_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pointofpif);
+			pDoc->ls.savetomem(pointofpif, lib, pDoc->ls.count_lib, create, pDoc->ls.lib[pDoc->ls.count_lib].name, pDoc->ls.lib[pDoc->ls.count_lib].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case ::dcd:
 			pDoc->ls.count_dcd++;
 			pDoc->ls.create_dcd(&pDoc->ls.dcd[pDoc->ls.count_dcd], pointofpif);
+			pDoc->ls.savetomem(pointofpif, dcd, pDoc->ls.count_dcd, create, pDoc->ls.dcd[pDoc->ls.count_dcd].name, pDoc->ls.dcd[pDoc->ls.count_dcd].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -1989,7 +2016,7 @@ void CPLS2View::Ondel()
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
 	
-	pDoc->ls.lsdelete(p1);
+	pDoc->ls.lsdelete(p1 , 1);
 	Invalidate(1);
 }
 
@@ -2091,144 +2118,159 @@ void CPLS2View::OnPaste()
 	{
 		case input:
 			pDoc->ls.count_input++;
+			pDoc->ls.create_input(&(pDoc->ls.in[pDoc->ls.count_input]), pointofpif);
+			pDoc->ls.rotate_input(&pDoc->ls.in[pDoc->ls.count_input], pDoc->ls.temp_logic.direct);
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].input = pDoc->ls.count_input;
 			pDoc->ls.in[pDoc->ls.count_input].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.in[pDoc->ls.count_input].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_input(&(pDoc->ls.in[pDoc->ls.count_input]), pointofpif);
-			pDoc->ls.rotate_input(&pDoc->ls.in[pDoc->ls.count_input], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing; // 마우스를 누르는 순간 그 위치에 그려지게 되므로 초기값으로 돌려줌.
 			Invalidate(1);
 			break;
 		case output:
 			pDoc->ls.count_output++;
+			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
+			pDoc->ls.out[pDoc->ls.count_output].direct = pDoc->ls.temp_logic.direct;
+			pDoc->ls.rotate_output(&pDoc->ls.out[pDoc->ls.count_output], pDoc->ls.temp_logic.direct);
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].input = pDoc->ls.count_output;
 			pDoc->ls.out[pDoc->ls.count_output].name = pDoc->ls.temp_logic.name;
-			pDoc->ls.out[pDoc->ls.count_output].direct = pDoc->ls.temp_logic.direct;
 			pDoc->ls.pif[p1.x / 20 - 1][p1.y / 20].value;
-			pDoc->ls.create_output(&pDoc->ls.out[pDoc->ls.count_output], pointofpif);
-			pDoc->ls.rotate_output(&pDoc->ls.out[pDoc->ls.count_output], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case and:
 			pDoc->ls.count_and++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].and = pDoc->ls.count_and;
+			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.and[pDoc->ls.count_and].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.and[pDoc->ls.count_and].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_and(&pDoc->ls.and[pDoc->ls.count_and], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.rotate_and(&pDoc->ls.and[pDoc->ls.count_and], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case xor:
 			pDoc->ls.count_xor++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].xor = pDoc->ls.count_xor;
+			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.xor[pDoc->ls.count_xor].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.xor[pDoc->ls.count_xor].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.rotate_xor(&pDoc->ls.xor[pDoc->ls.count_xor], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case nor:
 			pDoc->ls.count_nor++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].nor = pDoc->ls.count_nor;
+			pDoc->ls.create_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.nor[pDoc->ls.count_nor].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.nor[pDoc->ls.count_nor].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.rotate_nor(&pDoc->ls.nor[pDoc->ls.count_nor], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case nand:
 			pDoc->ls.count_nand++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].nand = pDoc->ls.count_nand;
+			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.nand[pDoc->ls.count_nand].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.nand[pDoc->ls.count_nand].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pointofpif); // 만드는 함수 호출.
 			pDoc->ls.rotate_nand(&pDoc->ls.nand[pDoc->ls.count_nand], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case or :
 			pDoc->ls.count_or++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20]. or = pDoc->ls.count_or;
+			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
 			pDoc->ls.or[pDoc->ls.count_or].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.or[pDoc->ls.count_or].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_or(&pDoc->ls. or [pDoc->ls.count_or], pointofpif);
 			pDoc->ls.rotate_or(&pDoc->ls. or [pDoc->ls.count_or], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case not:
 			pDoc->ls.count_not++;
 			pDoc->ls.pif[p1.x / 20][p1.y / 20].not = pDoc->ls.count_not;
+			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
 			pDoc->ls.not[pDoc->ls.count_not].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.not[pDoc->ls.count_not].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_not(&pDoc->ls. not [pDoc->ls.count_not], pointofpif);
 			pDoc->ls.rotate_not(&pDoc->ls. not [pDoc->ls.count_not], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case tff:
 			pDoc->ls.count_tff++;
+			pDoc->ls.create_tff(&pDoc->ls.tff[pDoc->ls.count_tff], pointofpif);
 			pDoc->ls.tff[pDoc->ls.count_tff].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.tff[pDoc->ls.count_tff].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_tff(&pDoc->ls.tff[pDoc->ls.count_tff], pointofpif);
 			pDoc->ls.rotate_tff(&pDoc->ls.tff[pDoc->ls.count_tff], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case lsclock:
 			pDoc->ls.count_clock++;
+			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
 			pDoc->ls.clock[pDoc->ls.count_clock].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.clock[pDoc->ls.count_clock].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pointofpif);
 			pDoc->ls.rotate_clock(&pDoc->ls.clock[pDoc->ls.count_clock], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case dff:
 			pDoc->ls.count_dff++;
+			pDoc->ls.create_dff(&pDoc->ls.dff[pDoc->ls.count_dff], pointofpif);
 			pDoc->ls.dff[pDoc->ls.count_dff].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.dff[pDoc->ls.count_dff].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_dff(&pDoc->ls.dff[pDoc->ls.count_dff], pointofpif);
 			pDoc->ls.rotate_dff(&pDoc->ls.dff[pDoc->ls.count_dff], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case jkff:
 			pDoc->ls.count_jkff++;
+			pDoc->ls.create_jkff(&pDoc->ls.jkff[pDoc->ls.count_jkff], pointofpif);
 			pDoc->ls.jkff[pDoc->ls.count_jkff].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.jkff[pDoc->ls.count_jkff].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_jkff(&pDoc->ls.jkff[pDoc->ls.count_jkff], pointofpif);
 			pDoc->ls.rotate_jkff(&pDoc->ls.jkff[pDoc->ls.count_jkff], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case seg7:
 			pDoc->ls.count_seg7++;
+			pDoc->ls.create_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pointofpif);
 			pDoc->ls.seg7[pDoc->ls.count_seg7].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.seg7[pDoc->ls.count_seg7].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pointofpif);
 			pDoc->ls.rotate_seg7(&pDoc->ls.seg7[pDoc->ls.count_seg7], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case lib:
 			pDoc->ls.count_lib++;
+			pDoc->ls.create_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pointofpif);
 			pDoc->ls.lib[pDoc->ls.count_lib].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.lib[pDoc->ls.count_lib].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pointofpif);
 			pDoc->ls.rotate_lib(&pDoc->ls.lib[pDoc->ls.count_lib], pDoc->ls.temp_logic.direct);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
 		case ::dcd:
 			pDoc->ls.count_dcd++;
+			pDoc->ls.create_dcd(&pDoc->ls.dcd[pDoc->ls.count_dcd], pointofpif);
 			pDoc->ls.dcd[pDoc->ls.count_dcd].name = pDoc->ls.temp_logic.name;
 			pDoc->ls.dcd[pDoc->ls.count_dcd].direct = pDoc->ls.temp_logic.direct;
-			pDoc->ls.create_dcd(&pDoc->ls.dcd[pDoc->ls.count_dcd], pointofpif);
+			pDoc->ls.savetomem(pointofpif, ::input, pDoc->ls.pif[p1.x / 20][p1.y / 20].input, ::paste, pDoc->ls.pif[p1.x / 20][p1.y / 20].name, (Direct)pDoc->ls.pif[p1.x / 20][p1.y / 20].direct);
 			pDoc->ls.whatgate = nothing;
 			Invalidate(1);
 			break;
@@ -2322,5 +2364,103 @@ void CPLS2View::Oncut()
 		break;
 	}
 
-	pDoc->ls.lsdelete(p1);
+	pDoc->ls.lsdelete(p1 , 1);
+}
+
+
+void CPLS2View::OnDoUndo()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.undo();
+	Invalidate(1);
+}
+
+
+void CPLS2View::OnDoRedo()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pDoc->ls.redo();
+	Invalidate(1);
+}
+
+
+void CPLS2View::OnUpdateDoUndo(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->Enable(pDoc->ls.memindex != -1);
+}
+
+
+void CPLS2View::OnUpdateDoRedo(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->Enable(pDoc->ls.memindex != pDoc->ls.maxmemindex);
+}
+
+
+void CPLS2View::OnUpdate1second(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->SetCheck(hz == 1000);
+}
+
+
+void CPLS2View::OnUpdatepoint5second(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->SetCheck(hz == 500);
+}
+
+
+void CPLS2View::OnUpdatepoint25second(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->SetCheck(hz == 200);
+}
+
+
+void CPLS2View::OnUpdatepoint1second(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->SetCheck(hz == 100);
+}
+
+
+void CPLS2View::OnUpdate32825(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->SetCheck(pDoc->ls.dff[0].trigger == TRUE);
+}
+
+
+void CPLS2View::OnUpdate32826(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->SetCheck(pDoc->ls.dff[0].trigger == FALSE);
+}
+
+
+void CPLS2View::OnUpdatelibready(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->Enable(pDoc->ls.existlibrary != 1);
+}
+
+
+void CPLS2View::OnUpdatecreatelib(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	pCmdUI->Enable(pDoc->ls.existlibrary == 1);
 }
