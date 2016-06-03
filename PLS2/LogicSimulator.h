@@ -370,6 +370,4 @@ public:
 	void rotate_seg7(SEG7 *seg7, Direct dir);
 	void rotate_lib(Library *lib, Direct dir);
 	void lsdelete(CPoint p1);
-	void copy(WhatGate wg);
-	void paste(WhatGate wg);
 };
