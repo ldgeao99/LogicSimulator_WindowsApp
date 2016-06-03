@@ -1843,3 +1843,32 @@ void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
 			this->pif[lib->output[i].x][lib->output[0].y].value = &lib->value[i];
 	}
 }
+
+void LogicSimulator::lsdelete(WhatGate gate, CPoint clicked, int num)
+{
+	switch (gate) {
+	case ::input: //입력
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+
+			}
+		}
+	case ::output://출력
+	case ::lsclock:
+
+	case ::and:
+	case ::or:
+	case ::xor:
+	case ::not:
+	case ::nand:
+	case ::nor:
+	case ::dff:
+	case ::jkff:
+	case ::tff:
+
+	case ::seg7:
+	case ::lib: 
+	case ::dcd :
+	case ::line:
+	}
+}
