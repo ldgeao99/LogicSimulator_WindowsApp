@@ -36,6 +36,7 @@ public:
 		int clock = -1;
 		int dcd = -1;
 
+		CString name;
 
 		BOOL gatein = FALSE; //게이트의 입력값으로 사용되는가
 		BOOL gateout = FALSE; //게이트의 출력값으로 사용되는가
@@ -263,6 +264,17 @@ public:
 		WhatGate gate;
 	};
 
+	struct TempMem {
+
+		CString name;
+		Direct direct;
+		WhatGate gate;
+		CPoint clicked;
+
+		int linex;
+		int liney;
+		Work work;
+	};
 	//변수입니다.
 public:
 	PointInfo pif[INDEX][INDEX];
