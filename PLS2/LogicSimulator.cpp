@@ -11,23 +11,35 @@ LogicSimulator::LogicSimulator()
 
 void LogicSimulator::OnePointClear(PointInfo pif)
 {
-	pif.input = -1;
-	pif.output = -1;
-	pif. and = -1;
+	pif.input = -1; //입력
+	pif.output = -1; //출력
+	pif.and = -1;
 	pif. or = -1;
-	pif. xor = -1;
-	pif. not = -1;
+	pif.xor = -1;
+	pif.not = -1;
 	pif.line = -1;
+	pif.nand = -1;
+	pif.nor = -1;
+	pif.dff = -1;
+	pif.jkff = -1;
+	pif.tff = -1;
+	pif.seg7 = -1;
+	pif.lib = -1;
+	pif.clock = -1;
+	pif.dcd = -1;
 
 
-	pif.gatein = FALSE;
-	pif.gateout = FALSE;
-	
+	pif.gatein = FALSE; //게이트의 입력값으로 사용되는가
+	pif.gateout = FALSE; //게이트의 출력값으로 사용되는가
+
 	pif.lineok = FALSE;
 	pif.gate = nothing;
+	pif.serializegate = nothing;
 	pif.usingpoint = FALSE;
-	int i = 0;
-	pif.value = &i;
+
+	pif.direct = 0;
+
+	pif.value = NULL;
 }
 
 void LogicSimulator::AllPointClear()

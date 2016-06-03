@@ -136,13 +136,19 @@
 #define ID_start                        32846
 #define ID_pause                        32847
 #define ID_delete                       32848
+#define ID_32849                        32849
+#define ID_32850                        32850
+#define ID_32851                        32851
+#define ID_32852                        32852
+#define ID_DO_UNDO                      32853
+#define ID_DO_REDO                      32854
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        360
-#define _APS_NEXT_COMMAND_VALUE         32849
+#define _APS_NEXT_COMMAND_VALUE         32855
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
