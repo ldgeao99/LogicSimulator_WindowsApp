@@ -1844,8 +1844,83 @@ void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
 	}
 }
 
-void LogicSimulator::lsdelete(WhatGate gate, CPoint clicked, int num)
+void LogicSimulator::lsdelete(CPoint p1)
 {
+	int x = p1.x / 20;
+	int y = p1.y / 20;
+	CPoint clicked = { x, y };
+	int num = 0;
+	WhatGate gate;
+	switch (this->pif[x][y].gate) {
+	case ::input: //입력
+		num = this->pif[x][y].input;
+		gate = ::input;
+		break;
+	case ::output://출력
+		num = this->pif[x][y].output;
+		gate = ::output;
+		break;
+	case ::lsclock:
+		num = this->pif[x][y].clock;
+		gate = ::lsclock;
+		break;
+	case ::and:
+		num = this->pif[x][y].and;
+		gate = ::and;
+		break;
+	case :: or :
+		num = this->pif[x][y]. or ;
+		gate = :: or ;
+		break;
+	case ::xor:
+		num = this->pif[x][y].xor;
+		gate = ::xor;
+		break;
+	case ::not:
+		num = this->pif[x][y].not;
+		gate = ::not;
+		break;
+	case ::nand:
+		num = this->pif[x][y].nand;
+		gate = ::nand;
+		break;
+	case ::nor:
+		num = this->pif[x][y].nor;
+		gate = ::nor;
+		break;
+	case ::dff:
+		num = this->pif[x][y].dff;
+		gate = ::dff;
+		break;
+	case ::jkff:
+		num = this->pif[x][y].jkff;
+		gate = ::jkff;
+		break;
+	case ::tff:
+		num = this->pif[x][y].tff;
+		gate = ::tff;
+		break;
+
+	case ::seg7:
+		num = this->pif[x][y].seg7;
+		gate = ::seg7;
+		break;
+	case ::lib:
+		num = this->pif[x][y].lib;
+		gate = ::lib;
+		break;
+	case ::dcd:
+		num = this->pif[x][y].dcd;
+		gate = ::dcd;
+		break;
+	default:
+		if (this->pif[x][y].line >= 0) {
+			num = this->pif[x][y].line;
+			gate = ::line;
+		}
+		break;
+	}
+
 	switch (gate) {
 	case ::input: //입력
 		for (int i =  -1; i < 2; i++) {
