@@ -636,7 +636,7 @@ CPLS2Doc* CPLS2View::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지
 
 
 // CPLS2View 메시지 처리기
-void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)
+void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)//완성
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CPLS2Doc* pDoc = GetDocument();
