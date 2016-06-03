@@ -58,6 +58,8 @@
 #define IDB_BITMAP9                     357
 #define IDB_LIB                         357
 #define IDR_WAVE                        359
+#define IDD_DIALOG1                     360
+#define IDC_EDIT1                       1000
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -142,14 +144,17 @@
 #define ID_32852                        32852
 #define ID_DO_UNDO                      32853
 #define ID_DO_REDO                      32854
+#define ID_32849                        32849
+#define ID_TextLabel                    32850
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        360
-#define _APS_NEXT_COMMAND_VALUE         32855
+#define _APS_NEXT_RESOURCE_VALUE        362
+#define _APS_NEXT_COMMAND_VALUE         32857
 #define _APS_NEXT_CONTROL_VALUE         1000
+
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
