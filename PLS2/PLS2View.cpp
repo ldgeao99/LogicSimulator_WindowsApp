@@ -1135,7 +1135,7 @@ void CPLS2View::OnMouseMove(UINT nFlags, CPoint point)
 
 	if (pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == dff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == jkff 
 		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == tff || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == seg7
-		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == lib) {
+		|| pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == lib || pDoc->ls.pif[pointofpif.x][pointofpif.y].serializegate == dcd) {
 		ff = 1;
 		pDC->SelectObject(&white3pen);
 		pDC->Rectangle(elffoldrect);
