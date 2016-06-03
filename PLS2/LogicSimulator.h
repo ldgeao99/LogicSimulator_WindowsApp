@@ -312,7 +312,7 @@ public:
 //함수입니다.
 public:
 	LogicSimulator::LogicSimulator();
-	void OnePointClear(PointInfo pif);
+	void OnePointClear(PointInfo *pif);
 	void AllPointClear();
 	void print(LogicSimulator ls);
 	void create_input(Input* in, CPoint clicked);
