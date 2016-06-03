@@ -56,6 +56,7 @@ BOOL CPLS2Doc::OnNewDocument()
 
 void CPLS2Doc::Serialize(CArchive& ar)
 {
+	CString str;
 	int l = 0;
 	int max = 0;
 	int gate = -1;
@@ -113,17 +114,19 @@ void CPLS2Doc::Serialize(CArchive& ar)
 			for (int j = 0; j < INDEX; j++) {
 				ar >> gate;
 				ar >> direct;
+				ls.pif[i][j].direct = (Direct)direct;
 				ls.pif[i][j].serializegate = (WhatGate)gate;
 				pointofpif = { i,j };
 				switch (ls.pif[i][j].serializegate) {
 				case input:
 					ls.count_input++;
+					ls.pif[i][j].input = ls.count_input;
 					ls.create_input(&(ls.in[ls.count_input]), pointofpif);
 					ls.rotate_input(&(ls.in[ls.count_input]), (Direct)direct);
 					break;
 				case output:
 					ls.count_output++;
-					ls.pif[i][j].value;
+					ls.pif[i][j].output = ls.count_output;
 					ls.create_output(&ls.out[ls.count_output], pointofpif);
 					ls.rotate_output(&ls.out[ls.count_output], (Direct)direct);
 					break;
@@ -219,12 +222,13 @@ void CPLS2Doc::Serialize(CArchive& ar)
 					switch (library.pif[i][j].serializegate) {
 					case input:
 						library.count_input++;
+						ls.pif[i][j].input = ls.count_input;
 						library.create_input(&(library.in[library.count_input]), pointofpif);
 						library.rotate_input(&(library.in[library.count_input]), (Direct)direct);
 						break;
 					case output:
 						library.count_output++;
-						library.pif[i][j].value;
+						ls.pif[i][j].output = ls.count_output;
 						library.create_output(&library.out[library.count_output], pointofpif);
 						library.rotate_output(&library.out[library.count_output], (Direct)direct);
 						break;

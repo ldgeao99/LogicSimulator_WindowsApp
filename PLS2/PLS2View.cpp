@@ -1535,7 +1535,7 @@ void CPLS2View::On_TurnToRight()
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
 	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = RIGHT;
-	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = RIGHT;
@@ -1609,7 +1609,7 @@ void CPLS2View::On_TurnToLeft()
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
 	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = LEFT;
-	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = LEFT;
@@ -1683,7 +1683,7 @@ void CPLS2View::On_TurnToTop()
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
 	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = TOP;
-	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = TOP;
@@ -1757,7 +1757,7 @@ void CPLS2View::On_TurnToBottom()
 	CPLS2Doc* pDoc = GetDocument();
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
 	pDoc->ls.pif[p1.x / 20][p1.y / 20].direct = BOTTOM;
-	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].gate)
+	switch (pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate)
 	{
 	case input:
 		pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].direct = BOTTOM;
