@@ -656,7 +656,7 @@ void CWaveView::Onready()
 		if (pDoc->ls.in[i].value == 0)
 			inoldpoint[i].Add(CPoint(pDoc->ls2.in[i].clicked.x * 20 + 40, pDoc->ls2.in[i].clicked.y * 20 + 10));
 		else
-			inoldpoint[i].Add(CPoint(pDoc->ls2.in[i].clicked.x * 20 + 40, pDoc->ls2.in[i].clicked.y * 20 - 10));
+			inoldpoint[i].Add(CPoint(pDoc->ls2.in[i].clicked.x * 20 + 40, pDoc->ls2.in[i].clicked.y * 20 - 10));  
 	}
 	clockoldpoint = new CArray<CPoint, CPoint&>[INDEX];
 	for (int i = 0; i <= pDoc->ls.count_clock; i++) {

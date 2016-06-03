@@ -1294,9 +1294,10 @@ void LogicSimulator::rotate_output(Output *out, Direct dir) {
 		out->input = { out->clicked.x - 1, out->clicked.y };
 		break;
 	case TOP:
-		out->input = { out->clicked.x, out->clicked.y -1};
+		out->input = { out->clicked.x, out->clicked.y + 1};
+		break;
 	case BOTTOM:
-		out->input = { out->clicked.x, out->clicked.y+1 };
+		out->input = { out->clicked.x, out->clicked.y - 1 };
 		break;
 	}
 	this->pif[out->input.x][out->input.y].lineok = TRUE;
