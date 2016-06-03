@@ -87,6 +87,12 @@ BEGIN_MESSAGE_MAP(CPLS2View, CView)
 	ON_UPDATE_COMMAND_UI(ID_32826, &CPLS2View::OnUpdate32826)
 	ON_UPDATE_COMMAND_UI(ID_lib_ready, &CPLS2View::OnUpdatelibready)
 	ON_UPDATE_COMMAND_UI(ID_create_lib, &CPLS2View::OnUpdatecreatelib)
+	ON_UPDATE_COMMAND_UI(ID_32810, &CPLS2View::OnUpdate32810)
+	ON_UPDATE_COMMAND_UI(ID_32811, &CPLS2View::OnUpdate32811)
+	ON_UPDATE_COMMAND_UI(ID_32812, &CPLS2View::OnUpdate32812)
+	ON_UPDATE_COMMAND_UI(ID_32813, &CPLS2View::OnUpdate32813)
+	ON_UPDATE_COMMAND_UI(ID_cut, &CPLS2View::OnUpdatecut)
+	ON_UPDATE_COMMAND_UI(ID_32850, &CPLS2View::OnUpdate32850)
 END_MESSAGE_MAP()
 
 // CPLS2View 생성/소멸
@@ -1858,7 +1864,10 @@ void CPLS2View::Onlibready()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pDoc->ls.readylibaray = 1;
+	if (pDoc->ls.readylibaray == 0)
+		pDoc->ls.readylibaray = 1;
+	else
+		pDoc->ls.readylibaray = 0;
 }
 
 
@@ -2454,7 +2463,10 @@ void CPLS2View::OnUpdatelibready(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
-	pCmdUI->Enable(pDoc->ls.existlibrary != 1);
+	if(pDoc->ls.existlibrary == 1)
+		pCmdUI->Enable(pDoc->ls.existlibrary != 1);
+	else
+		pCmdUI->SetCheck(pDoc->ls.readylibaray == 1);
 }
 
 
@@ -2463,4 +2475,58 @@ void CPLS2View::OnUpdatecreatelib(CCmdUI *pCmdUI)
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
 	pCmdUI->Enable(pDoc->ls.existlibrary == 1);
+}
+
+
+void CPLS2View::OnUpdate32810(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pCmdUI->Enable(pDoc->ls.pif[p1.x/20][p1.y/20].serializegate != nothing);
+}
+
+
+void CPLS2View::OnUpdate32811(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pCmdUI->Enable(pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate != nothing);
+}
+
+
+void CPLS2View::OnUpdate32812(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pCmdUI->Enable(pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate != nothing);
+}
+
+
+void CPLS2View::OnUpdate32813(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pCmdUI->Enable(pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate != nothing);
+}
+
+
+void CPLS2View::OnUpdatecut(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pCmdUI->Enable(pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate != nothing);
+}
+
+
+void CPLS2View::OnUpdate32850(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CPLS2Doc* pDoc = GetDocument();
+	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
+	pCmdUI->Enable(pDoc->ls.pif[p1.x / 20][p1.y / 20].serializegate != nothing);
 }

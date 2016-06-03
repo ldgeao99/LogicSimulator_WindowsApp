@@ -121,6 +121,12 @@ public:
 	afx_msg void OnUpdate32826(CCmdUI *pCmdUI);
 	afx_msg void OnUpdatelibready(CCmdUI *pCmdUI);
 	afx_msg void OnUpdatecreatelib(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32810(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32811(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32812(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32813(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatecut(CCmdUI *pCmdUI);
+	afx_msg void OnUpdate32850(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // PLS2View.cpp의 디버그 버전

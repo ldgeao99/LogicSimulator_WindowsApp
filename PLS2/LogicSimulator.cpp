@@ -1873,7 +1873,7 @@ void LogicSimulator::lsdelete(CPoint p1, int dodo)
 	int y = p1.y / 20;
 	CPoint clicked = { x, y };
 	int num = 0;
-	WhatGate gate;
+	WhatGate gate = nothing;
 	switch (this->pif[x][y].gate) {
 	case ::input: //ÀÔ·Â
 		num = this->pif[x][y].input;
