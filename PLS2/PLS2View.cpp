@@ -1910,7 +1910,7 @@ void CPLS2View::OnTextlabel()
 	CPoint p1 = DividedByTwenty(rbuttonClickedPoint);
 	TextLabel dlg;
 	dlg.m_str = m_str;
-	//str.Format(_T("%s(%d)"), pDoc->ls.and[i].name, pDoc->ls.and[i].value);
+
 	int result = dlg.DoModal();
 	if (result == IDOK)
 	{
@@ -1919,6 +1919,9 @@ void CPLS2View::OnTextlabel()
 		{
 		case input:
 			pDoc->ls.in[pDoc->ls.pif[p1.x / 20][p1.y / 20].input].name = m_str;
+			break;
+		case output:
+			pDoc->ls.out[pDoc->ls.pif[p1.x / 20][p1.y / 20].output].name = m_str;
 			break;
 		}
 		Invalidate(1);
