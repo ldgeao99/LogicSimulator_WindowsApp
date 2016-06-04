@@ -25,4 +25,6 @@ public:
 	virtual BOOL OnInitDialog();
 	CListBox m_list;
 	CString m_selectedFile;
+	BOOL m_loadLib = FALSE;
+	afx_msg void OnBnClickedOk();
 };
