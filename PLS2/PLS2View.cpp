@@ -790,7 +790,6 @@ void CPLS2View::OnLButtonDown(UINT nFlags, CPoint point)//완성
 		}
 	}
 	*/
-
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -808,7 +807,7 @@ void CPLS2View::OnLButtonUp(UINT nFlags, CPoint point)
 		pDoc->ls.SavePointOnTheLine(old_start, old_end, old_wherefixed); // 선에대한 점을 저장.
 	}
 
-	Invalidate(0);
+	Invalidate(1);
 
 	//이게 있어야 이전에 그렸던게 안없어짐.
 	old_start.x = 0;
@@ -1262,6 +1261,7 @@ void CPLS2View::drawingline(CPoint start, CPoint end, WhereFixed wherefixed) {
 	old_start = start;
 	old_end = end;
 	old_wherefixed = wherefixed;
+	ReleaseDC(pDC);
 }
 
 

@@ -61,6 +61,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CPoint DividedByTwenty(CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void Onwavehzstop();
 };
 
 

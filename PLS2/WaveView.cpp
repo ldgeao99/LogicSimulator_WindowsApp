@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CWaveView, CScrollView)
 	ON_COMMAND(ID_delete, &CWaveView::Ondelete)
 	ON_WM_TIMER()
 	ON_WM_LBUTTONDBLCLK()
+	ON_COMMAND(ID_wavehzstop, &CWaveView::Onwavehzstop)
 END_MESSAGE_MAP()
 
 
@@ -858,4 +859,14 @@ void CWaveView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 	Invalidate(0);
 	CScrollView::OnLButtonDblClk(nFlags, point);
+}
+
+
+void CWaveView::Onwavehzstop()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	for (int i = 0; i < pDoc->ls.count_clock; i++) {
+		KillTimer(i);
+	}
 }
