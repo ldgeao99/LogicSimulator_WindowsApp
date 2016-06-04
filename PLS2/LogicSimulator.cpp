@@ -59,7 +59,7 @@ void LogicSimulator::create_input(Input *in, CPoint clicked)
 	in->min = { clicked.x - 1, clicked.y - 1 };
 	in->max = { clicked.x + 1, clicked.y + 1 };
 	in->output = { clicked.x + 1, clicked.y};
-
+	this->pif[clicked.x][clicked.y].name = "IN";
 	this->pif[clicked.x][clicked.y].value = &(in->value);
 	this->pif[clicked.x][clicked.y].input = this->count_input;
 	this->pif[clicked.x][clicked.y].serializegate = input;
@@ -87,7 +87,7 @@ void LogicSimulator::create_output(Output *out, CPoint clicked)
 	out->min = { clicked.x - 1, clicked.y - 1 };
 	out->max = { clicked.x + 1, clicked.y + 1 };
 	out->input = { clicked.x - 1, clicked.y };
-
+	this->pif[clicked.x][clicked.y].name = "OUT";
 	this->pif[clicked.x][clicked.y].output = this->count_output;
 	this->pif[clicked.x][clicked.y].serializegate = output;
 	for (int i = 0; i < 3; i++)
@@ -110,6 +110,7 @@ void LogicSimulator::create_and(AndGate *and, CPoint clicked) // clicked : pif �
 	and->output = { clicked.x+2, clicked.y};//값을 내보낼 수 있는 점.
 	and->input[0] = { clicked.x-2, clicked.y - 1 }; // 값을 받는 점.
 	and->input[1] = { clicked.x-2, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "AND";
 	this->pif[clicked.x][clicked.y].serializegate = ::and;
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
@@ -139,6 +140,7 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 			 line.Add(OneLinePoint(old_start, old_end));
 			 count_line++;
 			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 this->savetomem(CPoint(line.GetAt(count_line).secondPt.x / 20, line.GetAt(count_line).secondPt.y / 20), ::line, count_line, ::create, NULL, RIGHT);
 			// pif[old_start.x/10][old_start.y/10].lineok = TRUE;
 			// pif[old_end.x/10][old_end.y/10].lineok = TRUE;
 		}
@@ -149,6 +151,7 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 			 line.Add(OneLinePoint(old_start, tempP));
 			 count_line++;
 			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 this->savetomem(CPoint(line.GetAt(count_line).secondPt.x / 20, line.GetAt(count_line).secondPt.y / 20), ::line, count_line, ::create, NULL, RIGHT);
 			 //pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
 			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
 
@@ -157,6 +160,7 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 			 line.Add(OneLinePoint(tempP, old_end));
 			 count_line++;
 			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 this->savetomem(CPoint(line.GetAt(count_line).secondPt.x / 20, line.GetAt(count_line).secondPt.y / 20), ::line, count_line, ::create, NULL, RIGHT);
 			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
 			// pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
 		}
@@ -165,6 +169,7 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 			 line.Add(OneLinePoint(old_start, old_end));
 			 count_line++;
 			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 this->savetomem(CPoint(line.GetAt(count_line).secondPt.x / 20, line.GetAt(count_line).secondPt.y / 20), ::line, count_line, ::create, NULL, RIGHT);
 			// pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
 			// pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
 		}
@@ -174,6 +179,7 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 			 line.Add(OneLinePoint(old_start, tempP));
 			 count_line++;
 			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 this->savetomem(CPoint(line.GetAt(count_line).secondPt.x / 20, line.GetAt(count_line).secondPt.y / 20), ::line, count_line, ::create, NULL, RIGHT);
 			// pif[old_start.x / 10][old_start.y / 10].lineok = TRUE;
 			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
 
@@ -182,6 +188,7 @@ void LogicSimulator::SavePointOnTheLine(CPoint old_start, CPoint old_end, WhereF
 			 line.Add(OneLinePoint(tempP, old_end));
 			 count_line++;
 			 this->create_line(line.GetAt(count_line).firstPt, line.GetAt(count_line).secondPt, count_line);
+			 this->savetomem(CPoint(line.GetAt(count_line).secondPt.x / 20, line.GetAt(count_line).secondPt.y / 20), ::line, count_line, ::create, NULL, RIGHT);
 			// pif[tempP.x / 10][tempP.y / 10].lineok = TRUE;
 			// pif[old_end.x / 10][old_end.y / 10].lineok = TRUE;
 		}
@@ -253,6 +260,7 @@ void LogicSimulator::create_lib(Library * lib, CPoint clicked){
 	lib->output[4] = { clicked.x + 3, clicked.y + 1 };
 	lib->output[5] = { clicked.x + 3, clicked.y + 2 };
 	lib->output[6] = { clicked.x + 3, clicked.y + 3 };
+	this->pif[clicked.x][clicked.y].name = "LIB";
 	this->pif[clicked.x][clicked.y].serializegate = ::lib;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -357,6 +365,7 @@ void LogicSimulator::create_xor(XorGate * xor, CPoint clicked)
 	xor->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
 	xor->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
 	xor->input[1] = { clicked.x - 2, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "XOR";
 	this->pif[clicked.x][clicked.y].serializegate = ::xor;
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
@@ -381,6 +390,7 @@ void LogicSimulator::create_nor(NorGate * nor, CPoint clicked)
 	nor->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
 	nor->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
 	nor->input[1] = { clicked.x - 2, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "NOR";
 	this->pif[clicked.x][clicked.y].serializegate = ::nor;
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++) {
@@ -404,6 +414,7 @@ void LogicSimulator::create_nand(NAndGate *nand, CPoint clicked) {
 	nand->output = { clicked.x + 2, clicked.y };//값을 내보낼 수 있는 점.
 	nand->input[0] = { clicked.x - 2, clicked.y - 1 }; // 값을 받는 점.
 	nand->input[1] = { clicked.x - 2, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "NAND";
 	this->pif[clicked.x][clicked.y].serializegate = ::nand;
 	for (int i = 0; i < 5; i++){
 		for (int j = 0; j < 5; j++) {
@@ -430,6 +441,7 @@ void LogicSimulator::create_or(OrGate * or , CPoint clicked)
 	or ->output = { clicked.x + 2, clicked.y };
 	or ->input[0] = { clicked.x - 2,clicked.y - 1 };
 	or ->input[1] = { clicked.x - 2, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "OR";
 	this->pif[clicked.x][clicked.y].serializegate = ::or;
 	for(int i=0; i<5; i++)
 		for (int j = 0; j < 5; j++) {
@@ -453,6 +465,7 @@ void LogicSimulator::create_not(NotGate * not, CPoint clicked)
 	not->max = { clicked.x + 2, clicked.y + 2 };
 	not->output = { clicked.x + 2,clicked.y };
 	not->input = { clicked.x - 2,clicked.y };
+	this->pif[clicked.x][clicked.y].name = "NOT";
 	this->pif[clicked.x][clicked.y].serializegate = ::not;
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
@@ -802,6 +815,7 @@ void LogicSimulator::create_tff(TFF * tff, CPoint clicked)
 	tff->clock = { clicked.x - 3, clicked.y + 1};
 	tff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	tff->output[1] = { clicked.x + 3, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "T-FF";
 	this->pif[clicked.x][clicked.y].serializegate = ::tff;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -831,6 +845,7 @@ void LogicSimulator::create_clock(Clock * clock, CPoint clicked)
 	clock->max = { clicked.x + 1, clicked.y + 1 };
 	//값을 내보낼 수 있는 점.
 	clock->output = { clicked.x + 1, clicked.y };
+	this->pif[clicked.x][clicked.y].name = "CLK";
 	this->pif[clicked.x][clicked.y].serializegate = lsclock;
 	this->pif[clicked.x][clicked.y].value = &(clock->value);
 	this->pif[clicked.x][clicked.y].clock = this->count_clock;
@@ -855,6 +870,7 @@ void LogicSimulator::create_dff(DFF * dff, CPoint clicked)
 	dff->clock = { clicked.x - 3, clicked.y + 1 };
 	dff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	dff->output[1] = { clicked.x + 3, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "D-FF";
 	this->pif[clicked.x][clicked.y].serializegate = ::dff;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -884,6 +900,7 @@ void LogicSimulator::create_jkff(JKFF * jkff, CPoint clicked) {
 	jkff->clock = { clicked.x - 3, clicked.y };
 	jkff->output[0] = { clicked.x + 3,clicked.y - 1 };
 	jkff->output[1] = { clicked.x + 3, clicked.y + 1 };
+	this->pif[clicked.x][clicked.y].name = "JK-FF";
 	this->pif[clicked.x][clicked.y].serializegate = ::jkff;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -918,7 +935,7 @@ void LogicSimulator::create_seg7(SEG7 * seg7, CPoint clicked)
 	seg7->input[4] = { clicked.x - 3, clicked.y + 1 };
 	seg7->input[5] = { clicked.x - 3, clicked.y + 2 };
 	seg7->input[6] = { clicked.x - 3, clicked.y + 3 };
-
+	this->pif[clicked.x][clicked.y].name = "7-SEG";
 	this->pif[clicked.x][clicked.y].serializegate = ::seg7;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -946,6 +963,7 @@ void LogicSimulator::create_dcd(Decoder * dcd, CPoint clicked)
 	dcd->output[4] = { clicked.x + 3, clicked.y + 1 };
 	dcd->output[5] = { clicked.x + 3, clicked.y + 2 };
 	dcd->output[6] = { clicked.x + 3, clicked.y + 3 };
+	this->pif[clicked.x][clicked.y].name = "4*7 DECODER";
 	this->pif[clicked.x][clicked.y].serializegate = ::dcd;
 	for (int i = 0; i<7; i++)
 		for (int j = 0; j < 7; j++) {
@@ -1849,79 +1867,111 @@ void LogicSimulator::rotate_lib(Library *lib, Direct dir) {
 	}
 }
 
-void LogicSimulator::lsdelete(CPoint p1)
+void LogicSimulator::lsdelete(CPoint p1, int dodo)
 {
 	int x = p1.x / 20;
 	int y = p1.y / 20;
 	CPoint clicked = { x, y };
 	int num = 0;
-	WhatGate gate;
+	WhatGate gate = nothing;
 	switch (this->pif[x][y].gate) {
 	case ::input: //입력
 		num = this->pif[x][y].input;
 		gate = ::input;
+		if(dodo == 1)
+		this->savetomem(clicked, ::input, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::output://출력
 		num = this->pif[x][y].output;
 		gate = ::output;
+		if (dodo == 1)
+		this->savetomem(clicked, ::input, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::lsclock:
 		num = this->pif[x][y].clock;
 		gate = ::lsclock;
+		if (dodo == 1)
+		this->savetomem(clicked, ::lsclock, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::and:
 		num = this->pif[x][y].and;
 		gate = ::and;
+		if (dodo == 1)
+		this->savetomem(clicked, ::and, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case :: or :
 		num = this->pif[x][y]. or ;
 		gate = :: or ;
+		if (dodo == 1)
+		this->savetomem(clicked, :: or , num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::xor:
 		num = this->pif[x][y].xor;
 		gate = ::xor;
+		if (dodo == 1)
+		this->savetomem(clicked, ::xor, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::not:
 		num = this->pif[x][y].not;
 		gate = ::not;
+		if (dodo == 1)
+		this->savetomem(clicked, ::not, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::nand:
 		num = this->pif[x][y].nand;
 		gate = ::nand;
+		if (dodo == 1)
+		this->savetomem(clicked, ::nand, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::nor:
 		num = this->pif[x][y].nor;
 		gate = ::nor;
+		if (dodo == 1)
+		this->savetomem(clicked, ::nor, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::dff:
 		num = this->pif[x][y].dff;
 		gate = ::dff;
+		if (dodo == 1)
+		this->savetomem(clicked, ::dff, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::jkff:
 		num = this->pif[x][y].jkff;
 		gate = ::jkff;
+		if (dodo == 1)
+		this->savetomem(clicked, ::jkff, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::tff:
 		num = this->pif[x][y].tff;
 		gate = ::tff;
+		if (dodo == 1)
+		this->savetomem(clicked, ::tff, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 
 	case ::seg7:
 		num = this->pif[x][y].seg7;
 		gate = ::seg7;
+		if (dodo == 1)
+		this->savetomem(clicked, ::seg7, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::lib:
 		num = this->pif[x][y].lib;
 		gate = ::lib;
+		if (dodo == 1)
+		this->savetomem(clicked, ::lib, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	case ::dcd:
 		num = this->pif[x][y].dcd;
 		gate = ::dcd;
+		if (dodo == 1)
+		this->savetomem(clicked, ::dcd, num, ::del, pif[x][y].name, (Direct)pif[x][y].direct);
 		break;
 	default:
 		if (this->pif[x][y].line >= 0) {
 			num = this->pif[x][y].line;
 			gate = ::line;
+			if (dodo == 1)
+			this->savetomem(CPoint(0, 0), ::line, num, ::del, NULL, RIGHT);
 		}
 		break;
 	}
@@ -2109,3 +2159,286 @@ void LogicSimulator::lsdelete(CPoint p1)
 		break;
 	}
 }
+
+void LogicSimulator::savetomem(CPoint clicked, WhatGate gate, int index, Work work, CString name, Direct direct)
+{
+	switch (gate) {
+	case ::line:
+		tempmem.clicked = clicked;
+		tempmem.gate = ::line;
+		tempmem.start = line[index].firstPt;
+		tempmem.end = line[index].secondPt;
+		tempmem.work = work;
+		break;
+	default:
+		tempmem.gate = gate;
+		tempmem.clicked = clicked;
+		tempmem.direct = direct;
+		tempmem.name = name;
+		tempmem.work = work;
+		break;
+	}
+	memindex++;
+	maxmemindex++;
+	mem.InsertAt(memindex, tempmem, 1);
+	tempmemclear();
+}
+
+void LogicSimulator::tempmemclear()
+{
+	tempmem.name = _T("");
+	tempmem.direct = RIGHT;
+	tempmem.gate = nothing;
+	tempmem.clicked = { -1, -1 };
+
+	tempmem.start = { -1, -1 };
+	tempmem.end = { -1, -1 };
+
+	tempmem.work = ::no;
+}
+
+void LogicSimulator::undo()
+{
+	tempmem = mem.GetAt(memindex);
+	CPoint click = { tempmem.clicked.x * 20, tempmem.clicked.y * 20};
+	switch (tempmem.work) {
+	case ::create:
+	case ::paste:
+		lsdelete(click , 0);
+		break;
+	case ::del:
+	case ::cut:
+		switch (tempmem.gate) {
+		case ::input:
+			this->count_input++;
+			this->pif[tempmem.clicked.x][tempmem.clicked.y].serializegate = ::input;
+			this->create_input(&(this->in[this->count_input]), tempmem.clicked);
+			this->in[this->count_input].name = this->tempmem.name;
+			this->in[this->count_input].direct = this->tempmem.direct;
+			this->rotate_input(&this->in[this->count_input], this->tempmem.direct);
+			break;
+		case ::output:
+			this->count_output++;
+			this->create_output(&this->out[this->count_output], tempmem.clicked);
+			this->out[this->count_output].direct = this->tempmem.direct;
+			this->rotate_output(&this->out[this->count_output], this->tempmem.direct);
+			this->out[this->count_output].name = this->tempmem.name;
+			break;
+		case ::and:
+			this->count_and++;
+			this->create_and(&this->and[this->count_and], tempmem.clicked); // 만드는 함수 호출.
+			this->and[this->count_and].name = this->tempmem.name;
+			this->and[this->count_and].direct = this->tempmem.direct;
+			this->rotate_and(&this->and[this->count_and], this->tempmem.direct);
+			break;
+		case ::xor:
+			this->count_xor++;
+			this->create_xor(&this->xor[this->count_xor], tempmem.clicked); // 만드는 함수 호출.
+			this->xor[this->count_xor].name = this->tempmem.name;
+			this->xor[this->count_xor].direct = this->tempmem.direct;
+			this->rotate_xor(&this->xor[this->count_xor], this->tempmem.direct);
+			break;
+		case ::nor:
+			this->count_nor++;
+			this->create_nor(&this->nor[this->count_nor], tempmem.clicked); // 만드는 함수 호출.
+			this->nor[this->count_nor].name = this->tempmem.name;
+			this->nor[this->count_nor].direct = this->tempmem.direct;
+			this->rotate_nor(&this->nor[this->count_nor], this->tempmem.direct);
+			break;
+		case ::nand:
+			this->count_nand++;
+			this->create_nand(&this->nand[this->count_nand], tempmem.clicked); // 만드는 함수 호출.
+			this->nand[this->count_nand].name = this->tempmem.name;
+			this->nand[this->count_nand].direct = this->tempmem.direct;
+			this->rotate_nand(&this->nand[this->count_nand], this->tempmem.direct);
+			break;
+		case ::or :
+			this->count_or++;
+			this->create_or(&this-> or [this->count_or], tempmem.clicked);
+			this-> or [this->count_or].name = this->tempmem.name;
+			this-> or [this->count_or].direct = this->tempmem.direct;
+			this->rotate_or(&this-> or [this->count_or], this->tempmem.direct);
+			break;
+		case ::not:
+			this->count_not++;
+			this->create_not(&this-> not [this->count_not], tempmem.clicked);
+			this->not[this->count_not].name = this->tempmem.name;
+			this->not[this->count_not].direct = this->tempmem.direct;
+			this->rotate_not(&this-> not [this->count_not], this->tempmem.direct);
+			break;
+		case ::tff:
+			this->count_tff++;
+			this->create_tff(&this->tff[this->count_tff], tempmem.clicked);
+			this->tff[this->count_tff].name = this->tempmem.name;
+			this->tff[this->count_tff].direct = this->tempmem.direct;
+			this->rotate_tff(&this->tff[this->count_tff], this->tempmem.direct);
+			break;
+		case ::lsclock:
+			this->count_clock++;
+			this->create_clock(&this->clock[this->count_clock], tempmem.clicked);
+			this->clock[this->count_clock].name = this->tempmem.name;
+			this->clock[this->count_clock].direct = this->tempmem.direct;
+			this->rotate_clock(&this->clock[this->count_clock], this->tempmem.direct);
+			break;
+		case ::dff:
+			this->count_dff++;
+			this->create_dff(&this->dff[this->count_dff], tempmem.clicked);
+			this->dff[this->count_dff].name = this->tempmem.name;
+			this->dff[this->count_dff].direct = this->tempmem.direct;
+			this->rotate_dff(&this->dff[this->count_dff], this->tempmem.direct);
+			break;
+		case ::jkff:
+			this->count_jkff++;
+			this->create_jkff(&this->jkff[this->count_jkff], tempmem.clicked);
+			this->jkff[this->count_jkff].name = this->tempmem.name;
+			this->jkff[this->count_jkff].direct = this->tempmem.direct;
+			this->rotate_jkff(&this->jkff[this->count_jkff], this->tempmem.direct);
+			break;
+		case ::seg7:
+			this->count_seg7++;
+			this->create_seg7(&this->seg7[this->count_seg7], tempmem.clicked);
+			this->seg7[this->count_seg7].name = this->tempmem.name;
+			this->seg7[this->count_seg7].direct = this->tempmem.direct;
+			this->rotate_seg7(&this->seg7[this->count_seg7], this->tempmem.direct);
+			break;
+		case ::lib:
+			this->count_lib++;
+			this->create_lib(&this->lib[this->count_lib], tempmem.clicked);
+			this->lib[this->count_lib].name = this->tempmem.name;
+			this->lib[this->count_lib].direct = this->tempmem.direct;
+			this->rotate_lib(&this->lib[this->count_lib], this->tempmem.direct);
+			break;
+		case ::dcd:
+			this->count_dcd++;
+			this->create_dcd(&this->dcd[this->count_dcd], tempmem.clicked);
+			this->dcd[this->count_dcd].name = this->tempmem.name;
+			this->dcd[this->count_dcd].direct = this->tempmem.direct;
+			break;
+		}
+		break;
+	}
+	memindex--;
+}
+
+void LogicSimulator::redo()
+{
+	memindex++;
+	tempmem = mem.GetAt(memindex);
+	CPoint click = { tempmem.clicked.x * 20, tempmem.clicked.y * 20 };
+	switch (tempmem.work) {
+	case ::del:
+	case ::cut:
+		lsdelete(click, 0);
+		break;
+	case ::create:
+	case ::paste:
+		switch (tempmem.gate) {
+		case ::input:
+			this->count_input++;
+			this->create_input(&(this->in[this->count_input]), tempmem.clicked);
+			this->in[this->count_input].name = this->tempmem.name;
+			this->in[this->count_input].direct = this->tempmem.direct;
+			this->rotate_input(&this->in[this->count_input], this->tempmem.direct);
+			break;
+		case ::output:
+			this->count_output++;
+			this->create_output(&this->out[this->count_output], tempmem.clicked);
+			this->out[this->count_output].direct = this->tempmem.direct;
+			this->rotate_output(&this->out[this->count_output], this->tempmem.direct);
+			this->out[this->count_output].name = this->tempmem.name;
+			break;
+		case ::and:
+			this->count_and++;
+			this->create_and(&this->and[this->count_and], tempmem.clicked); // 만드는 함수 호출.
+			this->and[this->count_and].name = this->tempmem.name;
+			this->and[this->count_and].direct = this->tempmem.direct;
+			this->rotate_and(&this->and[this->count_and], this->tempmem.direct);
+			break;
+		case ::xor:
+			this->count_xor++;
+			this->create_xor(&this->xor[this->count_xor], tempmem.clicked); // 만드는 함수 호출.
+			this->xor[this->count_xor].name = this->tempmem.name;
+			this->xor[this->count_xor].direct = this->tempmem.direct;
+			this->rotate_xor(&this->xor[this->count_xor], this->tempmem.direct);
+			break;
+		case ::nor:
+			this->count_nor++;
+			this->create_nor(&this->nor[this->count_nor], tempmem.clicked); // 만드는 함수 호출.
+			this->nor[this->count_nor].name = this->tempmem.name;
+			this->nor[this->count_nor].direct = this->tempmem.direct;
+			this->rotate_nor(&this->nor[this->count_nor], this->tempmem.direct);
+			break;
+		case ::nand:
+			this->count_nand++;
+			this->create_nand(&this->nand[this->count_nand], tempmem.clicked); // 만드는 함수 호출.
+			this->nand[this->count_nand].name = this->tempmem.name;
+			this->nand[this->count_nand].direct = this->tempmem.direct;
+			this->rotate_nand(&this->nand[this->count_nand], this->tempmem.direct);
+			break;
+		case :: or :
+			this->count_or++;
+			this->create_or(&this-> or [this->count_or], tempmem.clicked);
+			this-> or [this->count_or].name = this->tempmem.name;
+			this-> or [this->count_or].direct = this->tempmem.direct;
+			this->rotate_or(&this-> or [this->count_or], this->tempmem.direct);
+			break;
+		case ::not:
+			this->count_not++;
+			this->create_not(&this-> not [this->count_not], tempmem.clicked);
+			this->not[this->count_not].name = this->tempmem.name;
+			this->not[this->count_not].direct = this->tempmem.direct;
+			this->rotate_not(&this-> not [this->count_not], this->tempmem.direct);
+			break;
+		case ::tff:
+			this->count_tff++;
+			this->create_tff(&this->tff[this->count_tff], tempmem.clicked);
+			this->tff[this->count_tff].name = this->tempmem.name;
+			this->tff[this->count_tff].direct = this->tempmem.direct;
+			this->rotate_tff(&this->tff[this->count_tff], this->tempmem.direct);
+			break;
+		case ::lsclock:
+			this->count_clock++;
+			this->create_clock(&this->clock[this->count_clock], tempmem.clicked);
+			this->clock[this->count_clock].name = this->tempmem.name;
+			this->clock[this->count_clock].direct = this->tempmem.direct;
+			this->rotate_clock(&this->clock[this->count_clock], this->tempmem.direct);
+			break;
+		case ::dff:
+			this->count_dff++;
+			this->create_dff(&this->dff[this->count_dff], tempmem.clicked);
+			this->dff[this->count_dff].name = this->tempmem.name;
+			this->dff[this->count_dff].direct = this->tempmem.direct;
+			this->rotate_dff(&this->dff[this->count_dff], this->tempmem.direct);
+			break;
+		case ::jkff:
+			this->count_jkff++;
+			this->create_jkff(&this->jkff[this->count_jkff], tempmem.clicked);
+			this->jkff[this->count_jkff].name = this->tempmem.name;
+			this->jkff[this->count_jkff].direct = this->tempmem.direct;
+			this->rotate_jkff(&this->jkff[this->count_jkff], this->tempmem.direct);
+			break;
+		case ::seg7:
+			this->count_seg7++;
+			this->create_seg7(&this->seg7[this->count_seg7], tempmem.clicked);
+			this->seg7[this->count_seg7].name = this->tempmem.name;
+			this->seg7[this->count_seg7].direct = this->tempmem.direct;
+			this->rotate_seg7(&this->seg7[this->count_seg7], this->tempmem.direct);
+			break;
+		case ::lib:
+			this->count_lib++;
+			this->create_lib(&this->lib[this->count_lib], tempmem.clicked);
+			this->lib[this->count_lib].name = this->tempmem.name;
+			this->lib[this->count_lib].direct = this->tempmem.direct;
+			this->rotate_lib(&this->lib[this->count_lib], this->tempmem.direct);
+			break;
+		case ::dcd:
+			this->count_dcd++;
+			this->create_dcd(&this->dcd[this->count_dcd], tempmem.clicked);
+			this->dcd[this->count_dcd].name = this->tempmem.name;
+			this->dcd[this->count_dcd].direct = this->tempmem.direct;
+			break;
+		}
+		break;
+	}
+}
+

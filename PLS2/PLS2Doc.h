@@ -5,6 +5,8 @@
 
 #pragma once
 #include "LogicSimulator.h"
+#include "DlgSelLib.h"
+
 
 class CPLS2Doc : public CDocument
 {
@@ -15,6 +17,8 @@ protected: // serialization에서만 만들어집니다.
 public:
 	LogicSimulator ls;
 	LogicSimulator library;
+	BOOL m_loadLib = FALSE;
+	DlgSelLib dalg;
 // 특성입니다.
 public:
 
@@ -48,4 +52,6 @@ protected:
 	// 검색 처리기에 대한 검색 콘텐츠를 설정하는 도우미 함수
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	afx_msg void OnBnSelLibOk();
 };
