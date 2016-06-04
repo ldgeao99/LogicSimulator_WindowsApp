@@ -1901,7 +1901,7 @@ void CPLS2View::Onrunstop()
 }
 
 
-void CPLS2View::On32825()
+void CPLS2View::On32825() 
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
@@ -1913,7 +1913,7 @@ void CPLS2View::On32825()
 }
 
 
-void CPLS2View::On32826()
+void CPLS2View::On32826() 
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CPLS2Doc* pDoc = GetDocument();
