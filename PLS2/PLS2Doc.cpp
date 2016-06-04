@@ -46,7 +46,19 @@ BOOL CPLS2Doc::OnNewDocument()
 	// TODO: 여기에 재초기화 코드를 추가합니다.
 	ls.AllPointClear();
 	// SDI 문서는 이 문서를 다시 사용합니다.
-	dalg.DoModal();
+
+
+	int count = 0;
+	CFileFind finder;
+	CString s;
+	BOOL bWorking = finder.FindFile(_T("res\\lib_*.mdi"));
+
+	while (bWorking) {
+		bWorking = finder.FindNextFile();
+		count++;
+	}
+	if (count != 0)
+		dalg.DoModal();
 
 	return TRUE;
 }
@@ -439,7 +451,7 @@ void CPLS2Doc::OnBnSelLibOk()
 	CFile file;
 	CString s = _T("res\\");
 	s = s + dalg.m_selectedFile + _T(".mdi");
-	if (file.Open(s, CFile::modeRead)) {
+	if (file.Open(s, CFile::modeRead) ) {
 		CArchive ar(&file, CArchive::load);
 		Serialize(ar);
 		ar.Close();

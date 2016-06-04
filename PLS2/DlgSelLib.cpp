@@ -43,6 +43,7 @@ BOOL DlgSelLib::OnInitDialog()
 	CFileFind finder;
 	CString s;
 	BOOL bWorking = finder.FindFile(_T("res\\lib_*.mdi"));
+
 	while (bWorking) {
 		bWorking = finder.FindNextFile();
 		//TRACE(_T("[%s]\n"), (LPCTSTR)finder.GetFileName()); //디렉토리인경우 [] 로 보여줌.
