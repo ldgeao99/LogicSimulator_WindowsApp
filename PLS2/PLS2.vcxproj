@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="DlgSelLib.h" />
     <ClInclude Include="LogicSimulator.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="PLS2.h" />
@@ -200,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="DlgSelLib.cpp" />
     <ClCompile Include="LogicSimulator.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="PLS2.cpp" />

@@ -22,6 +22,7 @@
 IMPLEMENT_DYNCREATE(CPLS2Doc, CDocument)
 
 BEGIN_MESSAGE_MAP(CPLS2Doc, CDocument)
+	ON_BN_CLICKED(IDOK, &CPLS2Doc::OnBnSelLibOk)
 END_MESSAGE_MAP()
 
 
@@ -45,6 +46,19 @@ BOOL CPLS2Doc::OnNewDocument()
 	// TODO: 여기에 재초기화 코드를 추가합니다.
 	ls.AllPointClear();
 	// SDI 문서는 이 문서를 다시 사용합니다.
+
+
+	int count = 0;
+	CFileFind finder;
+	CString s;
+	BOOL bWorking = finder.FindFile(_T("res\\lib_*.mdi"));
+
+	while (bWorking) {
+		bWorking = finder.FindNextFile();
+		count++;
+	}
+	if (count != 0)
+		dalg.DoModal();
 
 	return TRUE;
 }
@@ -452,3 +466,26 @@ void CPLS2Doc::Dump(CDumpContext& dc) const
 
 
 // CPLS2Doc 명령
+
+
+void CPLS2Doc::OnBnSelLibOk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_loadLib = TRUE;
+
+	int nIndex = dalg.m_list.GetCurSel();
+	if (nIndex != LB_ERR) {
+		dalg.m_list.GetText(nIndex, dalg.m_selectedFile);
+	}
+
+	CFile file;
+	CString s = _T("res\\");
+	s = s + dalg.m_selectedFile + _T(".mdi");
+	if (file.Open(s, CFile::modeRead) ) {
+		CArchive ar(&file, CArchive::load);
+		Serialize(ar);
+		ar.Close();
+		file.Close();
+	}
+	m_loadLib = FALSE;
+}
