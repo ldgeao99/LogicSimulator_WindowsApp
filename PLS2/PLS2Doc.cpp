@@ -47,19 +47,7 @@ BOOL CPLS2Doc::OnNewDocument()
 	ls.AllPointClear();
 	// SDI 문서는 이 문서를 다시 사용합니다.
 
-
-	int count = 0;
-	CFileFind finder;
-	CString s;
-	BOOL bWorking = finder.FindFile(_T("res\\lib_*.mdi"));
-
-	while (bWorking) {
-		bWorking = finder.FindNextFile();
-		count++;
-	}
-	if (count != 0)
-		dalg.DoModal();
-
+	
 	return TRUE;
 }
 
@@ -261,7 +249,7 @@ void CPLS2Doc::Serialize(CArchive& ar)
 		}
 		ar >> l;
 		if (l == 1) {
-			library.existlibrary = 1;
+			ls.existlibrary = 1;
 			for (int i = 0; i < INDEX; i++)
 				for (int j = 0; j < INDEX; j++) {
 					ar >> gate;
