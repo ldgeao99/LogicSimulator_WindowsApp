@@ -152,13 +152,18 @@
 #define ID_Copy                         32858
 #define ID_Paste                        32859
 #define ID_del                          32860
+#define ID_32861                        32861
+#define ID_32862                        32862
+#define ID_32863                        32863
+#define ID_upedge                       32864
+#define ID_downedge                     32865
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        364
-#define _APS_NEXT_COMMAND_VALUE         32861
+#define _APS_NEXT_COMMAND_VALUE         32866
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

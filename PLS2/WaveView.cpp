@@ -34,6 +34,14 @@ BEGIN_MESSAGE_MAP(CWaveView, CScrollView)
 	ON_WM_TIMER()
 	ON_WM_LBUTTONDBLCLK()
 	ON_COMMAND(ID_wavehzstop, &CWaveView::Onwavehzstop)
+	ON_COMMAND(ID_upedge, &CWaveView::Onupedge)
+	ON_COMMAND(ID_downedge, &CWaveView::Ondownedge)
+	ON_UPDATE_COMMAND_UI(32840, &CWaveView::OnUpdate32840)
+	ON_UPDATE_COMMAND_UI(ID_wavehz2, &CWaveView::OnUpdatewavehz2)
+	ON_UPDATE_COMMAND_UI(ID_wavehz3, &CWaveView::OnUpdatewavehz3)
+	ON_UPDATE_COMMAND_UI(ID_wavehz4, &CWaveView::OnUpdatewavehz4)
+	ON_UPDATE_COMMAND_UI(ID_upedge, &CWaveView::OnUpdateupedge)
+	ON_UPDATE_COMMAND_UI(ID_downedge, &CWaveView::OnUpdatedownedge)
 END_MESSAGE_MAP()
 
 
@@ -640,13 +648,13 @@ void CWaveView::Onready()
 	se[0] = 0;
 	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
 	pDoc->ls.count_serial = -1;
-	for (int i = 0; i <= pDoc->ls.count_output; i++) {
-		pDoc->ls.serialize_gate(pDoc->ls.out[i].input.x, pDoc->ls.out[i].input.y);
+	for (int i = 0; i <= pDoc->ls.count_seg7; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.seg7[0].clicked.x, pDoc->ls.seg7[0].clicked.y);
 		repeat++;
 		se[repeat] = pDoc->ls.count_serial;
 	}
-	for (int i = 0; i <= pDoc->ls.count_seg7; i++) {
-		pDoc->ls.serialize_gate(pDoc->ls.seg7[0].clicked.x, pDoc->ls.seg7[0].clicked.y);
+	for (int i = 0; i <= pDoc->ls.count_output; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.out[i].input.x, pDoc->ls.out[i].input.y);
 		repeat++;
 		se[repeat] = pDoc->ls.count_serial;
 	}
@@ -869,4 +877,76 @@ void CWaveView::Onwavehzstop()
 	for (int i = 0; i < pDoc->ls.count_clock; i++) {
 		KillTimer(i);
 	}
+}
+
+
+void CWaveView::Onupedge()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	for (int i = 0; i < INDEX; i++) {
+		pDoc->ls.dff[i].trigger = TRUE;
+		pDoc->ls.jkff[i].trigger = TRUE;
+		pDoc->ls.tff[i].trigger = TRUE;
+	}
+}
+
+
+void CWaveView::Ondownedge()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	for (int i = 0; i < INDEX; i++) {
+		pDoc->ls.dff[i].trigger = FALSE;
+		pDoc->ls.jkff[i].trigger = FALSE;
+		pDoc->ls.tff[i].trigger = FALSE;
+	}
+}
+
+
+void CWaveView::OnUpdate32840(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	pCmdUI->SetCheck(hz == 1000);
+}
+
+
+void CWaveView::OnUpdatewavehz2(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	pCmdUI->SetCheck(hz == 500);
+}
+
+
+void CWaveView::OnUpdatewavehz3(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	pCmdUI->SetCheck(hz == 200);
+}
+
+
+void CWaveView::OnUpdatewavehz4(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	pCmdUI->SetCheck(hz == 100);
+}
+
+
+void CWaveView::OnUpdateupedge(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	pCmdUI->SetCheck(pDoc->ls.dff[0].trigger == TRUE);
+}
+
+
+void CWaveView::OnUpdatedownedge(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	CWaveDoc* pDoc = (CWaveDoc*)GetDocument();
+	pCmdUI->SetCheck(pDoc->ls.dff[0].trigger == FALSE);
 }

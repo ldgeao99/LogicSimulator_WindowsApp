@@ -62,6 +62,14 @@ public:
 	CPoint DividedByTwenty(CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void Onwavehzstop();
+	afx_msg void Onupedge();
+	afx_msg void Ondownedge();
+	afx_msg void OnUpdate32840(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatewavehz2(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatewavehz3(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatewavehz4(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateupedge(CCmdUI *pCmdUI);
+	afx_msg void OnUpdatedownedge(CCmdUI *pCmdUI);
 };
 
 

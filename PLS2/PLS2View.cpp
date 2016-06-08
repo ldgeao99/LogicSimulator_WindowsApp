@@ -815,6 +815,23 @@ void CPLS2View::OnLButtonUp(UINT nFlags, CPoint point)
 	old_end.x = 0;
 	old_end.y = 0;
 	pDoc->ls.canDrawState = FALSE;
+	//실행
+	repeat = 0;
+	se[0] = 0;
+
+	pDoc->ls.count_serial = -1;
+	for (int i = 0; i <= pDoc->ls.count_seg7; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.seg7[i].input[0].x, pDoc->ls.seg7[i].input[0].y);
+		repeat++;
+		se[repeat] = pDoc->ls.count_serial;
+	}
+	for (int i = 0; i <= pDoc->ls.count_output; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.out[i].input.x, pDoc->ls.out[i].input.y);
+		repeat++;
+		se[repeat] = pDoc->ls.count_serial;
+	}
+	pDoc->ls.run(repeat, se, &pDoc->library);
+	Invalidate();
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -1368,10 +1385,12 @@ void CPLS2View::OnTimer(UINT_PTR nIDEvent)
 	}
 	if (pDoc->ls.clock[nIDEvent].value == 0) {
 		pDoc->ls.clock[nIDEvent].value = 1;
+		pDoc->ls.run(repeat, se, &pDoc->library);
 		Invalidate(1);
 	}
 	else {
 		pDoc->ls.clock[nIDEvent].value = 0;
+		pDoc->ls.run(repeat, se, &pDoc->library);
 		Invalidate(1);
 	}
 		
@@ -1461,6 +1480,21 @@ void CPLS2View::OnLButtonDblClk(UINT nFlags, CPoint point)
 		pDoc->ls.calculate_dcd(&pDoc->ls.dcd[pDoc->ls.pif[p1.x / 20][p1.y / 20].dcd]);
 		break;
 	}
+	//실행
+	repeat = 0;
+	se[0] = 0;
+	pDoc->ls.count_serial = -1;
+	for (int i = 0; i <= pDoc->ls.count_seg7; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.seg7[i].input[0].x, pDoc->ls.seg7[i].input[0].y);
+		repeat++;
+		se[repeat] = pDoc->ls.count_serial;
+	}
+	for (int i = 0; i <= pDoc->ls.count_output; i++) {
+		pDoc->ls.serialize_gate(pDoc->ls.out[i].input.x, pDoc->ls.out[i].input.y);
+		repeat++;
+		se[repeat] = pDoc->ls.count_serial;
+	}
+	pDoc->ls.run(repeat, se, &pDoc->library);
 	Invalidate();
 	CView::OnLButtonDblClk(nFlags, point);
 }

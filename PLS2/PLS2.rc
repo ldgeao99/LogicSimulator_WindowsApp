@@ -273,7 +273,7 @@ BEGIN
         MENUITEM "클럭",                          ID_32798
         MENUITEM "4*7디코더",                      ID_decoder
     END
-    POPUP "실행"
+    POPUP "실행", INACTIVE
     BEGIN
         MENUITEM "serialize",                   ID_serialize
         MENUITEM "run",                         ID_run
@@ -323,7 +323,7 @@ END
 
 IDR_WAVE MENU
 BEGIN
-    POPUP "실행"
+    POPUP "실행", INACTIVE
     BEGIN
         MENUITEM "serialize",                   ID_wave_serial
         MENUITEM "autorun",                     ID_wave_running
@@ -335,6 +335,11 @@ BEGIN
         MENUITEM "2hz",                         ID_wavehz3
         MENUITEM "5hz",                         ID_wavehz4
         MENUITEM "stop",                        ID_wavehzstop
+        POPUP "트리거 설정"
+        BEGIN
+            MENUITEM "상승엣지",                        ID_upedge
+            MENUITEM "하강엣지",                        ID_downedge
+        END
     END
     POPUP "파형그리기"
     BEGIN
